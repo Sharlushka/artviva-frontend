@@ -1,5 +1,7 @@
 ## Frontend for artviva.school
 [Шпитьківська дитяча школа мистецтв](https://artviva.school)
+
+Work in progress. Master branch deployed on netlify: [artviva.netlify.com](https://artviva.netlify.com)
 ### React, Redux, Redux Thunk, React router, Axios, Cypress, ESLint
 
 ### Build Setup
