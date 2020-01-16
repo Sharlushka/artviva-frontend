@@ -1,0 +1,26 @@
+[
+	{
+		"comments": [],
+		"title": "Another one",
+		"author": "Jest",
+		"url": "same.url",
+		"likes": 0,
+		"user": {
+				"username": "Jest",
+				"id": "5dfcda4e43b3bd1e4c39ed06"
+		},
+		"id": "5e021b34a225dc2d48382543"
+	},
+	{
+		"comments": [],
+		"title": "Blog test title",
+		"author": "Dale 'tester' Gribble",
+		"url": "some.url",
+		"likes": 0,
+		"user": {
+				"username": "Dale 'tester' Gribble",
+				"id": "_test_id_5dfcda4e43b3bd1"
+		},
+		"id": "5e021b34a225dc2d48382542"
+	}
+]

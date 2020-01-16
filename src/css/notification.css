@@ -1,0 +1,7 @@
+div.ERROR {
+  border: 1px solid red;
+}
+
+div.SUCCESS {
+  border: 1px solid green;
+}
