@@ -14,12 +14,12 @@ const Footer = () => {
 		<footer className="footer">
 			<Container>
 				<Row>
-					<Col xs={8}>
+					<Col xs={7}>
 						<span className="text-muted">
 							&copy;&nbsp;{footerDate()}&nbsp;Artviva
 						</span>
 					</Col>
-					<Col xs={4} className="text-center">
+					<Col xs={5} className="text-center px-0">
 						<a
 							href="https://www.facebook.com/myz.shpytky"
 							alt="Фейсбук-група Шпитьківської Дитячої Школи Мистецтв"
