@@ -1,0 +1,32 @@
+// desktop
+=desktop($args...)
+	@if length($args) == 1
+		@media screen and (max-width: nth($args, 1))
+			@content
+	@if length($args) == 2
+		@media screen and (max-resolution: nth($args, 1)) and (min-width: nth($args, 2))
+			@content
+// not desktop
+=handheld($args...)
+	@if length($args) == 1
+		@media screen and (max-width: nth($args, 1))
+			@content
+	@if length($args) == 2
+		@media screen and (-webkit-min-device-pixel-ratio: nth($args, 1)) and (min-width: nth($args, 2))
+			@content
+// image blur
+=keyframes($name)
+	@-webkit-keyframes #{$name}
+		@content
+	@-moz-keyframes #{$name}
+		@content
+	@-ms-keyframes #{$name}
+		@content
+	@keyframes #{$name}
+		@content
+=filter($first-filter-type,$first-filter-amount,$second-filter-type,$second-filter-amount)
+	-webkit-filter: $first-filter-type+unquote('(#{$first-filter-amount})') $second-filter-type+unquote('(#{$second-filter-amount})')
+	-moz-filter: $first-filter-type+unquote('(#{$first-filter-amount})') $second-filter-type+unquote('(#{$second-filter-amount})')
+	-ms-filter: $first-filter-type+unquote('(#{$first-filter-amount})') $second-filter-type+unquote('(#{$second-filter-amount})')
+	-o-filter: $first-filter-type+unquote('(#{$first-filter-amount})') $second-filter-type+unquote('(#{$second-filter-amount})')
+	filter: $first-filter-type+unquote('(#{$first-filter-amount})') $second-filter-type+unquote('(#{$second-filter-amount})')
