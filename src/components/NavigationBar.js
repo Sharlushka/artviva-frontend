@@ -28,6 +28,12 @@ const NavigationBar = ({ user }) => {
 							</Nav.Link>
 						</Link>
 
+						<Link to="/blog" className="d-flex align-items-center">
+							<Nav.Link href="#" as="span">
+								Блог
+							</Nav.Link>
+						</Link>
+
 						<Nav.Link className="d-flex justify-content-end" href="#" as="span">
 							{user
 								? <>

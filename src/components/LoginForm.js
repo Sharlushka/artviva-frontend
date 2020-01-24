@@ -3,14 +3,12 @@ import { connect } from 'react-redux'
 import { useField } from '../hooks'
 import { login } from '../reducers/userReducer'
 import { setNotification } from '../reducers/notificationReducer'
-import { Form, Button } from 'react-bootstrap'
-import Togglable from './Togglable'
-import SignUp from './SignUp'
+import { Form, Button, Row } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
 
 const LoginForm = (props) => {
 	const { reset : resetEmail, ...email } = useField('email')
 	const { reset : resetPass, ...password } = useField('password')
-	const signUpRef = React.createRef()
 
 	const handleLogin = async event => {
 		event.preventDefault()
@@ -23,44 +21,54 @@ const LoginForm = (props) => {
 				props.setNotification({
 					message: 'Logged in successfully',
 					variant: 'info'
-				 }, 5)
+				}, 5)
 				document.location.href='/'
 			})
 			.catch(error => {
 				const notification = JSON.parse(error.request.responseText)
-				props.setNotification({ 
+				props.setNotification({
 					message: notification.error,
 					variant: 'danger'
 				}, 5)
 			})
-			resetEmail('')
-			resetPass('')
+		resetEmail('')
+		resetPass('')
 	}
 
 	return (
 		<>
-			<h4>Login into application</h4>
+			<h3 className="text-center alternate-font py-4">
+				Логін
+			</h3>
 			<Form data-cy="loginForm" onSubmit={handleLogin}>
 				<Form.Group>
-					<Form.Label>email</Form.Label>
+					<Form.Label>Електронна адреса</Form.Label>
 					<Form.Control
 						name="email"
 						data-cy="emailInput"
 						{...email}
 					/>
-					<Form.Label>password</Form.Label>
+					<Form.Label>Пароль</Form.Label>
 					<Form.Control
 						name="password"
 						data-cy="passwordInput"
 						{...password}
 					/>
-				<Button className="my-3" type="submit" variant="primary" data-cy="loginBtn">login</Button>
+					<Row className="p-3 d-flex justify-content-between align-items-center">
+						<Link to="/register">
+							Новий користувач?
+						</Link>
+						<Button
+							type="submit"
+							variant="primary"
+							data-cy="loginBtn"
+						>
+							Логін
+						</Button>
+					</Row>
 				</Form.Group>
 			</Form>
-			<Togglable buttonLabel="sign up" dataCy="signUp" ref={signUpRef}>
-				<SignUp />
-			</Togglable>
-	</>
+		</>
 	)
 }
 

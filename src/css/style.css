@@ -1,0 +1,127 @@
+@import url("https://fonts.googleapis.com/css?family=Lora&display=swap");
+.custom-font {
+  font-family: "Lora", serif;
+  font-size: 1.1em;
+  letter-spacing: 0.15em;
+  text-align: center;
+  color: #222222;
+}
+
+.alternate-font {
+  font-family: "Lora", serif;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 360px) {
+  .main-title {
+    font-size: 0.9em;
+  }
+}
+@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 768px) {
+  .main-title {
+    font-size: 1.7em;
+  }
+}
+@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 1024px) {
+  .main-title {
+    font-size: 2.6em;
+  }
+}
+@media screen and (max-resolution: 96dpi) and (min-width: 600px) {
+  .main-title {
+    font-size: 1.5em;
+  }
+}
+@media screen and (max-resolution: 96dpi) and (min-width: 1024px) {
+  .main-title {
+    font-size: 2.2em;
+  }
+}
+@media screen and (max-resolution: 96dpi) and (min-width: 1920px) {
+  .main-title {
+    font-size: 2.5em;
+  }
+}
+
+.main-page-descr, .about-text {
+  text-indent: 1.4em;
+}
+@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 768px) {
+  .main-page-descr, .about-text {
+    font-size: 1.7em;
+  }
+}
+@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 1024px) {
+  .main-page-descr, .about-text {
+    font-size: 2.3em;
+  }
+}
+@media screen and (max-resolution: 96dpi) and (min-width: 600px) {
+  .main-page-descr, .about-text {
+    font-size: 1.3em;
+  }
+}
+@media screen and (max-resolution: 96dpi) and (min-width: 1024px) {
+  .main-page-descr, .about-text {
+    font-size: 1.6em;
+  }
+}
+@media screen and (max-resolution: 96dpi) and (min-width: 1920px) {
+  .main-page-descr, .about-text {
+    font-size: 2.3em;
+  }
+}
+
+div.ERROR {
+  border: 1px solid red;
+}
+
+div.SUCCESS {
+  border: 1px solid green;
+}
+
+/* Sticky footer styles */
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+  /* Vertically center the text there */
+  line-height: 60px;
+  background-color: #f5f5f5;
+}
+
+/* Custom page CSS */
+/* Not required for template or sticky footer method. */
+body > .container {
+  padding: 60px 15px 0;
+}
+
+.footer > .container {
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+code {
+  font-size: 80%;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+a {
+  padding: 0 0.5em;
+}
+
+/*# sourceMappingURL=style.css.map */
