@@ -24,11 +24,9 @@ const MainPage = () => {
 						xs={8}
 						className="d-flex justify-content-center align-items-center"
 					>
-						<span className="custom-font">
-							<strong>
-								Artviva — дитяча школа мистецтв.
-							</strong>
-						</span>
+						<strong className="main-title custom-font">
+							Artviva — дитяча школа мистецтв.
+						</strong>
 					</Col>
 					<Col
 						xs={12}

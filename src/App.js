@@ -13,7 +13,6 @@ import BlogView from './components/BlogView'
 
 import { setUserFromLocalStorage } from './reducers/userReducer'
 import './css/index.css'
-import './css/styles.css'
 import { Container } from 'react-bootstrap'
 
 const App = (props) => {

@@ -1,0 +1,28 @@
+@import 'mixins.sass'
+
+.main-title
+	+handheld(2, 360px)
+		font-size: .9em
+	+handheld(2, 768px)
+		font-size: 1.7em
+	+handheld(2, 1024px)
+		font-size: 2.6em
+	+desktop(96dpi, 600px)
+		font-size: 1.5em
+	+desktop(96dpi, 1024px)
+		font-size: 2.2em
+	+desktop(96dpi, 1920px)
+		font-size: 2.5em
+
+.main-page-descr, .about-text
+	text-indent: 1.4em
+	+handheld(2, 768px)
+		font-size: 1.7em
+	+handheld(2, 1024px)
+		font-size: 2.3em
+	+desktop(96dpi, 600px)
+		font-size: 1.3em
+	+desktop(96dpi, 1024px)
+		font-size: 1.6em
+	+desktop(96dpi, 1920px)
+		font-size: 2.3em
