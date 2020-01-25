@@ -16,10 +16,23 @@
 
 .main-page-descr, .about-text
 	text-indent: 1.4em
+	line-height: 1.6
 	+handheld(2, 768px)
 		font-size: 1.7em
-	+handheld(2, 1024px)
+	+handheld(2, 1920px)
+		font-size: 1.9em
+	+desktop(96dpi, 600px)
+		font-size: 1.3em
+	+desktop(96dpi, 1024px)
+		font-size: 1.8em
+	+desktop(96dpi, 1920px)
 		font-size: 2.3em
+
+.about-quote
+	+handheld(2, 1024px)
+		font-size: 1.5em
+	+handheld(2, 1920px)
+		font-size: 1.8em
 	+desktop(96dpi, 600px)
 		font-size: 1.3em
 	+desktop(96dpi, 1024px)

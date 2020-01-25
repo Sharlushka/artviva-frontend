@@ -20,20 +20,34 @@ const AboutView = () => {
 		width:'100%'
 	}
 
+	const floatLeft = {
+		height:'auto',
+		width:'100%',
+		maxWidth: '25em',
+		float: 'left'
+	}
+
+	const floatRight = {
+		height:'auto',
+		width:'100%',
+		maxWidth: '25em',
+		float: 'right'
+	}
+
 	return (
 		<Container>
 			<Row className="d-flex justify-content-center">
-				<Col xs={12} sm={10}>
-					<h1 className="text-center py-2 alternate-font">
+				<Col xs={12}>
+					<h1 className="text-center py-4 alternate-font">
 						Про школу
 					</h1>
 				</Col>
 
-				<Col xs={12} sm={10}>
+				<Col xs={12} className="about-quote alternate-font">
 					<p className="text-center">
 						<em>Музика, не згадуючи ні npo що, може сказати все.</em>
 					</p>
-					<p className="text-right alternate-font">
+					<p className="text-right">
 						<em>
 							<strong>
 								І. Г. Еренбург
@@ -42,7 +56,7 @@ const AboutView = () => {
 					</p>
 				</Col>
 
-				<Col xs={12} sm={10}>
+				<Col xs={12}>
 					<p className="about-text">
 						Позаду 40 років діяльності навчального закладу і багата історія перших
 						починань та досягнень. Ми з гордістю і великою шаною згадуємо людей,
@@ -61,7 +75,7 @@ const AboutView = () => {
 					<Image
 						src="img/about/aboutArtviva00.jpg"
 						style={respStyle}
-						className="mb-3"
+						className="pb-2"
 					/>
 
 					<p className="about-text">
@@ -73,6 +87,11 @@ const AboutView = () => {
 						Аліни та Анни Завальських (дует «Алібі»).
 					</p>
 
+					<Image
+						src="img/about/aboutArtviva01.jpg"
+						style={respStyle}
+						className="pb-2"
+					/>
 					<p className="about-text">
 						З 1984 року школу очолила Щербак Неля Юріївна, посаду заступника з
 						навчально-виховної роботи зайняла Романчишина Людмила Іванівна. Кабінет
@@ -85,15 +104,14 @@ const AboutView = () => {
 						створювалися ансамблі, відкриті філії в селах Гореничі та Дмитрівка. Учні разом
 						з викладачами їздили з благодійними концертами в поля, на ферми, тепличні комплекси.
 					</p>
-
-					<Image
-						src="img/about/aboutArtviva01.jpg"
-						style={respStyle}
-						className="mb-3"
-					/>
 				</Col>
 
-				<Col xs={12} sm={10}>
+				<Col xs={12}>
+					<Image
+						src="img/about/aboutArtviva02.jpg"
+						style={floatLeft}
+						className="px-3 pb-2"
+					/>
 					<p className="about-text">
 						Випали на долю школи і часи фінансової нестабільності, кризи, недостатнього
 						забезпечення, скорочення посад, навчальних планів, навіть закриття закладу,
@@ -107,15 +125,12 @@ const AboutView = () => {
 					</p>
 				</Col>
 
-				<Col xs={12} sm={8}>
+				<Col xs={12}>
 					<Image
-						src="img/about/aboutArtviva02.jpg"
-						className="mb-3"
-						style={respStyle}
+						src="img/about/aboutArtviva03.jpg"
+						style={floatRight}
+						className="px-3 pb-2"
 					/>
-				</Col>
-
-				<Col xs={12} sm={10}>
 					<p className="about-text">
 						За часів керівництва Ільїна Віктора Тихоновича (2006-2009), Шпитьківська музична
 						школа здобула статус школи мистецтв, у зв&apos;язку з відкриттям класу хореографії
@@ -124,15 +139,8 @@ const AboutView = () => {
 						2008 році було побудовано сучасну котельню та школа почала опалюватись природнім газом.
 					</p>
 				</Col>
-				<Col xs={12} sm={6}>
-					<Image
-						src="img/about/aboutArtviva03.jpg"
-						style={respStyle}
-						className="mb-3"
-					/>
-				</Col>
 
-				<Col xs={12} sm={10}>
+				<Col xs={12}>
 					<p className="about-text">
 						3 2009 року починає свою роботу молодий, енергійний директор, досвідчений викладач
 						по класу вокалу — Іванчук Олена Анатоліївна, замісником залишається незамінна
@@ -148,15 +156,12 @@ const AboutView = () => {
 					</p>
 				</Col>
 
-				<Col xs={12} sm={6}>
+				<Col xs={12}>
 					<Image
 						src="img/about/aboutArtviva04.jpg"
-						style={respStyle}
-						className="mb-3"
+						style={floatLeft}
+						className="px-3 pb-2"
 					/>
-				</Col>
-
-				<Col xs={12} sm={10}>
 					<p className="about-text">
 						Сьогодні на території школи проходять роботи по озелененню та ландшафтному дизайну,
 						встановлено автоматичний полив та насаджено багато молодих рослин та дерев, що ще
