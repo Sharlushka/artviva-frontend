@@ -1,5 +1,15 @@
 @import 'mixins.sass'
 
+.carousel-caption h3
+	+carouselText()
+	padding: 0 1.5rem .25rem 1.5rem
+	line-height: 2
+
+.carousel-caption p
+	+carouselText()
+	padding: 0 1.5rem .25rem 1.5rem
+
+// wtf? use font size percentage on html
 .main-title
 	+handheld(2, 360px)
 		font-size: .9em

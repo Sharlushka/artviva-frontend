@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import LargeImg from './common/LargeImg'
+// import LargeImg from './common/LargeImg'
+import Carousel from './common/MainViewCarousel'
 import { Container, Row, Col, Image } from 'react-bootstrap'
 
 const MainPage = () => {
@@ -11,7 +12,7 @@ const MainPage = () => {
 
 	return (
 		<>
-			<LargeImg />
+			<Carousel />
 			<Container>
 				<Row className="py-4">
 					<Col

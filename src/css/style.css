@@ -11,6 +11,35 @@
   font-family: "Lora", serif;
 }
 
+.carousel-caption h3 {
+  background-color: rgba(33, 33, 33, 0.5);
+  display: inline;
+  text-align: center;
+  border-radius: 0.25rem;
+  padding: 0 1.5rem 0.25rem 1.5rem;
+  line-height: 2;
+}
+@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 360px) {
+  .carousel-caption h3 {
+    line-height: 1.5;
+    padding: 0 0.3rem;
+  }
+}
+
+.carousel-caption p {
+  background-color: rgba(33, 33, 33, 0.5);
+  display: inline;
+  text-align: center;
+  border-radius: 0.25rem;
+  padding: 0 1.5rem 0.25rem 1.5rem;
+}
+@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 360px) {
+  .carousel-caption p {
+    line-height: 1.5;
+    padding: 0 0.3rem;
+  }
+}
+
 @media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 360px) {
   .main-title {
     font-size: 0.9em;
