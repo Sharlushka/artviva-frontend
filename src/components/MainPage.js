@@ -3,11 +3,18 @@ import { connect } from 'react-redux'
 // import LargeImg from './common/LargeImg'
 import Carousel from './common/MainViewCarousel'
 import { Container, Row, Col, Image } from 'react-bootstrap'
+import { ReactComponent as OrigamiIcon } from '../svg/origami.svg'
+import { ReactComponent as EditIcon } from '../svg/edit.svg'
+import { ReactComponent as LoveSongIcon } from '../svg/love-song.svg'
 
 const MainPage = () => {
 	const respStyle = {
 		height:'auto',
 		width:'100%'
+	}
+
+	const borderPink = {
+		border: '1px solid pink'
 	}
 
 	return (
@@ -49,6 +56,24 @@ const MainPage = () => {
 							особистості, пошук, розвиток та підтримка обдарованих і талановитих
 							дітей. Все це ми робимо з любов&apos;ю, щирістю та відкритою душею.
 						</p>
+					</Col>
+					<Col>
+						<Container>
+							<Row className="text-center py-4">
+								<Col xs={12}>
+									<OrigamiIcon />
+									<p className="py-4 alternate-font">Never Apologize for Being an Artist</p>
+								</Col>
+								<Col xs={12}>
+									<EditIcon />
+									<p className="py-4 alternate-font">Your Education. Your Way</p>
+								</Col>
+								<Col xs={12}>
+									<LoveSongIcon />
+									<p className="py-4 alternate-font">Art is Where Work Meets Love</p>
+								</Col>
+							</Row>
+						</Container>
 					</Col>
 				</Row>
 			</Container>
