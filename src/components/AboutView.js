@@ -38,12 +38,12 @@ const AboutView = () => {
 		<Container>
 			<Row className="d-flex justify-content-center">
 				<Col xs={12}>
-					<h1 className="text-center py-4 alternate-font">
+					<h1 className="text-center py-4 custom-font">
 						Про школу
 					</h1>
 				</Col>
 
-				<Col xs={12} className="about-quote alternate-font">
+				<Col xs={12} className="about-quote custom-font">
 					<p className="text-center">
 						<em>Музика, не згадуючи ні npo що, може сказати все.</em>
 					</p>

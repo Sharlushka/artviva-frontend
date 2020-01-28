@@ -1,13 +1,12 @@
 @import url("https://fonts.googleapis.com/css?family=Lora&display=swap");
 .custom-font {
   font-family: "Lora", serif;
-  font-size: 1.1em;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.1em;
   text-align: center;
   color: #222222;
 }
 
-.alternate-font {
+.nav-logo-font {
   font-family: "Lora", serif;
 }
 
@@ -16,14 +15,8 @@
   display: inline;
   text-align: center;
   border-radius: 0.25rem;
-  padding: 0 1.5rem 0.25rem 1.5rem;
-  line-height: 2;
-}
-@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 360px) {
-  .carousel-caption h3 {
-    line-height: 1.5;
-    padding: 0 0.3rem;
-  }
+  line-height: 1.7;
+  padding: 0 0.4rem 0.2rem 0.4rem;
 }
 
 .carousel-caption p {
@@ -31,100 +24,18 @@
   display: inline;
   text-align: center;
   border-radius: 0.25rem;
-  padding: 0 1.5rem 0.25rem 1.5rem;
-}
-@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 360px) {
-  .carousel-caption p {
-    line-height: 1.5;
-    padding: 0 0.3rem;
-  }
+  line-height: 1.7;
+  padding: 0 0.4rem 0.2rem 0.4rem;
 }
 
-@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 360px) {
-  .main-title {
-    font-size: 0.9em;
-  }
-}
-@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 768px) {
-  .main-title {
-    font-size: 1.7em;
-  }
-}
-@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 1024px) {
-  .main-title {
-    font-size: 2.6em;
-  }
-}
-@media screen and (max-resolution: 96dpi) and (min-width: 600px) {
-  .main-title {
-    font-size: 1.5em;
-  }
-}
-@media screen and (max-resolution: 96dpi) and (min-width: 1024px) {
-  .main-title {
-    font-size: 2.2em;
-  }
-}
-@media screen and (max-resolution: 96dpi) and (min-width: 1920px) {
-  .main-title {
-    font-size: 2.5em;
-  }
+.carousel-indicators {
+  margin: 0 0 0.3rem 0;
 }
 
 .main-page-descr, .about-text {
   text-indent: 1.4em;
+  text-align: left;
   line-height: 1.6;
-}
-@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 768px) {
-  .main-page-descr, .about-text {
-    font-size: 1.7em;
-  }
-}
-@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 1920px) {
-  .main-page-descr, .about-text {
-    font-size: 1.9em;
-  }
-}
-@media screen and (max-resolution: 96dpi) and (min-width: 600px) {
-  .main-page-descr, .about-text {
-    font-size: 1.3em;
-  }
-}
-@media screen and (max-resolution: 96dpi) and (min-width: 1024px) {
-  .main-page-descr, .about-text {
-    font-size: 1.8em;
-  }
-}
-@media screen and (max-resolution: 96dpi) and (min-width: 1920px) {
-  .main-page-descr, .about-text {
-    font-size: 2.3em;
-  }
-}
-
-@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 1024px) {
-  .about-quote {
-    font-size: 1.5em;
-  }
-}
-@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 1920px) {
-  .about-quote {
-    font-size: 1.8em;
-  }
-}
-@media screen and (max-resolution: 96dpi) and (min-width: 600px) {
-  .about-quote {
-    font-size: 1.3em;
-  }
-}
-@media screen and (max-resolution: 96dpi) and (min-width: 1024px) {
-  .about-quote {
-    font-size: 1.6em;
-  }
-}
-@media screen and (max-resolution: 96dpi) and (min-width: 1920px) {
-  .about-quote {
-    font-size: 2.3em;
-  }
 }
 
 div.ERROR {
@@ -182,6 +93,31 @@ code {
 
 html {
   scroll-behavior: smooth;
+}
+@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 768px) {
+  html {
+    font-size: 120%;
+  }
+}
+@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 1024px) {
+  html {
+    font-size: 170%;
+  }
+}
+@media screen and (max-resolution: 96dpi) and (min-width: 800px) {
+  html {
+    font-size: 115%;
+  }
+}
+@media screen and (max-resolution: 96dpi) and (min-width: 1024px) {
+  html {
+    font-size: 170%;
+  }
+}
+@media screen and (max-resolution: 96dpi) and (min-width: 1920px) {
+  html {
+    font-size: 220%;
+  }
 }
 
 /*# sourceMappingURL=style.css.map */

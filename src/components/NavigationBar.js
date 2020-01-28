@@ -2,21 +2,20 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import Logout from './Logout'
-import { Navbar, Nav } from 'react-bootstrap'
+import { Navbar, Nav, Image } from 'react-bootstrap'
 
 const NavigationBar = ({ user }) => {
 	return (
 		<header>
 			<Navbar collapseOnSelect expand="sm" bg="light" variant="light">
-				<Navbar.Brand href="/">
-					<img
+				<Navbar.Brand href="/" className="d-flex align-items-center">
+					<Image
 						alt="Лого"
 						src="img/schoolLogo-transparent.png"
 						width="30"
 						height="30"
-						className="d-inline-block align-top"
 					/>{' '}
-					<span className="alternate-font">Artviva</span>
+					<span className="pl-2 nav-logo-font">Artviva</span>
 				</Navbar.Brand>
 				<Navbar.Toggle aria-controls="responsive-navbar-nav" />
 				<Navbar.Collapse id="responsive-navbar-nav">

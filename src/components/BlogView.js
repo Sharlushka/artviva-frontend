@@ -5,7 +5,7 @@ import { Container, Row, Col } from 'react-bootstrap'
 const BlogView = () => {
 	return (
 		<Container>
-			<h1 className="py-3 text-center alternate-font">Блог</h1>
+			<h1 className="py-3 text-center custom-font">Блог</h1>
 			<Row>
 				<Col>
 					<div className="fb-page d-flex justify-content-center"
