@@ -1,5 +1,4 @@
-## Frontend for artviva.school
-[Шпитьківська дитяча школа мистецтв](https://artviva.school)
+## Frontend for [artviva.school](https://artviva.school) Шпитьківська дитяча школа мистецтв
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/87644f91-b3d0-4a87-ac7a-eaecb6e39c5f/deploy-status)](https://app.netlify.com/sites/artviva/deploys)
 
