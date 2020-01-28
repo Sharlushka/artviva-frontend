@@ -1,32 +1,22 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Container, Row, Col } from 'react-bootstrap'
+import { FacebookProvider, Page } from 'react-facebook'
+import { Container } from 'react-bootstrap'
 
 const BlogView = () => {
 	return (
-		<Container>
-			<h1 className="py-3 text-center custom-font">Блог</h1>
-			<Row>
-				<Col>
-					<div className="fb-page d-flex justify-content-center"
-						data-href="https://www.facebook.com/myz.shpytky"
-						data-tabs="timeline"
-						data-width="500"
-						data-height="550"
-						data-small-header="true"
-						data-adapt-container-width="true"
-						data-hide-cover="true"
-						data-show-facepile="false">
-						<blockquote
-							cite="https://www.facebook.com/myz.shpytky"
-							className="fb-xfbml-parse-ignore">
-							<a href="https://www.facebook.com/myz.shpytky">
-								Шпитьківська Дитяча Школа Мистецтв
-							</a>
-						</blockquote>
-					</div>
-				</Col>
-			</Row>
+		<Container className="p-0">
+			<h1 className="custom-font py-3 m-0">Наш Фейсбук</h1>
+			<FacebookProvider appId="2185912735037143">
+				<Page href="https://www.facebook.com/myz.shpytky" tabs="timeline"
+					width="500"
+					height="520"
+					small-header="true"
+					adapt-container-width="true"
+					hide-cover="true"
+					show-facepile="false"
+				/>
+			</FacebookProvider>
 		</Container>
 	)
 }
