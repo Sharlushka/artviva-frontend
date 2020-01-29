@@ -1,4 +1,5 @@
 @import 'mixins.sass'
+@import 'palette.scss'
 
 .carousel-caption h3
 	+carouselText()
@@ -13,3 +14,18 @@
 	text-indent: 1.4em
 	text-align: left
 	line-height: 1.6
+
+.about-text
+	margin-bottom: 2em
+	+desktop(96dpi, 768px)
+		font-size: 130%
+
+.main-title
+	font-size: 1.1rem
+	color: $grayish
+	+handheld(2, 768px)
+		font-size: 150%
+	+desktop(96dpi, 600px)
+		font-size: 150%
+	+desktop(96dpi, 1024px)
+		font-size: 200%

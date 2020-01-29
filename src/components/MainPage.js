@@ -13,9 +13,10 @@ const MainPage = () => {
 		width:'100%'
 	}
 
+	/*
 	const borderPink = {
 		border: '1px solid pink'
-	}
+	}*/
 
 	return (
 		<>

@@ -11,6 +11,7 @@ import LoginView from './components/LoginView'
 import RegisterView from './components/RegisterView'
 import BlogView from './components/BlogView'
 import DebugView from './components/views/DebugView'
+import ContactsView from './components/views/ContactsView'
 
 import { setUserFromLocalStorage } from './reducers/userReducer'
 import './css/index.css'
@@ -59,6 +60,10 @@ const App = (props) => {
 
 					<Route exact path="/blog" render={() =>
 						<BlogView />
+					} />
+
+					<Route exact path="/contacts" render={() =>
+						<ContactsView />
 					} />
 
 					<Route exact path="/debug" render={() =>

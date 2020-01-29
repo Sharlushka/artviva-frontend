@@ -1,13 +1,14 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import LoginForm from './LoginForm'
-import { Container, Row, Col, Image } from 'react-bootstrap'
+// import LoginForm from './LoginForm'
+import { Container, Row, Col } from 'react-bootstrap'
 
 const RegisterView = () => {
+	/*
 	const respStyle = {
 		height:'auto',
 		width:'50%'
-	}
+	}*/
 
 	return (
 		<Container className="py-4">

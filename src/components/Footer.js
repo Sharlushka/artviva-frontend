@@ -11,9 +11,10 @@ const Footer = () => {
 		margin: '0em .5em'
 	}
 
+	/*
 	const border = {
 		border: '1px solid pink'
-	}
+	}*/
 	return (
 		<footer className="footer">
 			<Container>

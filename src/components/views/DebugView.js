@@ -1,11 +1,11 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { FacebookProvider, Page } from 'react-facebook'
-import { Container, Row, Col, Image } from 'react-bootstrap'
+import { Container } from 'react-bootstrap'
 
 
 const DebugView = () => {
-
+/*
 	const respStyle = {
 		height:'auto',
 		width:'50%',
@@ -23,7 +23,7 @@ const DebugView = () => {
 
 	const borderBlue = {
 		border: '1px solid blue'
-	}
+	}*/
 
 	return (
 		<Container className="p-0">
