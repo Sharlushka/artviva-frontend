@@ -28,7 +28,7 @@ const ContactsView = () => {
 						<li>село Шпитьки,</li>
 						<li>вулиця Господарська,</li>
 						<li>будинок 3</li>
-						<li>(044) 555-55-55</li>
+						<li>+38(044)555-55-55</li>
 						<li>
 							<a href="mailto:info@artviva.school?subject=Лист з сайту школи">info@artviva.school</a>
 						</li>

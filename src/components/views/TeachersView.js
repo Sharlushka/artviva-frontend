@@ -2,12 +2,14 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Container, Row, Col } from 'react-bootstrap'
 
-const RegisterView = () => {
+
+const TeachersView = () => {
 	return (
-		<Container className="py-4">
-			<Row className="d-flex justify-content-center align-items-center">
-				<Col xs={12} sm={8} md={6} lg={4} className="py-4 text-center">
-					Register view
+		<Container className="text-center">
+			<h1 className="custom-font py-3">Наші вчітели</h1>
+			<Row className="p-0 d-flex justify-content-center">
+				<Col xs={12} md={6} className="p-0">
+					List of teachers here.
 				</Col>
 			</Row>
 		</Container>
@@ -22,4 +24,4 @@ const mapStateToProps = (state) => {
 
 export default connect(
 	mapStateToProps
-)(RegisterView)
+)(TeachersView)

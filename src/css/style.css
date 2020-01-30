@@ -73,6 +73,10 @@
   }
 }
 
+.required-text {
+  color: red;
+}
+
 div.ERROR {
   border: 1px solid red;
 }
@@ -154,6 +158,16 @@ html {
   padding: 0;
   line-height: 1.6;
   font-size: 120%;
+}
+
+.responsive-image {
+  height: auto;
+  width: 100%;
+}
+
+.responsive-image-half {
+  height: auto;
+  width: 50%;
 }
 
 /*# sourceMappingURL=style.css.map */
