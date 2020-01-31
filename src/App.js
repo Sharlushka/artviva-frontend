@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { ParallaxProvider } from 'react-scroll-parallax'
 
 import Notification from './components/Notification'
 import NavigationBar from './components/NavigationBar'
@@ -10,6 +11,9 @@ import AboutView from './components/AboutView'
 import LoginView from './components/LoginView'
 import RegisterView from './components/RegisterView'
 import BlogView from './components/BlogView'
+// import DebugView from './components/views/DebugView'
+import ContactsView from './components/views/ContactsView'
+import TeachersView from './components/views/TeachersView'
 
 import { setUserFromLocalStorage } from './reducers/userReducer'
 import './css/index.css'
@@ -35,7 +39,7 @@ const App = (props) => {
 	*/
 
 	return (
-		<>
+		<ParallaxProvider>
 			<Router>
 				<NavigationBar />
 				<Container role="main" className="px-0 mx-0" fluid data-cy="mainContainer">
@@ -46,6 +50,10 @@ const App = (props) => {
 
 					<Route exact path="/about" render={() =>
 						<AboutView />
+					} />
+
+					<Route exact path="/teachers" render={() =>
+						<TeachersView />
 					} />
 
 					<Route exact path="/login" render={() =>
@@ -60,10 +68,19 @@ const App = (props) => {
 						<BlogView />
 					} />
 
+					<Route exact path="/contacts" render={() =>
+						<ContactsView />
+					} />
+
+					{/*
+					<Route exact path="/debug" render={() =>
+						<DebugView />
+					} />*/}
+
 				</Container>
 				<Footer />
 			</Router>
-		</>
+		</ParallaxProvider>
 	)
 }
 

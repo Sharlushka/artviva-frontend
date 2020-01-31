@@ -37,7 +37,7 @@ const LoginForm = (props) => {
 
 	return (
 		<>
-			<h3 className="text-center alternate-font py-4">
+			<h3 className="text-center custom-font py-4">
 				Логін
 			</h3>
 			<Form data-cy="loginForm" onSubmit={handleLogin}>

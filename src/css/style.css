@@ -1,74 +1,80 @@
 @import url("https://fonts.googleapis.com/css?family=Lora&display=swap");
+/* Coolors Exported Palette - coolors.co/d6b68c-dac6ae-e5d4c4-e9ded4-eae5df */
+/* HSL */
+/* RGB */
 .custom-font {
   font-family: "Lora", serif;
-  font-size: 1.1em;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.1em;
   text-align: center;
-  color: #222222;
+  color: #414141;
 }
 
-.alternate-font {
+.nav-logo-font {
   font-family: "Lora", serif;
 }
 
-@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 360px) {
-  .main-title {
-    font-size: 0.9em;
-  }
+/* Coolors Exported Palette - coolors.co/d6b68c-dac6ae-e5d4c4-e9ded4-eae5df */
+/* HSL */
+/* RGB */
+.carousel-caption h3 {
+  background-color: rgba(33, 33, 33, 0.5);
+  display: inline;
+  text-align: center;
+  border-radius: 0.25rem;
+  line-height: 1.7;
+  padding: 0 0.4rem 0.2rem 0.4rem;
 }
-@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 768px) {
-  .main-title {
-    font-size: 1.7em;
-  }
+
+.carousel-caption p {
+  background-color: rgba(33, 33, 33, 0.5);
+  display: inline;
+  text-align: center;
+  border-radius: 0.25rem;
+  line-height: 1.7;
+  padding: 0 0.4rem 0.2rem 0.4rem;
 }
-@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 1024px) {
-  .main-title {
-    font-size: 2.6em;
-  }
-}
-@media screen and (max-resolution: 96dpi) and (min-width: 600px) {
-  .main-title {
-    font-size: 1.5em;
-  }
-}
-@media screen and (max-resolution: 96dpi) and (min-width: 1024px) {
-  .main-title {
-    font-size: 2.2em;
-  }
-}
-@media screen and (max-resolution: 96dpi) and (min-width: 1920px) {
-  .main-title {
-    font-size: 2.5em;
-  }
+
+.carousel-indicators {
+  margin: 0 0 0.3rem 0;
 }
 
 .main-page-descr, .about-text {
   text-indent: 1.4em;
+  text-align: left;
+  line-height: 1.6;
 }
-@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 768px) {
-  .main-page-descr, .about-text {
-    font-size: 1.7em;
+
+.about-text {
+  margin-bottom: 2em;
+}
+@media screen and (max-resolution: 96dpi) and (min-width: 768px) {
+  .about-text {
+    font-size: 130%;
   }
 }
-@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 1024px) {
-  .main-page-descr, .about-text {
-    font-size: 2.3em;
+
+.main-title {
+  font-size: 1.1rem;
+  color: #414141;
+}
+@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 768px) {
+  .main-title {
+    font-size: 150%;
   }
 }
 @media screen and (max-resolution: 96dpi) and (min-width: 600px) {
-  .main-page-descr, .about-text {
-    font-size: 1.3em;
+  .main-title {
+    font-size: 150%;
   }
 }
 @media screen and (max-resolution: 96dpi) and (min-width: 1024px) {
-  .main-page-descr, .about-text {
-    font-size: 1.6em;
+  .main-title {
+    font-size: 200%;
   }
 }
-@media screen and (max-resolution: 96dpi) and (min-width: 1920px) {
-  .main-page-descr, .about-text {
-    font-size: 2.3em;
-  }
+
+.required-text {
+  color: red;
 }
 
 div.ERROR {
@@ -79,6 +85,9 @@ div.SUCCESS {
   border: 1px solid green;
 }
 
+/* Coolors Exported Palette - coolors.co/d6b68c-dac6ae-e5d4c4-e9ded4-eae5df */
+/* HSL */
+/* RGB */
 /* Sticky footer styles */
 html {
   position: relative;
@@ -87,7 +96,7 @@ html {
 
 body {
   /* Margin bottom by footer height */
-  margin-bottom: 60px;
+  margin-bottom: 4rem;
 }
 
 .footer {
@@ -95,33 +104,101 @@ body {
   bottom: 0;
   width: 100%;
   /* Set the fixed height of the footer here */
-  height: 60px;
-  /* Vertically center the text there */
-  line-height: 60px;
+  height: 4rem;
   background-color: #f5f5f5;
+}
+
+.copy-info {
+  line-height: 1;
+}
+
+.copy-info a {
+  color: gray;
+  text-decoration: underline;
+}
+
+.icons-column {
+  /* Vertically center the text there */
+  line-height: 4rem;
 }
 
 /* Custom page CSS */
 /* Not required for template or sticky footer method. */
-body > .container {
-  padding: 60px 15px 0;
-}
-
 .footer > .container {
-  padding-right: 15px;
-  padding-left: 15px;
+  padding-right: 1rem;
+  padding-left: 1rem;
 }
 
-code {
-  font-size: 80%;
-}
-
+/* Coolors Exported Palette - coolors.co/d6b68c-dac6ae-e5d4c4-e9ded4-eae5df */
+/* HSL */
+/* RGB */
 html {
   scroll-behavior: smooth;
 }
+@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 768px) {
+  html {
+    font-size: 120%;
+  }
+}
+@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 1024px) {
+  html {
+    font-size: 170%;
+  }
+}
+@media screen and (max-resolution: 96dpi) and (min-width: 1024px) {
+  html {
+    font-size: 110%;
+  }
+}
+@media screen and (max-resolution: 96dpi) and (min-width: 1920px) {
+  html {
+    font-size: 160%;
+  }
+}
 
-a {
-  padding: 0 0.5em;
+.contacts-list {
+  list-style: none;
+  padding: 0;
+  line-height: 1.6;
+  font-size: 120%;
+}
+
+.responsive-image {
+  height: auto;
+  width: 100%;
+}
+
+.responsive-image-half {
+  height: auto;
+  width: 50%;
+}
+
+.primary-color-shadow {
+  border-radius: 0.3rem;
+  box-shadow: 0 0 0.5rem 0 #007bff;
+}
+
+.teacher-specs-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.teacher-avatar {
+  height: auto;
+  width: 100%;
+  border-radius: 0.3rem;
+}
+
+.teacher-social-icon {
+  max-width: 1.2rem;
+  float: right;
+}
+.teacher-social-icon path {
+  fill: #888888;
+}
+.teacher-social-icon:hover path {
+  fill: #3b5998;
 }
 
 /*# sourceMappingURL=style.css.map */

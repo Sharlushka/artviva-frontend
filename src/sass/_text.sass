@@ -1,28 +1,34 @@
 @import 'mixins.sass'
+@import 'palette.scss'
 
-.main-title
-	+handheld(2, 360px)
-		font-size: .9em
-	+handheld(2, 768px)
-		font-size: 1.7em
-	+handheld(2, 1024px)
-		font-size: 2.6em
-	+desktop(96dpi, 600px)
-		font-size: 1.5em
-	+desktop(96dpi, 1024px)
-		font-size: 2.2em
-	+desktop(96dpi, 1920px)
-		font-size: 2.5em
+.carousel-caption h3
+	+carouselText()
+
+.carousel-caption p
+	+carouselText()
+
+.carousel-indicators
+	margin: 0 0 .3rem 0
 
 .main-page-descr, .about-text
 	text-indent: 1.4em
+	text-align: left
+	line-height: 1.6
+
+.about-text
+	margin-bottom: 2em
+	+desktop(96dpi, 768px)
+		font-size: 130%
+
+.main-title
+	font-size: 1.1rem
+	color: $grayish
 	+handheld(2, 768px)
-		font-size: 1.7em
-	+handheld(2, 1024px)
-		font-size: 2.3em
+		font-size: 150%
 	+desktop(96dpi, 600px)
-		font-size: 1.3em
+		font-size: 150%
 	+desktop(96dpi, 1024px)
-		font-size: 1.6em
-	+desktop(96dpi, 1920px)
-		font-size: 2.3em
+		font-size: 200%
+
+.required-text
+	color: red

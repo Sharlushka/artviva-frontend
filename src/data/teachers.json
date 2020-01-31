@@ -1,0 +1,42 @@
+{
+	"teachers": [
+		{
+			"name": "Робакідзе Лілія Вікторівна",
+			"image": "teacher0.jpg",
+			"education": "Сєвєродонецьке обласне музичне училище ім. С. С. Прокоф’єва",
+			"speciality": "Саксофон",
+			"social": [
+				{
+					"icon": "facebook",
+					"link": "https://www.facebook.com/robakidze.lilya"
+				}
+			]
+		},
+		{
+			"name": "John Doe",
+			"image": "teacher1.jpg",
+			"education": "Streets of LA",
+			"speciality": "Guitar",
+			"social": []
+		},
+		{
+			"name": "Plain Mary",
+			"image": "teacher8.jpg",
+			"education": "Some very posh and snobby academy",
+			"speciality": "Piano",
+			"social": []
+		},
+		{
+			"name": "Tom Ford",
+			"image": "teacher9.jpg",
+			"education": "Self-taught",
+			"speciality": "Cello, violin",
+			"social": [
+				{
+					"icon": "facebook",
+					"link": "https://www.facebook.com"
+				}
+			]
+		}
+	]
+}
