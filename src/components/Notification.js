@@ -8,15 +8,15 @@ import { Alert } from 'react-bootstrap'
  */
 
 const Notification = ({ notification }) => {
-		return (
-			<>
+	return (
+		<>
 			{(notification.message &&
-				<Alert className="my-3" variant={notification.variant}>
+				<Alert className="m-3 fixed-top" variant={notification.variant}>
 					{notification.message}
 				</Alert>
 			)}
-			</>
-		)
+		</>
+	)
 }
 
 const mapStateToProps = (state) => {

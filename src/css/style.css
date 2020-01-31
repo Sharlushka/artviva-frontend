@@ -129,6 +129,9 @@ body {
   padding-left: 1rem;
 }
 
+/* Coolors Exported Palette - coolors.co/d6b68c-dac6ae-e5d4c4-e9ded4-eae5df */
+/* HSL */
+/* RGB */
 html {
   scroll-behavior: smooth;
 }
@@ -168,6 +171,34 @@ html {
 .responsive-image-half {
   height: auto;
   width: 50%;
+}
+
+.primary-color-shadow {
+  border-radius: 0.3rem;
+  box-shadow: 0 0 0.5rem 0 #007bff;
+}
+
+.teacher-specs-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.teacher-avatar {
+  height: auto;
+  width: 100%;
+  border-radius: 0.3rem;
+}
+
+.teacher-social-icon {
+  max-width: 1.2rem;
+  float: right;
+}
+.teacher-social-icon path {
+  fill: #888888;
+}
+.teacher-social-icon:hover path {
+  fill: #3b5998;
 }
 
 /*# sourceMappingURL=style.css.map */

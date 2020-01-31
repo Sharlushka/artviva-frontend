@@ -4,6 +4,7 @@ import Carousel from './common/MainViewCarousel'
 import ContactForm from './forms/ContactForm'
 import { Container, Row, Col, Image } from 'react-bootstrap'
 import { ParallaxBanner } from 'react-scroll-parallax'
+import ParallaxCache from './common/ParallaxCache'
 import { ReactComponent as OrigamiIcon } from '../svg/origami.svg'
 import { ReactComponent as EditIcon } from '../svg/edit.svg'
 import { ReactComponent as LoveSongIcon } from '../svg/love-song.svg'
@@ -63,8 +64,9 @@ const MainPage = () => {
 					</Col>
 				</Row>
 			</Container>
+			<ParallaxCache />
 			<ParallaxBanner
-				className="your-class"
+				className="parallax-main-page"
 				layers={[
 					{
 						image: 'img/parallax/book-crop.jpg',

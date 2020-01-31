@@ -1,68 +1,155 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Container, Image } from 'react-bootstrap'
-import { ParallaxBanner } from 'react-scroll-parallax'
-
+import { Container, Row, Col, Button, InputGroup, Form } from 'react-bootstrap'
+import { Formik } from 'formik'
+import * as yup from 'yup'
 
 const DebugView = () => {
-	/*
-	const respStyle = {
-		height:'auto',
-		width:'100%',
-	}
-
-	const bkg = {
-		background: 'white',
-		border: '1px solid red',
-		color: 'red'
-	}
-
-	const height = {
-		height: '10rem',
-		border: '1px solid green'
-	}
-	const borderPink = {
-		border: '1px solid pink'
-	}
-
-	const borderGreen = {
-		border: '1px solid green'
-	}
-
-	const borderBlue = {
-		border: '1px solid blue'
-	}*/
+	const schema = yup.object().shape({
+		firstName: yup.string()
+			.min(2, 'Too Short!')
+			.max(5, 'Too Long!')
+			.required('Required'),
+		lastName: yup.string().required(),
+		username: yup.string().required(),
+		city: yup.string().required(),
+		state: yup.string().required(),
+		zip: yup.string().required(),
+		terms: yup.bool().required(),
+	})
 
 	return (
-		<>
-			<Container>
-				<p>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Eget gravida cum sociis natoque penatibus et magnis dis parturient. Nulla aliquet enim tortor at auctor urna nunc id cursus. Volutpat maecenas volutpat blandit aliquam. Nec feugiat in fermentum posuere urna. Mi tempus imperdiet nulla malesuada. Placerat duis ultricies lacus sed turpis tincidunt id aliquet risus. Vitae aliquet nec ullamcorper sit amet. Molestie ac feugiat sed lectus. Habitant morbi tristique senectus et. Quis risus sed vulputate odio ut enim. Viverra maecenas accumsan lacus vel facilisis volutpat est. Ullamcorper a lacus vestibulum sed arcu non odio euismod lacinia. Scelerisque mauris pellentesque pulvinar pellentesque habitant morbi.
-					Fringilla phasellus faucibus scelerisque eleifend donec pretium vulputate. Laoreet suspendisse interdum consectetur libero id. Dolor purus non enim praesent elementum facilisis leo. Venenatis lectus magna fringilla urna. Vitae purus faucibus ornare suspendisse sed nisi lacus. Enim lobortis scelerisque fermentum dui faucibus. Erat nam at lectus urna duis convallis convallis tellus. Amet consectetur adipiscing elit ut aliquam purus sit amet. Bibendum enim facilisis gravida neque convallis a cras. Praesent tristique magna sit amet purus gravida quis. Vulputate eu scelerisque felis imperdiet proin fermentum leo vel orci. Euismod nisi porta lorem mollis aliquam. Blandit volutpat maecenas volutpat blandit aliquam etiam erat velit scelerisque. Risus ultricies tristique nulla aliquet enim tortor at auctor. Nulla porttitor massa id neque aliquam vestibulum morbi blandit. In aliquam sem fringilla ut morbi tincidunt augue. Sollicitudin nibh sit amet commodo nulla facilisi nullam vehicula ipsum. Maecenas accumsan lacus vel facilisis. Sed cras ornare arcu dui vivamus arcu. Maecenas volutpat blandit aliquam etiam erat velit scelerisque.
-					Sollicitudin tempor id eu nisl nunc mi ipsum faucibus. Ultrices gravida dictum fusce ut placerat. Diam vel quam elementum pulvinar. Nisi porta lorem mollis aliquam ut porttitor. Etiam non quam lacus suspendisse. Sem viverra aliquet eget sit amet tellus cras. Odio ut enim blandit volutpat maecenas. Fames ac turpis egestas sed tempus. Tellus in metus vulputate eu scelerisque felis imperdiet proin. Elit duis tristique sollicitudin nibh sit amet commodo. Venenatis cras sed felis eget velit aliquet. Duis tristique sollicitudin nibh sit amet commodo nulla facilisi. Consequat ac felis donec et odio pellentesque diam. Luctus accumsan tortor posuere ac ut consequat semper viverra nam. Ultrices gravida dictum fusce ut placerat orci nulla pellentesque. Nisi lacus sed viverra tellus in hac. Aliquet enim tortor at auctor urna nunc id cursus.
-				</p>
-			</Container>
-			<ParallaxBanner
-				className="your-class"
-				layers={[
-					{
-						image: 'img/parallax/book.jpg',
-						amount: 0.2,
-					},
-				]}
-				style={{
-					height: '20rem',
-				}}
-			>
-			</ParallaxBanner>
-			<Container>
-				<p>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Eget gravida cum sociis natoque penatibus et magnis dis parturient. Nulla aliquet enim tortor at auctor urna nunc id cursus. Volutpat maecenas volutpat blandit aliquam. Nec feugiat in fermentum posuere urna. Mi tempus imperdiet nulla malesuada. Placerat duis ultricies lacus sed turpis tincidunt id aliquet risus. Vitae aliquet nec ullamcorper sit amet. Molestie ac feugiat sed lectus. Habitant morbi tristique senectus et. Quis risus sed vulputate odio ut enim. Viverra maecenas accumsan lacus vel facilisis volutpat est. Ullamcorper a lacus vestibulum sed arcu non odio euismod lacinia. Scelerisque mauris pellentesque pulvinar pellentesque habitant morbi.
-					Fringilla phasellus faucibus scelerisque eleifend donec pretium vulputate. Laoreet suspendisse interdum consectetur libero id. Dolor purus non enim praesent elementum facilisis leo. Venenatis lectus magna fringilla urna. Vitae purus faucibus ornare suspendisse sed nisi lacus. Enim lobortis scelerisque fermentum dui faucibus. Erat nam at lectus urna duis convallis convallis tellus. Amet consectetur adipiscing elit ut aliquam purus sit amet. Bibendum enim facilisis gravida neque convallis a cras. Praesent tristique magna sit amet purus gravida quis. Vulputate eu scelerisque felis imperdiet proin fermentum leo vel orci. Euismod nisi porta lorem mollis aliquam. Blandit volutpat maecenas volutpat blandit aliquam etiam erat velit scelerisque. Risus ultricies tristique nulla aliquet enim tortor at auctor. Nulla porttitor massa id neque aliquam vestibulum morbi blandit. In aliquam sem fringilla ut morbi tincidunt augue. Sollicitudin nibh sit amet commodo nulla facilisi nullam vehicula ipsum. Maecenas accumsan lacus vel facilisis. Sed cras ornare arcu dui vivamus arcu. Maecenas volutpat blandit aliquam etiam erat velit scelerisque.
-					Sollicitudin tempor id eu nisl nunc mi ipsum faucibus. Ultrices gravida dictum fusce ut placerat. Diam vel quam elementum pulvinar. Nisi porta lorem mollis aliquam ut porttitor. Etiam non quam lacus suspendisse. Sem viverra aliquet eget sit amet tellus cras. Odio ut enim blandit volutpat maecenas. Fames ac turpis egestas sed tempus. Tellus in metus vulputate eu scelerisque felis imperdiet proin. Elit duis tristique sollicitudin nibh sit amet commodo. Venenatis cras sed felis eget velit aliquet. Duis tristique sollicitudin nibh sit amet commodo nulla facilisi. Consequat ac felis donec et odio pellentesque diam. Luctus accumsan tortor posuere ac ut consequat semper viverra nam. Ultrices gravida dictum fusce ut placerat orci nulla pellentesque. Nisi lacus sed viverra tellus in hac. Aliquet enim tortor at auctor urna nunc id cursus.
-				</p>
-			</Container>
-		</>
+		<Container className="p-4">
+			<Row>
+				<Formik
+					validationSchema={schema}
+					onSubmit={values => {
+						// same shape as initial values
+						console.log(values)
+					}}
+					initialValues={{
+						firstName: '',
+						lastName: '',
+					}}
+				>
+					{({
+						handleSubmit,
+						handleChange,
+						handleBlur,
+						values,
+						touched,
+						isValid,
+						errors,
+					}) => (
+						<Form noValidate onSubmit={handleSubmit}>
+							<Form.Row>
+								<Form.Group as={Col} md="4" controlId="validationFormik01">
+									<Form.Label>First name</Form.Label>
+									<Form.Control
+										type="text"
+										name="firstName"
+										value={values.firstName}
+										onChange={handleChange}
+										isValid={touched.firstName && !errors.firstName}
+									/>
+									<Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+								</Form.Group>
+								<Form.Group as={Col} md="4" controlId="validationFormik02">
+									<Form.Label>Last name</Form.Label>
+									<Form.Control
+										type="text"
+										name="lastName"
+										value={values.lastName}
+										onChange={handleChange}
+										isValid={touched.lastName && !errors.lastName}
+									/>
+
+									<Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+								</Form.Group>
+								<Form.Group as={Col} md="4" controlId="validationFormikUsername">
+									<Form.Label>Username</Form.Label>
+									<InputGroup>
+										<InputGroup.Prepend>
+											<InputGroup.Text id="inputGroupPrepend">@</InputGroup.Text>
+										</InputGroup.Prepend>
+										<Form.Control
+											type="text"
+											placeholder="Username"
+											aria-describedby="inputGroupPrepend"
+											name="username"
+											value={values.username}
+											onChange={handleChange}
+											isInvalid={!!errors.username}
+										/>
+										<Form.Control.Feedback type="invalid">
+											{errors.username}
+										</Form.Control.Feedback>
+									</InputGroup>
+								</Form.Group>
+							</Form.Row>
+							<Form.Row>
+								<Form.Group as={Col} md="6" controlId="validationFormik03">
+									<Form.Label>City</Form.Label>
+									<Form.Control
+										type="text"
+										placeholder="City"
+										name="city"
+										value={values.city}
+										onChange={handleChange}
+										isInvalid={!!errors.city}
+									/>
+
+									<Form.Control.Feedback type="invalid">
+										{errors.city}
+									</Form.Control.Feedback>
+								</Form.Group>
+								<Form.Group as={Col} md="3" controlId="validationFormik04">
+									<Form.Label>State</Form.Label>
+									<Form.Control
+										type="text"
+										placeholder="State"
+										name="state"
+										value={values.state}
+										onChange={handleChange}
+										isInvalid={!!errors.state}
+									/>
+									<Form.Control.Feedback type="invalid">
+										{errors.state}
+									</Form.Control.Feedback>
+								</Form.Group>
+								<Form.Group as={Col} md="3" controlId="validationFormik05">
+									<Form.Label>Zip</Form.Label>
+									<Form.Control
+										type="text"
+										placeholder="Zip"
+										name="zip"
+										value={values.zip}
+										onChange={handleChange}
+										isInvalid={!!errors.zip}
+									/>
+
+									<Form.Control.Feedback type="invalid">
+										{errors.zip}
+									</Form.Control.Feedback>
+								</Form.Group>
+							</Form.Row>
+							<Form.Group>
+								<Form.Check
+									required
+									name="terms"
+									label="Agree to terms and conditions"
+									onChange={handleChange}
+									isInvalid={!!errors.terms}
+									feedback={errors.terms}
+									id="validationFormik0"
+								/>
+							</Form.Group>
+							<Button type="submit">Submit form</Button>
+						</Form>
+					)}
+				</Formik>
+			</Row>
+		</Container>
 	)
 }
 
@@ -75,21 +162,3 @@ const mapStateToProps = (state) => {
 export default connect(
 	mapStateToProps
 )(DebugView)
-
-/*
-		{/*<Container className="p-0">
-			<h1 className="custom-font py-3 m-0">Debug</h1>
-			<p style={bkg}>
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Eget gravida cum sociis natoque penatibus et magnis dis parturient. Nulla aliquet enim tortor at auctor urna nunc id cursus. Volutpat maecenas volutpat blandit aliquam. Nec feugiat in fermentum posuere urna. Mi tempus imperdiet nulla malesuada. Placerat duis ultricies lacus sed turpis tincidunt id aliquet risus. Vitae aliquet nec ullamcorper sit amet. Molestie ac feugiat sed lectus. Habitant morbi tristique senectus et. Quis risus sed vulputate odio ut enim. Viverra maecenas accumsan lacus vel facilisis volutpat est. Ullamcorper a lacus vestibulum sed arcu non odio euismod lacinia. Scelerisque mauris pellentesque pulvinar pellentesque habitant morbi.
-				Fringilla phasellus faucibus scelerisque eleifend donec pretium vulputate. Laoreet suspendisse interdum consectetur libero id. Dolor purus non enim praesent elementum facilisis leo. Venenatis lectus magna fringilla urna. Vitae purus faucibus ornare suspendisse sed nisi lacus. Enim lobortis scelerisque fermentum dui faucibus. Erat nam at lectus urna duis convallis convallis tellus. Amet consectetur adipiscing elit ut aliquam purus sit amet. Bibendum enim facilisis gravida neque convallis a cras. Praesent tristique magna sit amet purus gravida quis. Vulputate eu scelerisque felis imperdiet proin fermentum leo vel orci. Euismod nisi porta lorem mollis aliquam. Blandit volutpat maecenas volutpat blandit aliquam etiam erat velit scelerisque. Risus ultricies tristique nulla aliquet enim tortor at auctor. Nulla porttitor massa id neque aliquam vestibulum morbi blandit. In aliquam sem fringilla ut morbi tincidunt augue. Sollicitudin nibh sit amet commodo nulla facilisi nullam vehicula ipsum. Maecenas accumsan lacus vel facilisis. Sed cras ornare arcu dui vivamus arcu. Maecenas volutpat blandit aliquam etiam erat velit scelerisque.
-				Sollicitudin tempor id eu nisl nunc mi ipsum faucibus. Ultrices gravida dictum fusce ut placerat. Diam vel quam elementum pulvinar. Nisi porta lorem mollis aliquam ut porttitor. Etiam non quam lacus suspendisse. Sem viverra aliquet eget sit amet tellus cras. Odio ut enim blandit volutpat maecenas. Fames ac turpis egestas sed tempus. Tellus in metus vulputate eu scelerisque felis imperdiet proin. Elit duis tristique sollicitudin nibh sit amet commodo. Venenatis cras sed felis eget velit aliquet. Duis tristique sollicitudin nibh sit amet commodo nulla facilisi. Consequat ac felis donec et odio pellentesque diam. Luctus accumsan tortor posuere ac ut consequat semper viverra nam. Ultrices gravida dictum fusce ut placerat orci nulla pellentesque. Nisi lacus sed viverra tellus in hac. Aliquet enim tortor at auctor urna nunc id cursus.
-			</p>
-			<Parallax styleInner={height} className="custom-class" y={[-50, 20]} tagOuter="figure">
-				<Image src="img/parallax/book.jpg" style={respStyle} />
-			</Parallax>
-			<p style={bkg}>
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Eget gravida cum sociis natoque penatibus et magnis dis parturient. Nulla aliquet enim tortor at auctor urna nunc id cursus. Volutpat maecenas volutpat blandit aliquam. Nec feugiat in fermentum posuere urna. Mi tempus imperdiet nulla malesuada. Placerat duis ultricies lacus sed turpis tincidunt id aliquet risus. Vitae aliquet nec ullamcorper sit amet. Molestie ac feugiat sed lectus. Habitant morbi tristique senectus et. Quis risus sed vulputate odio ut enim. Viverra maecenas accumsan lacus vel facilisis volutpat est. Ullamcorper a lacus vestibulum sed arcu non odio euismod lacinia. Scelerisque mauris pellentesque pulvinar pellentesque habitant morbi.
-				Fringilla phasellus faucibus scelerisque eleifend donec pretium vulputate. Laoreet suspendisse interdum consectetur libero id. Dolor purus non enim praesent elementum facilisis leo. Venenatis lectus magna fringilla urna. Vitae purus faucibus ornare suspendisse sed nisi lacus. Enim lobortis scelerisque fermentum dui faucibus. Erat nam at lectus urna duis convallis convallis tellus. Amet consectetur adipiscing elit ut aliquam purus sit amet. Bibendum enim facilisis gravida neque convallis a cras. Praesent tristique magna sit amet purus gravida quis. Vulputate eu scelerisque felis imperdiet proin fermentum leo vel orci. Euismod nisi porta lorem mollis aliquam. Blandit volutpat maecenas volutpat blandit aliquam etiam erat velit scelerisque. Risus ultricies tristique nulla aliquet enim tortor at auctor. Nulla porttitor massa id neque aliquam vestibulum morbi blandit. In aliquam sem fringilla ut morbi tincidunt augue. Sollicitudin nibh sit amet commodo nulla facilisi nullam vehicula ipsum. Maecenas accumsan lacus vel facilisis. Sed cras ornare arcu dui vivamus arcu. Maecenas volutpat blandit aliquam etiam erat velit scelerisque.
-				Sollicitudin tempor id eu nisl nunc mi ipsum faucibus. Ultrices gravida dictum fusce ut placerat. Diam vel quam elementum pulvinar. Nisi porta lorem mollis aliquam ut porttitor. Etiam non quam lacus suspendisse. Sem viverra aliquet eget sit amet tellus cras. Odio ut enim blandit volutpat maecenas. Fames ac turpis egestas sed tempus. Tellus in metus vulputate eu scelerisque felis imperdiet proin. Elit duis tristique sollicitudin nibh sit amet commodo. Venenatis cras sed felis eget velit aliquet. Duis tristique sollicitudin nibh sit amet commodo nulla facilisi. Consequat ac felis donec et odio pellentesque diam. Luctus accumsan tortor posuere ac ut consequat semper viverra nam. Ultrices gravida dictum fusce ut placerat orci nulla pellentesque. Nisi lacus sed viverra tellus in hac. Aliquet enim tortor at auctor urna nunc id cursus.
-			</p>
-	</Container>*/

@@ -2,6 +2,7 @@
 @import 'text.sass'
 @import 'notification.sass'
 @import 'sticky-footer.sass'
+@import 'palette.scss'
 
 html
 	scroll-behavior: smooth
@@ -27,3 +28,26 @@ html
 .responsive-image-half
 	height: auto
 	width: 50%
+
+.primary-color-shadow
+	// border: 1px solid grey
+	border-radius: .3rem
+	box-shadow: 0 0 .5rem 0 rgba(0, 123, 255, 1)
+
+.teacher-specs-list
+	list-style: none
+	padding: 0
+	margin: 0
+
+.teacher-avatar
+	height: auto
+	width: 100%
+	border-radius: .3rem
+
+.teacher-social-icon
+	max-width: 1.2rem
+	float: right
+	path
+		fill: $lightGrey
+	&:hover path
+		fill: $facebookColor
