@@ -201,4 +201,8 @@ html {
   fill: #3b5998;
 }
 
+.active {
+  font-weight: 500;
+}
+
 /*# sourceMappingURL=style.css.map */
