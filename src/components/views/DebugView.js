@@ -1,154 +1,155 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Container, Row, Col, Button, InputGroup, Form } from 'react-bootstrap'
+import { Container, Col, Button, Form } from 'react-bootstrap'
+import { setNotification } from '../../reducers/notificationReducer'
 import { Formik } from 'formik'
-import * as yup from 'yup'
+import * as Yup from 'yup'
 
-const DebugView = () => {
-	const schema = yup.object().shape({
-		firstName: yup.string()
-			.min(2, 'Too Short!')
-			.max(5, 'Too Long!')
-			.required('Required'),
-		lastName: yup.string().required(),
-		username: yup.string().required(),
-		city: yup.string().required(),
-		state: yup.string().required(),
-		zip: yup.string().required(),
-		terms: yup.bool().required(),
+const DebugView = ({ setNotification }) => {
+
+	const messageFormSchema = Yup.object().shape({
+		name: Yup.string()
+			.min(2, 'Мінімум 2 символи.')
+			.max(30, 'Максимум 30 символів.')
+			.required('Ваше ім\'я?'),
+		email: Yup.string()
+			.email('Адреса електронної пошти недійсна.')
+			.required('Введіть свою електронну пошту.'),
+		message: Yup.string()
+			.max(280, 'Максимум 280 символів.')
+			.required('Будь ласка, введіть своє повідомлення.')
 	})
 
+	const sendContactMessage = values => {
+		console.log('Sending message', values)
+		setNotification({
+			message: `Сайт працює в тестовому режимі,
+				повідомлення наразі не надсилаються, але дякуємо
+				за участь у тестуванні сайту! )`,
+			variant: 'success'
+		}, 5)
+	}
+
 	return (
-		<Container className="p-4">
-			<Row>
-				<Formik
-					validationSchema={schema}
-					onSubmit={values => {
-						// same shape as initial values
-						console.log(values)
-					}}
-					initialValues={{
-						firstName: '',
-						lastName: '',
-					}}
-				>
-					{({
-						handleSubmit,
-						handleChange,
-						handleBlur,
-						values,
-						touched,
-						isValid,
-						errors,
-					}) => (
-						<Form noValidate onSubmit={handleSubmit}>
-							<Form.Row>
-								<Form.Group as={Col} md="4" controlId="validationFormik01">
-									<Form.Label>First name</Form.Label>
-									<Form.Control
-										type="text"
-										name="firstName"
-										value={values.firstName}
-										onChange={handleChange}
-										isValid={touched.firstName && !errors.firstName}
-									/>
-									<Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-								</Form.Group>
-								<Form.Group as={Col} md="4" controlId="validationFormik02">
-									<Form.Label>Last name</Form.Label>
-									<Form.Control
-										type="text"
-										name="lastName"
-										value={values.lastName}
-										onChange={handleChange}
-										isValid={touched.lastName && !errors.lastName}
-									/>
+		<Container className="py-4">
+			<h1 className="text-center custom-font pb-4">Зворотній зв&apos;язок</h1>
+			<Formik
+				initialValues={{
+					name: '',
+					email: '',
+					message: ''
+				}}
+				onSubmit={async (values, { resetForm }) => {
+					await sendContactMessage(values)
+					resetForm()
+				}}
+				validationSchema={messageFormSchema}
+			>
+				{({ handleSubmit,
+					handleChange,
+					handleBlur,
+					values,
+					touched,
+					errors
+				}) => (
+					<Form data-cy="contactForm"
+						noValidate
+						onSubmit={handleSubmit}
+					>
 
-									<Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-								</Form.Group>
-								<Form.Group as={Col} md="4" controlId="validationFormikUsername">
-									<Form.Label>Username</Form.Label>
-									<InputGroup>
-										<InputGroup.Prepend>
-											<InputGroup.Text id="inputGroupPrepend">@</InputGroup.Text>
-										</InputGroup.Prepend>
-										<Form.Control
-											type="text"
-											placeholder="Username"
-											aria-describedby="inputGroupPrepend"
-											name="username"
-											value={values.username}
-											onChange={handleChange}
-											isInvalid={!!errors.username}
-										/>
-										<Form.Control.Feedback type="invalid">
-											{errors.username}
-										</Form.Control.Feedback>
-									</InputGroup>
-								</Form.Group>
-							</Form.Row>
-							<Form.Row>
-								<Form.Group as={Col} md="6" controlId="validationFormik03">
-									<Form.Label>City</Form.Label>
-									<Form.Control
-										type="text"
-										placeholder="City"
-										name="city"
-										value={values.city}
-										onChange={handleChange}
-										isInvalid={!!errors.city}
-									/>
-
-									<Form.Control.Feedback type="invalid">
-										{errors.city}
-									</Form.Control.Feedback>
-								</Form.Group>
-								<Form.Group as={Col} md="3" controlId="validationFormik04">
-									<Form.Label>State</Form.Label>
-									<Form.Control
-										type="text"
-										placeholder="State"
-										name="state"
-										value={values.state}
-										onChange={handleChange}
-										isInvalid={!!errors.state}
-									/>
-									<Form.Control.Feedback type="invalid">
-										{errors.state}
-									</Form.Control.Feedback>
-								</Form.Group>
-								<Form.Group as={Col} md="3" controlId="validationFormik05">
-									<Form.Label>Zip</Form.Label>
-									<Form.Control
-										type="text"
-										placeholder="Zip"
-										name="zip"
-										value={values.zip}
-										onChange={handleChange}
-										isInvalid={!!errors.zip}
-									/>
-
-									<Form.Control.Feedback type="invalid">
-										{errors.zip}
-									</Form.Control.Feedback>
-								</Form.Group>
-							</Form.Row>
-							<Form.Group>
-								<Form.Check
-									required
-									name="terms"
-									label="Agree to terms and conditions"
+						{/* Message sender name input */}
+						<Form.Row className="d-flex justify-content-center">
+							<Form.Group as={Col} className="col-sm-6 col-md-5">
+								<Form.Label>
+									Ваше ім&apos;я
+									<span className="required-text">*</span>
+								</Form.Label>
+								<Form.Control
+									type="text"
+									name="name"
+									data-cy="nameInput"
 									onChange={handleChange}
-									isInvalid={!!errors.terms}
-									feedback={errors.terms}
-									id="validationFormik0"
+									onBlur={handleBlur}
+									value={values.name}
+									isValid={touched.name && !errors.name}
+									isInvalid={touched.name && !!errors.name}
 								/>
+								<Form.Control.Feedback>
+									Ok
+								</Form.Control.Feedback>
+								<Form.Control.Feedback type="invalid">
+									{errors.name}
+								</Form.Control.Feedback>
 							</Form.Group>
-							<Button type="submit">Submit form</Button>
-						</Form>
-					)}
-				</Formik>
-			</Row>
+						</Form.Row>
+
+						{/* Message sender email input */}
+						<Form.Row className="d-flex justify-content-center">
+							<Form.Group as={Col} className="col-sm-6 col-md-5">
+								<Form.Label>
+									Ваша електронна пошта
+									<span className="required-text">*</span>
+								</Form.Label>
+								<Form.Control
+									type="email"
+									name="email"
+									data-cy="emailInput"
+									onChange={handleChange}
+									onBlur={handleBlur}
+									value={values.email}
+									isValid={touched.email && !errors.email}
+									isInvalid={touched.email && !!errors.email}
+								/>
+								<Form.Control.Feedback>
+									Ok
+								</Form.Control.Feedback>
+								<Form.Control.Feedback type="invalid">
+									{errors.email}
+								</Form.Control.Feedback>
+							</Form.Group>
+						</Form.Row>
+
+						{/* Message body input */}
+						<Form.Row className="d-flex justify-content-center">
+							<Form.Group as={Col} className="col-sm-6 col-md-5">
+								<Form.Label>
+									Ваше повідомлення
+									<span className="required-text">*</span>
+								</Form.Label>
+								<Form.Control
+									as="textarea"
+									name="message"
+									rows="6"
+									data-cy="messageInput"
+									onChange={handleChange}
+									onBlur={handleBlur}
+									value={values.message}
+									isValid={touched.message && !errors.message}
+									isInvalid={touched.message && !!errors.message}
+								/>
+								<Form.Control.Feedback>
+									Ok
+								</Form.Control.Feedback>
+								<Form.Control.Feedback type="invalid">
+									{errors.message}
+								</Form.Control.Feedback>
+							</Form.Group>
+						</Form.Row>
+
+						{/* Button */}
+						<Form.Row className="d-flex justify-content-center">
+							<Button
+								type="submit"
+								variant="primary"
+								data-cy="contactMsgBtn"
+								className="primary-color-shadow px-5"
+							>
+								Відправити
+							</Button>
+						</Form.Row>
+					</Form>
+				)}
+			</Formik>
 		</Container>
 	)
 }
@@ -159,6 +160,11 @@ const mapStateToProps = (state) => {
 	}
 }
 
+const mapDispatchToProps = {
+	setNotification
+}
+
 export default connect(
-	mapStateToProps
+	mapStateToProps,
+	mapDispatchToProps
 )(DebugView)
