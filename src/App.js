@@ -8,7 +8,7 @@ import NavigationBar from './components/NavigationBar'
 import Footer from './components/Footer'
 import MainPage from './components/MainPage'
 import AboutView from './components/AboutView'
-import LoginView from './components/LoginView'
+import LoginView from './components/views/LoginView'
 import RegisterView from './components/RegisterView'
 import BlogView from './components/BlogView'
 // import DebugView from './components/views/DebugView'
@@ -19,6 +19,7 @@ import { setUserFromLocalStorage } from './reducers/userReducer'
 import './css/index.css'
 import { Container } from 'react-bootstrap'
 
+// eslint-disable-next-line
 const App = (props) => {
 	/*
 	useEffect(() => {
