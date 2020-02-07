@@ -1,15 +1,44 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
-import { Container, Col, Button, Form, InputGroup } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import { login } from '../../reducers/userReducer'
 import { setNotification } from '../../reducers/notificationReducer'
+import { Container, Col, Form, InputGroup, Button } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
+
 import { Formik } from 'formik'
 import * as Yup from 'yup'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 
-const DebugView = ({ setNotification }) => {
+// eslint-disable-next-line
+const LoginForm = ({ setNotification }) => {
+
+	/*
+	const handleLogin = async event => {
+		event.preventDefault()
+		const userCreds = {
+			email: email.value,
+			password : password.value
+		}
+		props.login(userCreds)
+			.then(() => {
+				props.setNotification({
+					message: 'Logged in successfully',
+					variant: 'info'
+				}, 5)
+				document.location.href='/'
+			})
+			.catch(error => {
+				const notification = JSON.parse(error.request.responseText)
+				props.setNotification({
+					message: notification.error,
+					variant: 'danger'
+				}, 5)
+			})
+		resetEmail('')
+		resetPass('')
+	}*/
 
 	// Minimum eight characters, at least one uppercase letter, one lowercase letter and one number
 	const mediumStrPass = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/
@@ -48,7 +77,7 @@ const DebugView = ({ setNotification }) => {
 	}
 
 	return (
-		<Container className="py-4">
+		<Container className="pb-4">
 			<h1 className="text-center custom-font py-4">
 				Логін
 			</h1>
@@ -77,7 +106,7 @@ const DebugView = ({ setNotification }) => {
 
 						{/* Message sender email input */}
 						<Form.Row className="d-flex justify-content-center">
-							<Form.Group as={Col} className="col-sm-8 col-md-7 col-lg-6">
+							<Form.Group as={Col} className="col-sm-8 col-md-10 col-xl-8">
 								<Form.Label>
 									Ваша електронна пошта
 								</Form.Label>
@@ -102,7 +131,7 @@ const DebugView = ({ setNotification }) => {
 
 						{/* User password input */}
 						<Form.Row className="d-flex justify-content-center">
-							<Form.Group as={Col} className="col-sm-8 col-md-7 col-lg-6">
+							<Form.Group as={Col} className="col-sm-8 col-md-10 col-xl-8">
 								<Form.Label>
 									Ваш пароль
 								</Form.Label>
@@ -144,7 +173,7 @@ const DebugView = ({ setNotification }) => {
 						<Form.Row className="d-flex justify-content-center">
 							<Form.Group
 								as={Col}
-								className="col-sm-8 col-md-7 col-lg-6
+								className="col-sm-8 col-md-10 col-xl-8
 									d-flex
 									justify-content-between
 									align-items-center"
@@ -176,10 +205,11 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
+	login,
 	setNotification
 }
 
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(DebugView)
+)(LoginForm)
