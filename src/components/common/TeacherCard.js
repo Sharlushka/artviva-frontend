@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { Row, Col, Card, Image, Collapse } from 'react-bootstrap'
-import { ReactComponent as FbIcon } from '../../svg/facebook.svg'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faAngleUp } from '@fortawesome/free-solid-svg-icons'
+import { faFacebookF, faInstagram } from '@fortawesome/free-brands-svg-icons'
 
 const TeacherCard = ({ teacher }) => {
 	const [open, setOpen] = useState(false)
@@ -9,11 +11,24 @@ const TeacherCard = ({ teacher }) => {
 		setOpen(!open)
 	}
 
+	const showIcon = (icon) => {
+		const iconStyle = 'teacher-social-icon fa-lg mx-1'
+
+		switch (icon) {
+		case 'facebook':
+			return <FontAwesomeIcon icon={faFacebookF} className={iconStyle} />
+		case 'instagram':
+			return <FontAwesomeIcon icon={faInstagram} className={iconStyle} />
+		default:
+			return null
+		}
+	}
+
 	return (
 		<Card key={teacher.id} className="my-4">
 			<Card.Body>
 				<Row className="d-flex justify-content-center">
-					<Col xs={7} sm={2} className="py-4">
+					<Col xs={7} sm={2} className="p-2 pl-3">
 						<Image
 							src={`img/teachers/${teacher.image}`}
 							className="teacher-avatar"
@@ -21,10 +36,21 @@ const TeacherCard = ({ teacher }) => {
 					</Col>
 					<Col xs={12} sm={10}>
 						<ul className="teacher-specs-list">
-							<li>
-								<strong className="custom-font teacher-name">
+							<li className="d-flex justify-content-between align-items-center">
+								<strong className="custom-font teacher-name text-left">
 									{teacher.name}
 								</strong>
+								<span className="d-flex justify-content-end">
+									{ teacher.social
+										?
+										teacher.social.map(social =>
+											<a key={social.link} href={social.link}>
+												{showIcon(social.icon)}
+											</a>
+										)
+										: null
+									}
+								</span>
 							</li>
 							<li>
 								<em className="text-muted">Освіта: </em>
@@ -53,7 +79,7 @@ const TeacherCard = ({ teacher }) => {
 												aria-expanded={open}
 											>
 												{ open
-													? <em>меньше...</em>
+													? <em><FontAwesomeIcon icon={faAngleUp} /></em>
 													: <em>більше...</em>
 												}
 											</button>
@@ -63,15 +89,6 @@ const TeacherCard = ({ teacher }) => {
 								}
 							</li>
 						</ul>
-						{ teacher.social
-							?
-							teacher.social.map(social =>
-								<a key={social.link} href={social.link}>
-									<FbIcon className="teacher-social-icon" />
-								</a>
-							)
-							: null
-						}
 					</Col>
 				</Row>
 			</Card.Body>

@@ -247,10 +247,6 @@ html {
   border-radius: 0.3rem;
 }
 
-.teacher-social-icon {
-  max-width: 1.2rem;
-  float: right;
-}
 .teacher-social-icon path {
   fill: #888888;
 }
