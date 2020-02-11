@@ -5,6 +5,7 @@ const MainViewCarousel = () => {
 	return (
 		<Carousel>
 			<Carousel.Item>
+				<div className="carousel-overlay"></div>
 				<img
 					className="d-block w-100"
 					src="img/carousel/arts-n-crafts.jpg"
@@ -13,11 +14,12 @@ const MainViewCarousel = () => {
 				<Carousel.Caption>
 					<h3>Навчання</h3>
 					<br />
-					<p>Безліч напрямків навчання: образотворче мистецтво, музика, театр</p>
+					<p>Образотворче мистецтво, музика, театр</p>
 				</Carousel.Caption>
 			</Carousel.Item>
 
 			<Carousel.Item>
+				<div className="carousel-overlay"></div>
 				<img
 					className="d-block w-100"
 					src="img/carousel/paper-boats.jpg"
@@ -31,6 +33,7 @@ const MainViewCarousel = () => {
 			</Carousel.Item>
 
 			<Carousel.Item>
+				<div className="carousel-overlay"></div>
 				<img
 					className="d-block w-100"
 					src="img/carousel/commerce.jpg"

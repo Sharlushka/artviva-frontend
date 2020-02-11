@@ -3,9 +3,21 @@
 
 .carousel-caption h3
 	+carouselText()
+	+desktop(96dpi, 600px)
+		font-size: 200%
+	+desktop(96dpi, 1024px)
+		font-size: 400%
+	+handheld(2, 1440px)
+		font-size: 300%
 
 .carousel-caption p
 	+carouselText()
+	+desktop(96dpi, 600px)
+		font-size: 150%
+	+desktop(96dpi, 1024px)
+		font-size: 200%
+	+handheld(2, 1440px)
+		font-size: 170%
 
 .carousel-indicators
 	margin: 0 0 .3rem 0
@@ -14,6 +26,10 @@
 	text-indent: 1.4em
 	text-align: left
 	line-height: 1.6
+
+.main-page-descr
+	+handheld(2, 1440px)
+		font-size: 120%
 
 .about-text
 	margin-bottom: 2em
@@ -32,3 +48,6 @@
 
 .required-text
 	color: red
+
+.teacher-name
+	font-size: 1.2rem

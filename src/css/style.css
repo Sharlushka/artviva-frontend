@@ -17,21 +17,47 @@
 /* HSL */
 /* RGB */
 .carousel-caption h3 {
-  background-color: rgba(33, 33, 33, 0.5);
-  display: inline;
-  text-align: center;
-  border-radius: 0.25rem;
+  margin: 0;
+  text-align: left;
   line-height: 1.7;
-  padding: 0 0.4rem 0.2rem 0.4rem;
+  margin: 0;
+}
+@media screen and (max-resolution: 96dpi) and (min-width: 600px) {
+  .carousel-caption h3 {
+    font-size: 200%;
+  }
+}
+@media screen and (max-resolution: 96dpi) and (min-width: 1024px) {
+  .carousel-caption h3 {
+    font-size: 400%;
+  }
+}
+@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 1440px) {
+  .carousel-caption h3 {
+    font-size: 300%;
+  }
 }
 
 .carousel-caption p {
-  background-color: rgba(33, 33, 33, 0.5);
-  display: inline;
-  text-align: center;
-  border-radius: 0.25rem;
+  margin: 0;
+  text-align: left;
   line-height: 1.7;
-  padding: 0 0.4rem 0.2rem 0.4rem;
+  margin: 0;
+}
+@media screen and (max-resolution: 96dpi) and (min-width: 600px) {
+  .carousel-caption p {
+    font-size: 150%;
+  }
+}
+@media screen and (max-resolution: 96dpi) and (min-width: 1024px) {
+  .carousel-caption p {
+    font-size: 200%;
+  }
+}
+@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 1440px) {
+  .carousel-caption p {
+    font-size: 170%;
+  }
 }
 
 .carousel-indicators {
@@ -42,6 +68,12 @@
   text-indent: 1.4em;
   text-align: left;
   line-height: 1.6;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 1440px) {
+  .main-page-descr {
+    font-size: 120%;
+  }
 }
 
 .about-text {
@@ -75,6 +107,10 @@
 
 .required-text {
   color: red;
+}
+
+.teacher-name {
+  font-size: 1.2rem;
 }
 
 div.ERROR {
@@ -168,9 +204,15 @@ html {
   width: 100%;
 }
 
-.responsive-image-half {
+.responsive-image-fraction {
   height: auto;
-  width: 50%;
+  width: 75%;
+}
+
+.image-align-helper {
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
 }
 
 .primary-color-shadow {
@@ -183,6 +225,21 @@ html {
   padding: 0;
   margin: 0;
 }
+.teacher-specs-list li {
+  padding: 0.2rem;
+}
+.teacher-specs-list p {
+  text-indent: 1rem;
+  margin: 0;
+}
+
+.more-teacher-info {
+  color: grey;
+  background: none;
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
 
 .teacher-avatar {
   height: auto;
@@ -190,15 +247,40 @@ html {
   border-radius: 0.3rem;
 }
 
-.teacher-social-icon {
-  max-width: 1.2rem;
-  float: right;
-}
 .teacher-social-icon path {
   fill: #888888;
 }
 .teacher-social-icon:hover path {
   fill: #3b5998;
+}
+
+span.active, a.active {
+  font-weight: 500;
+}
+
+.carousel-overlay {
+  background-color: rgba(33, 33, 33, 0.4);
+  height: 100%;
+  width: 100%;
+  position: absolute;
+}
+
+.elevated-z-index {
+  z-index: 99;
+}
+
+.border-pink {
+  border: 1px solid pink;
+}
+
+.border-gray {
+  border: 1px solid #dee2e6;
+}
+
+.custom-gray-border {
+  border-right: 1px solid #dee2e6;
+  border-bottom: 1px solid #dee2e6;
+  border-left: 1px solid #dee2e6;
 }
 
 /*# sourceMappingURL=style.css.map */

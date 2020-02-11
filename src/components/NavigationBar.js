@@ -22,7 +22,7 @@ const NavigationBar = ({ user }) => {
 					<Nav className="ml-auto pl-2 d-flex align-items-left">
 
 						<Link to="/about" className="d-flex align-items-center">
-							<Nav.Link href="#" as="span">
+							<Nav.Link as="span" href="/about" activeclassname="active">
 								Про школу
 							</Nav.Link>
 						</Link>
@@ -35,24 +35,29 @@ const NavigationBar = ({ user }) => {
 						</Link>*/}
 
 						<Link to="/teachers" className="d-flex align-items-center">
-							<Nav.Link href="#" as="span">
+							<Nav.Link as="span" href="/teachers" activeclassname="active">
 								Наші вчителі
 							</Nav.Link>
 						</Link>
 
 						<Link to="/blog" className="d-flex align-items-center">
-							<Nav.Link href="#" as="span">
+							<Nav.Link as="span" href="/blog" activeclassname="active">
 								Блог
 							</Nav.Link>
 						</Link>
 
 						<Link to="/contacts" className="d-flex align-items-center">
-							<Nav.Link href="#" as="span">
+							<Nav.Link as="span" href="/contacts" activeclassname="active">
 								Контакти
 							</Nav.Link>
 						</Link>
 
-						<Nav.Link className="d-flex justify-content-end" href="#" as="span">
+						<Nav.Link
+							className="d-flex justify-content-end"
+							href="/login"
+							as="span"
+							activeclassname="active"
+						>
 							{user
 								? <>
 									<em className="d-flex align-items-center">
