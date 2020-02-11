@@ -109,6 +109,10 @@
   color: red;
 }
 
+.teacher-name {
+  font-size: 1.2rem;
+}
+
 div.ERROR {
   border: 1px solid red;
 }
@@ -221,6 +225,21 @@ html {
   padding: 0;
   margin: 0;
 }
+.teacher-specs-list li {
+  padding: 0.2rem;
+}
+.teacher-specs-list p {
+  text-indent: 1rem;
+  margin: 0;
+}
+
+.more-teacher-info {
+  color: grey;
+  background: none;
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
 
 .teacher-avatar {
   height: auto;
@@ -228,10 +247,6 @@ html {
   border-radius: 0.3rem;
 }
 
-.teacher-social-icon {
-  max-width: 1.2rem;
-  float: right;
-}
 .teacher-social-icon path {
   fill: #888888;
 }
@@ -239,7 +254,7 @@ html {
   fill: #3b5998;
 }
 
-.active {
+span.active, a.active {
   font-weight: 500;
 }
 
@@ -252,6 +267,20 @@ html {
 
 .elevated-z-index {
   z-index: 99;
+}
+
+.border-pink {
+  border: 1px solid pink;
+}
+
+.border-gray {
+  border: 1px solid #dee2e6;
+}
+
+.custom-gray-border {
+  border-right: 1px solid #dee2e6;
+  border-bottom: 1px solid #dee2e6;
+  border-left: 1px solid #dee2e6;
 }
 
 /*# sourceMappingURL=style.css.map */
