@@ -283,4 +283,16 @@ span.active, a.active {
   border-left: 1px solid #dee2e6;
 }
 
+.navbar-hidden {
+  top: -60px;
+}
+
+.navbar-visible {
+  top: 0px;
+}
+
+nav {
+  transition: top ease-out 750ms;
+}
+
 /*# sourceMappingURL=style.css.map */

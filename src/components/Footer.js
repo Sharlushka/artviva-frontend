@@ -22,7 +22,7 @@ const Footer = () => {
 					<Col xs={7} className="d-flex align-items-center">
 						<span className="text-muted copy-info">
 							<strong>
-								&copy;&nbsp;{footerDate()}&nbsp;Artviva
+								&copy;&nbsp;{footerDate()}&nbsp;ArtViva
 							</strong>
 							<br />
 							<small>

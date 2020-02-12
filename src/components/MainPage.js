@@ -29,7 +29,7 @@ const MainPage = () => {
 						className="d-flex justify-content-center align-items-center"
 					>
 						<strong className="main-title custom-font">
-							Artviva — дитяча школа мистецтв.
+							ArtViva — дитяча школа мистецтв.
 						</strong>
 					</Col>
 					<Col>
