@@ -11,8 +11,8 @@ html
 		font-size: 120%
 	+handheld(2, 1024px) // ipadPro
 		font-size: 170%
-	+desktop(96dpi, 1024px)
-		font-size: 110%
+	+desktop(96dpi, 640px)
+		font-size: 120%
 	+desktop(96dpi, 1440px)
 		font-size: 160%
 
@@ -71,7 +71,7 @@ span.active, a.active
 
 .carousel-container
 	img
-		height: 25rem
+		height: 30rem
 		object-fit: cover
 
 .carousel-overlay
@@ -104,3 +104,16 @@ nav
 .navbar-visible
 	top: 0rem
 	opacity: 1
+
+.moar-padding-top
+	padding-top: 4rem
+
+.marker-info
+	ul
+		list-style: none
+		padding: 0
+		margin: 0
+		li
+			padding: .3rem
+		li:first-child
+			font-size: 120%
