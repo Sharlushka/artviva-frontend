@@ -43,7 +43,7 @@ const NavigationBar = ({ user }) => {
 
 						<Link to="/about" className="d-flex align-items-center">
 							<Nav.Link as="span" href="/about" activeclassname="active">
-								Про школу
+								Історія
 							</Nav.Link>
 						</Link>
 

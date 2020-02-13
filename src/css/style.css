@@ -168,6 +168,98 @@ body {
 /* Coolors Exported Palette - coolors.co/d6b68c-dac6ae-e5d4c4-e9ded4-eae5df */
 /* HSL */
 /* RGB */
+@-webkit-keyframes zoomIn {
+  from {
+    opacity: 0;
+    -webkit-transform: scale3d(0.3, 0.3, 0.3);
+    transform: scale3d(0.3, 0.3, 0.3);
+  }
+  50% {
+    opacity: 1;
+  }
+}
+@keyframes zoomIn {
+  from {
+    opacity: 0;
+    -webkit-transform: scale3d(0.3, 0.3, 0.3);
+    transform: scale3d(0.3, 0.3, 0.3);
+  }
+  50% {
+    opacity: 1;
+  }
+}
+.zoomIn {
+  -webkit-animation-name: zoomIn;
+  animation-name: zoomIn;
+}
+
+.animated {
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+.animated.infinite {
+  -webkit-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+}
+
+.animated.delay-1s {
+  -webkit-animation-delay: 1s;
+  animation-delay: 1s;
+}
+
+.animated.delay-2s {
+  -webkit-animation-delay: 2s;
+  animation-delay: 2s;
+}
+
+.animated.delay-3s {
+  -webkit-animation-delay: 3s;
+  animation-delay: 3s;
+}
+
+.animated.delay-4s {
+  -webkit-animation-delay: 4s;
+  animation-delay: 4s;
+}
+
+.animated.delay-5s {
+  -webkit-animation-delay: 5s;
+  animation-delay: 5s;
+}
+
+.animated.fast {
+  -webkit-animation-duration: 800ms;
+  animation-duration: 800ms;
+}
+
+.animated.faster {
+  -webkit-animation-duration: 500ms;
+  animation-duration: 500ms;
+}
+
+.animated.slow {
+  -webkit-animation-duration: 2s;
+  animation-duration: 2s;
+}
+
+.animated.slower {
+  -webkit-animation-duration: 3s;
+  animation-duration: 3s;
+}
+
+@media (print), (prefers-reduced-motion: reduce) {
+  .animated {
+    -webkit-animation-duration: 1ms !important;
+    animation-duration: 1ms !important;
+    -webkit-transition-duration: 1ms !important;
+    transition-duration: 1ms !important;
+    -webkit-animation-iteration-count: 1 !important;
+    animation-iteration-count: 1 !important;
+  }
+}
 html {
   scroll-behavior: smooth;
 }
@@ -186,7 +278,7 @@ html {
     font-size: 110%;
   }
 }
-@media screen and (max-resolution: 96dpi) and (min-width: 1920px) {
+@media screen and (max-resolution: 96dpi) and (min-width: 1440px) {
   html {
     font-size: 160%;
   }
@@ -244,7 +336,6 @@ html {
 .teacher-avatar {
   height: auto;
   width: 100%;
-  border-radius: 0.3rem;
 }
 
 .teacher-social-icon path {
@@ -256,6 +347,11 @@ html {
 
 span.active, a.active {
   font-weight: 500;
+}
+
+.carousel-container img {
+  height: 25rem;
+  object-fit: cover;
 }
 
 .carousel-overlay {
@@ -283,16 +379,18 @@ span.active, a.active {
   border-left: 1px solid #dee2e6;
 }
 
+nav {
+  transition: opacity ease-in 750ms, top ease-in 750ms;
+}
+
 .navbar-hidden {
-  top: -60px;
+  top: -3.5rem;
+  opacity: 0;
 }
 
 .navbar-visible {
-  top: 0px;
-}
-
-nav {
-  transition: top ease-out 750ms;
+  top: 0rem;
+  opacity: 1;
 }
 
 /*# sourceMappingURL=style.css.map */

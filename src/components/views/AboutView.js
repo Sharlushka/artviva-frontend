@@ -2,18 +2,6 @@ import React from 'react'
 import { Container, Row, Col, Image } from 'react-bootstrap'
 
 const AboutView = () => {
-	/*
-	const borderPink = {
-		border: '1px solid pink'
-	}
-
-	const borderGreen = {
-		border: '1px solid green'
-	}
-
-	const borderBlue = {
-		border: '1px solid blue'
-	}*/
 
 	const respStyle = {
 		height:'auto',
@@ -35,11 +23,11 @@ const AboutView = () => {
 	}
 
 	return (
-		<Container>
+		<Container className="pt-5">
 			<Row className="d-flex justify-content-center">
 				<Col xs={12}>
 					<h1 className="text-center py-4 custom-font">
-						Про школу
+						Історія
 					</h1>
 				</Col>
 

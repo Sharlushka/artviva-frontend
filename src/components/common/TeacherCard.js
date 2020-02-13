@@ -25,13 +25,14 @@ const TeacherCard = ({ teacher }) => {
 	}
 
 	return (
-		<Card key={teacher.id} className="my-4">
+		<Card key={teacher.id} className="mb-4">
 			<Card.Body>
 				<Row className="d-flex justify-content-center">
 					<Col xs={7} sm={2} className="p-2 pl-3">
 						<Image
 							src={`img/teachers/${teacher.image}`}
 							className="teacher-avatar"
+							rounded
 						/>
 					</Col>
 					<Col xs={12} sm={10}>
