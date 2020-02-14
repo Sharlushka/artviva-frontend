@@ -64,6 +64,7 @@ const AboutView = () => {
 						src="img/about/aboutArtviva00.jpg"
 						style={respStyle}
 						className="pb-2"
+						alt="Групове фото складу школи"
 					/>
 
 					<p className="about-text">
@@ -79,6 +80,7 @@ const AboutView = () => {
 						src="img/about/aboutArtviva01.jpg"
 						style={respStyle}
 						className="pb-2"
+						alt="Виїзний концерт на підприємстві"
 					/>
 					<p className="about-text">
 						З 1984 року школу очолила Щербак Неля Юріївна, посаду заступника з
@@ -99,6 +101,7 @@ const AboutView = () => {
 						src="img/about/aboutArtviva02.jpg"
 						style={floatLeft}
 						className="px-3 pb-2"
+						alt="Оркестр школи перед будинком культури"
 					/>
 					<p className="about-text">
 						Випали на долю школи і часи фінансової нестабільності, кризи, недостатнього
@@ -118,6 +121,7 @@ const AboutView = () => {
 						src="img/about/aboutArtviva03.jpg"
 						style={floatRight}
 						className="px-3 pb-2"
+						alt="Колектив перед входом в будівлю школи"
 					/>
 					<p className="about-text">
 						За часів керівництва Ільїна Віктора Тихоновича (2006-2009), Шпитьківська музична
@@ -149,6 +153,7 @@ const AboutView = () => {
 						src="img/about/aboutArtviva04.jpg"
 						style={floatLeft}
 						className="px-3 pb-2"
+						alt="Завуч і директор школи"
 					/>
 					<p className="about-text">
 						Сьогодні на території школи проходять роботи по озелененню та ландшафтному дизайну,

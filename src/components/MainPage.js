@@ -23,6 +23,7 @@ const MainPage = () => {
 						<Image
 							src="img/schoolLogo-transparent.png"
 							className='responsive-image'
+							alt="Лого ArtViva"
 						/>
 					</Col>
 					<Col
@@ -36,7 +37,7 @@ const MainPage = () => {
 					<Col>
 						<Row className="text-center pt-4 justify-content-center">
 							<Col xs={12} sm={6} className="py-4">
-								<ScrollAnimation animateIn="zoomIn">
+								<ScrollAnimation animateIn="fadeIn">
 									<OrigamiIcon />
 								</ScrollAnimation>
 								<p className="pt-4 px-2 main-page-descr">
@@ -47,7 +48,7 @@ const MainPage = () => {
 								</p>
 							</Col>
 							<Col xs={12} sm={6} className="py-4">
-								<ScrollAnimation animateIn="zoomIn">
+								<ScrollAnimation animateIn="fadeIn">
 									<EditIcon />
 								</ScrollAnimation>
 								<p className="pt-4 px-2 main-page-descr">
@@ -57,7 +58,7 @@ const MainPage = () => {
 								</p>
 							</Col>
 							<Col xs={12} sm={8} className="py-4">
-								<ScrollAnimation animateIn="zoomIn">
+								<ScrollAnimation animateIn="fadeIn">
 									<LoveSongIcon />
 								</ScrollAnimation>
 								<p className="pt-4 px-2 main-page-descr">

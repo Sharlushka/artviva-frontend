@@ -59,7 +59,7 @@ const ContactForm = ({ setNotification }) => {
 
 						{/* Message sender name input */}
 						<Form.Row className="d-flex justify-content-center">
-							<Form.Group as={Col} className="col-sm-6 col-md-5">
+							<Form.Group controlId="nameInput" as={Col} className="col-sm-6 col-md-5">
 								<Form.Label>
 									Ваше ім&apos;я
 									<span className="required-text">*</span>
@@ -85,7 +85,7 @@ const ContactForm = ({ setNotification }) => {
 
 						{/* Message sender email input */}
 						<Form.Row className="d-flex justify-content-center">
-							<Form.Group as={Col} className="col-sm-6 col-md-5">
+							<Form.Group controlId="emailInput" as={Col} className="col-sm-6 col-md-5">
 								<Form.Label>
 									Ваша електронна пошта
 									<span className="required-text">*</span>
@@ -111,7 +111,7 @@ const ContactForm = ({ setNotification }) => {
 
 						{/* Message body input */}
 						<Form.Row className="d-flex justify-content-center">
-							<Form.Group as={Col} className="col-sm-6 col-md-5">
+							<Form.Group controlId="messageInput" as={Col} className="col-sm-6 col-md-5">
 								<Form.Label>
 									Ваше повідомлення
 									<span className="required-text">*</span>

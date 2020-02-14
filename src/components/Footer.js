@@ -36,12 +36,14 @@ const Footer = () => {
 						<a
 							href="https://www.facebook.com/myz.shpytky"
 							alt="Фейсбук-група Шпитьківської Дитячої Школи Мистецтв"
+							aria-label="Фейсбук" target="_blank" rel="noopener noreferrer"
 						>
 							<FbIcon style={maxWidth} />
 						</a>
 						<a
 							href="https://www.instagram.com/myz_shputky"
 							alt="Інстаграм Шпитьківської Дитячої Школи Мистецтв"
+							aria-label="Інстаграм" target="_blank" rel="noopener noreferrer"
 						>
 							<InstIcon style={maxWidth} />
 						</a>

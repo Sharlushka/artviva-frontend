@@ -12,7 +12,7 @@ const TeacherCard = ({ teacher }) => {
 	}
 
 	const showIcon = (icon) => {
-		const iconStyle = 'teacher-social-icon fa-lg mx-1'
+		const iconStyle = 'teacher-social-icon fa-2x mx-2'
 
 		switch (icon) {
 		case 'facebook':
@@ -33,6 +33,7 @@ const TeacherCard = ({ teacher }) => {
 							src={`img/teachers/${teacher.image}`}
 							className="teacher-avatar"
 							rounded
+							alt={`Фото ${teacher.name}`}
 						/>
 					</Col>
 					<Col xs={12} sm={10}>
@@ -45,7 +46,10 @@ const TeacherCard = ({ teacher }) => {
 									{ teacher.social
 										?
 										teacher.social.map(social =>
-											<a key={social.link} href={social.link}>
+											<a key={social.link} href={social.link}
+												alt={`Посилання на профіль вчителя в соціальній мережі ${social.icon}`}
+												aria-label={social.icon} target="_blank" rel="noopener noreferrer"
+											>
 												{showIcon(social.icon)}
 											</a>
 										)
