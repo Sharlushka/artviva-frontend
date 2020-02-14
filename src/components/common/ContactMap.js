@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Map, GoogleApiWrapper, Marker, InfoWindow } from 'google-maps-react'
+import googleApiKey from '../../data/keys'
 
 const ContactMap = (props) => {
 	const [showingInfoWindow, setShowingInfoWindow] = useState(false)
@@ -60,5 +61,5 @@ const ContactMap = (props) => {
 }
 
 export default GoogleApiWrapper({
-	apiKey: 'AIzaSyCmGrMvG2TbW9adGp6UDXHdz5S4AHVV-qM'
+	apiKey: googleApiKey
 })(ContactMap)
