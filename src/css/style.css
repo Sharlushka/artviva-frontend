@@ -19,7 +19,7 @@
 .carousel-caption h3 {
   margin: 0;
   text-align: left;
-  line-height: 1.7;
+  line-height: 1.3;
   margin: 0;
 }
 @media screen and (max-resolution: 96dpi) and (min-width: 600px) {
@@ -41,7 +41,7 @@
 .carousel-caption p {
   margin: 0;
   text-align: left;
-  line-height: 1.7;
+  line-height: 1.3;
   margin: 0;
 }
 @media screen and (max-resolution: 96dpi) and (min-width: 600px) {
@@ -366,8 +366,25 @@ html {
   fill: #3b5998;
 }
 
-span.active, a.active {
+.nav-link {
+  transition: color ease-in 250ms, border-bottom ease-in 250ms;
+  line-height: 0.7;
+  border-bottom: 0.1rem solid rgba(0, 0, 0, 0);
+}
+
+.navbar-nav a {
+  text-decoration: none;
+}
+
+.nav-link:hover {
+  color: #3b5998 !important;
+  border-bottom: 0.1rem solid #3b5998;
+}
+
+span.active {
   font-weight: 500;
+  color: #3b5998 !important;
+  border-bottom: 0.1rem solid #3b5998;
 }
 
 .carousel-container img {
@@ -376,7 +393,7 @@ span.active, a.active {
 }
 
 .carousel-overlay {
-  background-color: rgba(33, 33, 33, 0.4);
+  background-image: linear-gradient(to bottom, rgba(33, 33, 33, 0), rgba(33, 33, 33, 0.8));
   height: 100%;
   width: 100%;
   position: absolute;

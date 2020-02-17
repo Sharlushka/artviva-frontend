@@ -66,8 +66,24 @@ html
 	&:hover path
 		fill: $facebookColor
 
-span.active, a.active
+.nav-link
+	transition: color ease-in 250ms, border-bottom ease-in 250ms
+	line-height: .7
+	border-bottom: .1rem solid rgba(0,0,0,0)
+
+.navbar-nav
+	a
+		text-decoration: none
+
+.nav-link
+	&:hover
+		color: $facebookColor !important
+		border-bottom: .1rem solid $facebookColor
+
+span.active
 	font-weight: 500
+	color: $facebookColor !important
+	border-bottom: .1rem solid $facebookColor
 
 .carousel-container
 	img
@@ -75,7 +91,7 @@ span.active, a.active
 		object-fit: cover
 
 .carousel-overlay
-	background-color: rgba(33, 33, 33, .4)
+	background-image: linear-gradient(to bottom, rgba(33, 33, 33, 0), rgba(33, 33, 33, .8))
 	height: 100%
 	width: 100%
 	position: absolute
