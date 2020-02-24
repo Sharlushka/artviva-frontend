@@ -9,7 +9,7 @@ const TeachersView = () => {
 
 	return (
 		<Container className="pt-5">
-			<h1 className="text-center custom-font pt-3">
+			<h1 className="text-center custom-font pt-4 pb-2">
 				Наші вчітели
 			</h1>
 			<Row className="p-2 d-flex justify-content-center">

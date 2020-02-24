@@ -51,7 +51,7 @@ html
 		margin: 0
 
 .more-teacher-info
-	color: grey
+	color: $primary-color
 	background: none
 	padding: 0
 	margin: 0
@@ -60,6 +60,11 @@ html
 .teacher-avatar
 	height: auto
 	width: 100%
+	box-shadow: .1rem .3rem .5rem .15rem rgba(0, 0, 0, 0.1)
+
+.teacher-name
+	font-size: 140%
+	padding-bottom: .5rem
 
 .teacher-social-icon
 	path
@@ -67,10 +72,17 @@ html
 	&:hover path
 		fill: $facebookColor
 
+.spec-title
+	color: $primary-color-muted
+
+.more-info
+	padding-top: .5rem
+
 .nav-link
 	transition: color ease-in 250ms, border-bottom ease-in 250ms
-	line-height: .7
+	line-height: .4
 	border-bottom: .1rem solid rgba(0,0,0,0)
+	padding: .7rem 0
 
 .navbar-nav
 	a
@@ -103,6 +115,9 @@ span.active
 .border-pink
 	border: 1px solid pink
 
+.border-green
+	border: 1px solid green
+
 .border-gray
 	border: 1px solid #dee2e6
 
@@ -134,3 +149,6 @@ nav
 			padding: .3rem
 		li:first-child
 			font-size: 120%
+
+.navbar-toggler
+	border: none !important // will remove soon, just for testing

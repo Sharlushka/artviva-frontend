@@ -12,7 +12,7 @@ const TeacherCard = ({ teacher }) => {
 	}
 
 	const showIcon = (icon) => {
-		const iconStyle = 'teacher-social-icon fa-2x mx-2'
+		const iconStyle = 'teacher-social-icon fa-lg mx-2'
 
 		switch (icon) {
 		case 'facebook':
@@ -28,7 +28,7 @@ const TeacherCard = ({ teacher }) => {
 		<Card key={teacher.id} className="mb-4">
 			<Card.Body>
 				<Row className="d-flex justify-content-center">
-					<Col xs={7} sm={2} className="p-2 pl-3">
+					<Col xs={8} sm={6} md={4} className="border-pink1 pb-3">
 						<Image
 							src={`img/teachers/${teacher.image}`}
 							className="teacher-avatar"
@@ -36,7 +36,7 @@ const TeacherCard = ({ teacher }) => {
 							alt={`Фото ${teacher.name}`}
 						/>
 					</Col>
-					<Col xs={12} sm={10}>
+					<Col xs={12} md={8} className="border-green1">
 						<ul className="teacher-specs-list">
 							<li className="d-flex justify-content-between align-items-center">
 								<strong className="custom-font teacher-name text-left">
@@ -58,11 +58,11 @@ const TeacherCard = ({ teacher }) => {
 								</span>
 							</li>
 							<li>
-								<em className="text-muted">Освіта: </em>
+								<em className="spec-title"><strong>Освіта: </strong></em>
 								{teacher.education}
 							</li>
 							<li>
-								<em className="text-muted">Предмет: </em>
+								<em className="spec-title"><strong>Предмет: </strong></em>
 								{teacher.speciality}
 							</li>
 							<li>
@@ -72,11 +72,11 @@ const TeacherCard = ({ teacher }) => {
 											{teacher.description.intro}
 										</p>
 										<Collapse in={open}>
-											<p id="more-info" className="text-left">
+											<p id="more-info" className="text-left more-info">
 												{teacher.description.more}
 											</p>
 										</Collapse>
-										<div className="text-right">
+										<div className="text-right pt-3">
 											<button
 												className="more-teacher-info"
 												onClick={() => openTeacherDescr()}
@@ -85,7 +85,7 @@ const TeacherCard = ({ teacher }) => {
 											>
 												{ open
 													? <em><FontAwesomeIcon icon={faAngleUp} /></em>
-													: <em>більше...</em>
+													: <em>докладніше...</em>
 												}
 											</button>
 										</div>
