@@ -2,18 +2,6 @@ import React from 'react'
 import { Container, Row, Col, Image } from 'react-bootstrap'
 
 const AboutView = () => {
-	/*
-	const borderPink = {
-		border: '1px solid pink'
-	}
-
-	const borderGreen = {
-		border: '1px solid green'
-	}
-
-	const borderBlue = {
-		border: '1px solid blue'
-	}*/
 
 	const respStyle = {
 		height:'auto',
@@ -35,11 +23,11 @@ const AboutView = () => {
 	}
 
 	return (
-		<Container>
+		<Container className="pt-5">
 			<Row className="d-flex justify-content-center">
 				<Col xs={12}>
 					<h1 className="text-center py-4 custom-font">
-						Про школу
+						Історія
 					</h1>
 				</Col>
 
@@ -76,6 +64,7 @@ const AboutView = () => {
 						src="img/about/aboutArtviva00.jpg"
 						style={respStyle}
 						className="pb-2"
+						alt="Групове фото складу школи"
 					/>
 
 					<p className="about-text">
@@ -91,6 +80,7 @@ const AboutView = () => {
 						src="img/about/aboutArtviva01.jpg"
 						style={respStyle}
 						className="pb-2"
+						alt="Виїзний концерт на підприємстві"
 					/>
 					<p className="about-text">
 						З 1984 року школу очолила Щербак Неля Юріївна, посаду заступника з
@@ -111,6 +101,7 @@ const AboutView = () => {
 						src="img/about/aboutArtviva02.jpg"
 						style={floatLeft}
 						className="px-3 pb-2"
+						alt="Оркестр школи перед будинком культури"
 					/>
 					<p className="about-text">
 						Випали на долю школи і часи фінансової нестабільності, кризи, недостатнього
@@ -130,6 +121,7 @@ const AboutView = () => {
 						src="img/about/aboutArtviva03.jpg"
 						style={floatRight}
 						className="px-3 pb-2"
+						alt="Колектив перед входом в будівлю школи"
 					/>
 					<p className="about-text">
 						За часів керівництва Ільїна Віктора Тихоновича (2006-2009), Шпитьківська музична
@@ -161,6 +153,7 @@ const AboutView = () => {
 						src="img/about/aboutArtviva04.jpg"
 						style={floatLeft}
 						className="px-3 pb-2"
+						alt="Завуч і директор школи"
 					/>
 					<p className="about-text">
 						Сьогодні на території школи проходять роботи по озелененню та ландшафтному дизайну,

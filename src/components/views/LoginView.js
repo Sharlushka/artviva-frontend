@@ -11,7 +11,7 @@ const LoginView = () => {
 					<span className="image-align-helper"></span>
 					<Image
 						src="img/schoolLogo-transparent.png"
-						alt="Artviva logo"
+						alt="ArtViva logo"
 						className="responsive-image-fraction pt-4"
 					/>
 				</Col>

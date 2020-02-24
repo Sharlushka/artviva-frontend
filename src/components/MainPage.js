@@ -8,6 +8,7 @@ import ParallaxCache from './common/ParallaxCache'
 import { ReactComponent as OrigamiIcon } from '../svg/origami.svg'
 import { ReactComponent as EditIcon } from '../svg/edit.svg'
 import { ReactComponent as LoveSongIcon } from '../svg/love-song.svg'
+import ScrollAnimation from 'react-animate-on-scroll'
 
 const MainPage = () => {
 	return (
@@ -22,6 +23,7 @@ const MainPage = () => {
 						<Image
 							src="img/schoolLogo-transparent.png"
 							className='responsive-image'
+							alt="Лого ArtViva"
 						/>
 					</Col>
 					<Col
@@ -29,13 +31,15 @@ const MainPage = () => {
 						className="d-flex justify-content-center align-items-center"
 					>
 						<strong className="main-title custom-font">
-							Artviva — дитяча школа мистецтв.
+							ArtViva — дитяча школа мистецтв.
 						</strong>
 					</Col>
 					<Col>
 						<Row className="text-center pt-4 justify-content-center">
 							<Col xs={12} sm={6} className="py-4">
-								<OrigamiIcon />
+								<ScrollAnimation animateIn="fadeIn">
+									<OrigamiIcon />
+								</ScrollAnimation>
 								<p className="pt-4 px-2 main-page-descr">
 									Сьогодні Шпитьківська ДШМ на чолі з Іванчук Оленою Анатоліївною
 									&mdash; сучасний заклад естетичного виховання, де на музичному,
@@ -44,7 +48,9 @@ const MainPage = () => {
 								</p>
 							</Col>
 							<Col xs={12} sm={6} className="py-4">
-								<EditIcon />
+								<ScrollAnimation animateIn="fadeIn">
+									<EditIcon />
+								</ScrollAnimation>
 								<p className="pt-4 px-2 main-page-descr">
 									Адміністрація школи прикладає максимум зусиль для покращення
 									і осучаснення матеріальної бази, впровадження новітніх технологій
@@ -52,7 +58,9 @@ const MainPage = () => {
 								</p>
 							</Col>
 							<Col xs={12} sm={8} className="py-4">
-								<LoveSongIcon />
+								<ScrollAnimation animateIn="fadeIn">
+									<LoveSongIcon />
+								</ScrollAnimation>
 								<p className="pt-4 px-2 main-page-descr">
 									Головним завданням навчально-виховного процесу ШДШМ є створення умов
 									для творчого, інтелектуального, духовного і фізичного самовираження
