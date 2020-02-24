@@ -33,7 +33,7 @@
     "eslint": "eslint .",
     "cypress:open": "cypress open",
     "jest": "CI=true npm test",
-    "sass:watch": "sass --watch src/sass:src/css"
+    "sass:watch": "sass --watch src/sass:src/css --style compressed"
   },
   "repository": {
     "type": "git",

@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Container, Row, Col } from 'react-bootstrap'
 import * as data from '../../data/teachers.json'
-import TeacherCard from '../common/TeacherCard'
+import TeacherCard from '../common/TeacherCard.jsx'
 
 const TeachersView = () => {
 	const { teachers } = data

@@ -14,6 +14,7 @@ import BlogView from './components/views/BlogView'
 // import DebugView from './components/views/DebugView'
 import ContactsView from './components/views/ContactsView'
 import TeachersView from './components/views/TeachersView'
+import ScrollToTop from './components/common/ScrollToTop'
 
 import { setUserFromLocalStorage } from './reducers/userReducer'
 import './css/index.css'
@@ -80,6 +81,7 @@ const App = (props) => {
 
 				</Container>
 				<Footer />
+				<ScrollToTop />
 			</Router>
 		</ParallaxProvider>
 	)
