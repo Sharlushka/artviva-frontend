@@ -1,13 +1,33 @@
-import React from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import Logout from './Logout'
+// import Logout from './Logout'
 import { Navbar, Nav, Image } from 'react-bootstrap'
 
+// eslint-disable-next-line
 const NavigationBar = ({ user }) => {
+
+	const [visibility, setVisibility] = useState(true)
+	const [prevScrollpos, setScrollPosition] = useState(window.pageYOffset)
+
+	const handleScroll = useCallback(() => {
+		const currentScrollPos = window.pageYOffset
+		const visible = prevScrollpos > currentScrollPos
+
+		setVisibility(visible)
+		setScrollPosition(currentScrollPos)
+	}, [prevScrollpos])
+
+	useEffect(() => {
+		window.addEventListener('scroll', handleScroll)
+		return () => window.removeEventListener('scroll', handleScroll)
+	}, [handleScroll])
+
 	return (
 		<header>
-			<Navbar collapseOnSelect expand="sm" bg="light" variant="light">
+			<Navbar fixed="top" collapseOnSelect expand="sm" bg="light" variant="light"
+				className={visibility ? 'navbar-visible' : 'navbar-hidden' }
+			>
 				<Navbar.Brand href="/" className="d-flex align-items-center">
 					<Image
 						alt="Лого"
@@ -15,7 +35,7 @@ const NavigationBar = ({ user }) => {
 						width="30"
 						height="30"
 					/>{' '}
-					<span className="pl-2 nav-logo-font">Artviva</span>
+					<span className="pl-2 nav-logo-font">ArtViva</span>
 				</Navbar.Brand>
 				<Navbar.Toggle aria-controls="responsive-navbar-nav" />
 				<Navbar.Collapse id="responsive-navbar-nav">
@@ -23,7 +43,7 @@ const NavigationBar = ({ user }) => {
 
 						<Link to="/about" className="d-flex align-items-center">
 							<Nav.Link as="span" href="/about" activeclassname="active">
-								Про школу
+								Історія
 							</Nav.Link>
 						</Link>
 
@@ -52,7 +72,7 @@ const NavigationBar = ({ user }) => {
 							</Nav.Link>
 						</Link>
 
-						<Nav.Link
+						{/*<Nav.Link
 							className="d-flex justify-content-end"
 							href="/login"
 							as="span"
@@ -67,7 +87,7 @@ const NavigationBar = ({ user }) => {
 								</>
 								: <Link to="/login">Логін</Link>
 							}
-						</Nav.Link>
+						</Nav.Link>*/}
 
 					</Nav>
 				</Navbar.Collapse>
