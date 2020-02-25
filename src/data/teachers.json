@@ -3,7 +3,7 @@
 		{
 			"id": "1",
 			"name": "Робакідзе Лілія Вікторівна",
-			"image": "teacher0.jpg",
+			"image": "robakidze.jpg",
 			"education": "Сєвєродонецьке обласне музичне училище ім. С. С. Прокоф’єва",
 			"speciality": "Саксофон",
 			"description": {
@@ -18,11 +18,15 @@
 				{
 					"icon": "instagram",
 					"link": "https://instagram.com/lili.robak"
+				},
+				{
+					"icon": "youtube",
+					"link": "https://www.youtube.com/channel/UCuzXhxCq2aQPoMJ6S49xdjQ"
 				}
 			]
 		},
 		{
-			"id": "2",
+			"id": "993",
 			"name": "Сініцина Оксана Ільдарівна",
 			"image": "teacher_default.png",
 			"education": "Донецька державна музична академія ім. С. С. Прокоф’єва",
@@ -34,7 +38,7 @@
 			"social": []
 		},
 		{
-			"id": "3",
+			"id": "994",
 			"name": "Ноздріна Валентина Павлівна",
 			"image": "teacher_default.png",
 			"education": "Ніжинський державний педінститут ім. М. В. Гоголя",
@@ -46,7 +50,7 @@
 			"social": []
 		},
 		{
-			"id": "4",
+			"id": "995",
 			"name": "Шушвар Олена Іванівна",
 			"image": "teacher_default.png",
 			"education": "Київський національний університет культури і мистецтв",
@@ -58,7 +62,7 @@
 			"social": []
 		},
 		{
-			"id": "5",
+			"id": "996",
 			"name": "Трегубенко Тетяна Миколаївна",
 			"image": "teacher_default.png",
 			"education": "Київський національний університет культури і мистецтв",

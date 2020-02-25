@@ -31,6 +31,7 @@ const ContactMap = (props) => {
 					onClick={onMarkerClick}
 					position={{ lat: department.latitude, lng: department.longitude }}
 					key={department.id}
+					id={department.id}
 					name={department.name}
 					address={department.address}
 					phone={department.phone}
@@ -51,6 +52,11 @@ const ContactMap = (props) => {
 						</li>
 						<li>
 							{selectedPlace.phone}
+						</li>
+						<li>
+							<a href={`#${selectedPlace.id}`}>
+								докладніше...
+							</a>
 						</li>
 					</ul>
 				</div>

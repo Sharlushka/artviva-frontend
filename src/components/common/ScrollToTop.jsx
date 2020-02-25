@@ -29,7 +29,7 @@ const ScrollToTop = () => {
 		<>
 			{ isVisible
 				? <button
-					className="scroll-to-top animated fadeIn"
+					className="scroll-to-top animated fadeInRight"
 					onClick={() => scrollToTop()}
 				>
 					<FontAwesomeIcon icon={faArrowUp} className={'fa-2x'}/>
