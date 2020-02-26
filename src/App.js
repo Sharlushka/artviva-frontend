@@ -14,6 +14,7 @@ import BlogView from './components/views/BlogView'
 // import DebugView from './components/views/DebugView'
 import ContactsView from './components/views/ContactsView'
 import TeachersView from './components/views/TeachersView'
+import RecoverView from './components/views/RecoverView'
 import ScrollToTop from './components/common/ScrollToTop'
 
 import { setUserFromLocalStorage } from './reducers/userReducer'
@@ -60,6 +61,10 @@ const App = (props) => {
 
 					<Route exact path="/login" render={() =>
 						<LoginView />
+					} />
+
+					<Route exact path="/recover" render={() =>
+						<RecoverView />
 					} />
 
 					<Route exact path="/register" render={() =>

@@ -106,7 +106,7 @@ const LoginForm = ({ setNotification }) => {
 
 						{/* Message sender email input */}
 						<Form.Row className="d-flex justify-content-center">
-							<Form.Group as={Col} className="col-sm-8 col-md-10 col-xl-8">
+							<Form.Group as={Col} sm="10">
 								<Form.Label>
 									Ваша електронна пошта
 								</Form.Label>
@@ -131,7 +131,7 @@ const LoginForm = ({ setNotification }) => {
 
 						{/* User password input */}
 						<Form.Row className="d-flex justify-content-center">
-							<Form.Group as={Col} className="col-sm-8 col-md-10 col-xl-8">
+							<Form.Group as={Col} sm="10" >
 								<Form.Label>
 									Ваш пароль
 								</Form.Label>
@@ -173,14 +173,25 @@ const LoginForm = ({ setNotification }) => {
 						<Form.Row className="d-flex justify-content-center">
 							<Form.Group
 								as={Col}
-								className="col-sm-8 col-md-10 col-xl-8
-									d-flex
-									justify-content-between
-									align-items-center"
+								sm="10"
+								className="d-flex
+								justify-content-between
+								align-items-center"
 							>
 								<Link to="/register">
-									Новий користувач?
+									Реєстрація
 								</Link>
+								<Link to="/recover">
+									Відновлення паролю
+								</Link>
+							</Form.Group>
+							<Form.Group
+								as={Col}
+								sm="10"
+								className="d-flex pt-3
+									justify-content-center
+									align-items-center"
+							>
 								<Button
 									type="submit"
 									variant="primary"

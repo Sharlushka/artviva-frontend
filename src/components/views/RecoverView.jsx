@@ -1,14 +1,17 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import RecoverForm from '../forms/RecoverForm'
 import { Container, Row, Col } from 'react-bootstrap'
-import RegisterForm from '../forms/RegisterForm'
 
-const RegisterView = () => {
+const RecoverView = () => {
 	return (
 		<Container className="pt-4">
-			<Row className="pt-4 d-flex justify-content-center align-items-center">
-				<Col xs={12} sm={10} md={8} className="text-center">
-					<RegisterForm />
+			<Row className="pt-4">
+				<Col xs={12}>
+					<h1 className="text-center custom-font py-4">
+						Відновлення паролю
+					</h1>
+					<RecoverForm />
 				</Col>
 			</Row>
 		</Container>
@@ -23,4 +26,4 @@ const mapStateToProps = (state) => {
 
 export default connect(
 	mapStateToProps
-)(RegisterView)
+)(RecoverView)
