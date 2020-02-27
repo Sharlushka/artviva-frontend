@@ -3,6 +3,7 @@ import { Row, Col, Card, Image, Collapse } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleUp } from '@fortawesome/free-solid-svg-icons'
 import { faFacebookF, faInstagram, faYoutube } from '@fortawesome/free-brands-svg-icons'
+import PropTypes from 'prop-types'
 
 const TeacherCard = ({ teacher }) => {
 	const [open, setOpen] = useState(false)
@@ -101,6 +102,10 @@ const TeacherCard = ({ teacher }) => {
 			</Card.Body>
 		</Card>
 	)
+}
+
+TeacherCard.propTypes = {
+	teacher: PropTypes.object.isRequired
 }
 
 export default TeacherCard
