@@ -5,6 +5,7 @@
 @import 'palette.scss'
 @import 'animations.sass'
 @import 'buttons.sass'
+@import 'icons.sass'
 
 html
 	scroll-behavior: smooth
@@ -60,7 +61,7 @@ html
 .teacher-avatar
 	height: auto
 	width: 100%
-	box-shadow: .1rem .3rem .5rem .15rem rgba(0, 0, 0, 0.1)
+	box-shadow: .1rem .3rem .5rem .15rem rgba(0, 0, 0, 0.1) //should really be a mixin
 
 .teacher-name
 	font-size: 140%
@@ -137,7 +138,7 @@ span.active
 nav
 	transition: opacity ease-in 500ms, top ease-in 500ms
 
-.moar-padding-top
+.moar-padding-top // tf is this?
 	padding-top: 4rem
 
 .marker-info
@@ -152,3 +153,6 @@ nav
 
 .navbar-toggler
 	border: none !important // will remove soon, just for testing
+
+.default-shadow
+	box-shadow: .1rem .3rem .5rem .15rem rgba(0, 0, 0, 0.1)

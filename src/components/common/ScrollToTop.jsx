@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import throttle from '../../utils/throttle'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowUp } from '@fortawesome/free-solid-svg-icons'
+import Fade from 'react-bootstrap/Fade'
 
 const ScrollToTop = () => {
 
@@ -27,15 +28,14 @@ const ScrollToTop = () => {
 
 	return (
 		<>
-			{ isVisible
-				? <button
-					className="scroll-to-top animated fadeIn"
+			<Fade in={isVisible}>
+				<button
+					className="scroll-to-top"
 					onClick={() => scrollToTop()}
 				>
 					<FontAwesomeIcon icon={faArrowUp} className={'fa-2x'}/>
 				</button>
-				: null
-			}
+			</Fade>
 		</>
 	)
 }

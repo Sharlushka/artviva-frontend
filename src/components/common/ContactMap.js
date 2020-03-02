@@ -1,7 +1,14 @@
 import React, { useState } from 'react'
 import { Map, GoogleApiWrapper, Marker, InfoWindow } from 'google-maps-react'
+import PropTypes from 'prop-types'
 
-const ContactMap = (props) => {
+const ContactMap = ({
+	google,
+	zoom,
+	mapStyles,
+	initialCenter,
+	departments }) => {
+
 	const [showingInfoWindow, setShowingInfoWindow] = useState(false)
 	const [activeMarker, setActiveMarker] = useState({})
 	const [selectedPlace, setSelectedPlace] = useState({})
@@ -21,16 +28,17 @@ const ContactMap = (props) => {
 
 	return (
 		<Map
-			google={props.google}
-			zoom={props.zoom}
-			style={props.mapStyles}
-			initialCenter={props.initialCenter}
+			google={google}
+			zoom={zoom}
+			style={mapStyles}
+			initialCenter={initialCenter}
 		>
-			{props.departments.map(department => (
+			{departments.map(department => (
 				<Marker
 					onClick={onMarkerClick}
 					position={{ lat: department.latitude, lng: department.longitude }}
 					key={department.id}
+					id={department.id}
 					name={department.name}
 					address={department.address}
 					phone={department.phone}
@@ -52,11 +60,24 @@ const ContactMap = (props) => {
 						<li>
 							{selectedPlace.phone}
 						</li>
+						<li>
+							<a href={`#${selectedPlace.id}`}>
+								докладніше...
+							</a>
+						</li>
 					</ul>
 				</div>
 			</InfoWindow>
 		</Map>
 	)
+}
+
+ContactMap.propTypes = {
+	google: PropTypes.object.isRequired,
+	zoom: PropTypes.number.isRequired,
+	mapStyles: PropTypes.object.isRequired,
+	initialCenter: PropTypes.object.isRequired,
+	departments: PropTypes.array.isRequired
 }
 
 export default GoogleApiWrapper({

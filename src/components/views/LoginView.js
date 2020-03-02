@@ -5,8 +5,8 @@ import { Container, Row, Col, Image } from 'react-bootstrap'
 
 const LoginView = () => {
 	return (
-		<Container>
-			<Row className="d-flex justify-content-center">
+		<Container className="pt-4">
+			<Row className="pt-4 d-flex justify-content-center">
 				<Col xs={12} md={4} className="text-center">
 					<span className="image-align-helper"></span>
 					<Image

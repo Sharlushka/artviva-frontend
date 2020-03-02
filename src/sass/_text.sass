@@ -25,16 +25,20 @@
 .main-page-descr, .about-text
 	text-indent: 1.4em
 	text-align: left
-	line-height: 1.6
+	line-height: 1.8
+	+desktop(96dpi, 768px)
+		font-size: 120%
 
 .main-page-descr
 	+handheld(2, 1440px)
 		font-size: 120%
 
 .about-text
-	margin-bottom: 2em
+	margin: 2rem 0rem
+	color: $grayish
+	text-align: left
 	+desktop(96dpi, 768px)
-		font-size: 130%
+		font-size: 110%
 
 .main-title
 	font-size: 1.1rem
