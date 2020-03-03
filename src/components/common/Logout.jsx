@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { setNotification } from '../reducers/notificationReducer'
+import { setNotification } from '../../reducers/notificationReducer'
 import { Button } from 'react-bootstrap'
 
 const Logout = ({ setNotification }) => {
@@ -29,8 +29,7 @@ const Logout = ({ setNotification }) => {
 				onClick={handleLogout}
 				type="button"
 				data-cy="logoutBtn"
-				variant="outline-secondary"
-				className="mx-3"
+				variant="outline-primary"
 			>
 				Logout
 			</Button>

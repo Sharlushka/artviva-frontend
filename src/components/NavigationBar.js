@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-// import Logout from './Logout'
 import { Navbar, Nav, Image } from 'react-bootstrap'
+import UserInfoPopover from '../components/common/UserInfoPopover'
 
-// eslint-disable-next-line
 const NavigationBar = ({ user }) => {
 
 	const [visibility, setVisibility] = useState(true)
@@ -72,22 +71,10 @@ const NavigationBar = ({ user }) => {
 							</Nav.Link>
 						</Link>
 
-						{/*<Nav.Link
-							className="d-flex justify-content-end"
-							href="/login"
-							as="span"
-							activeclassname="active"
-						>
-							{user
-								? <>
-									<em className="d-flex align-items-center">
-										{user.username} logged in
-									</em>
-									<Logout />
-								</>
-								: <Link to="/login">Логін</Link>
-							}
-						</Nav.Link>*/}
+						{user
+							? <UserInfoPopover />
+							: null
+						}
 
 					</Nav>
 				</Navbar.Collapse>

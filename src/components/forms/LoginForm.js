@@ -11,19 +11,17 @@ import * as Yup from 'yup'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 
-// eslint-disable-next-line
-const LoginForm = ({ setNotification }) => {
+const LoginForm = ({ setNotification, ...props }) => {
 
-	/*
-	const handleLogin = async event => {
-		event.preventDefault()
+	const handleLogin = async (values) => {
 		const userCreds = {
-			email: email.value,
-			password : password.value
+			email: values.email,
+			password : values.password
 		}
+
 		props.login(userCreds)
 			.then(() => {
-				props.setNotification({
+				setNotification({
 					message: 'Logged in successfully',
 					variant: 'info'
 				}, 5)
@@ -31,14 +29,12 @@ const LoginForm = ({ setNotification }) => {
 			})
 			.catch(error => {
 				const notification = JSON.parse(error.request.responseText)
-				props.setNotification({
+				setNotification({
 					message: notification.error,
 					variant: 'danger'
 				}, 5)
 			})
-		resetEmail('')
-		resetPass('')
-	}*/
+	}
 
 	// Minimum eight characters, at least one uppercase letter, one lowercase letter and one number
 	const mediumStrPass = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/
@@ -52,16 +48,6 @@ const LoginForm = ({ setNotification }) => {
 			.matches(mediumStrPass, 'Мінімум 8 символів, принаймні одна велика літера, одна маленька літера та одне число.')
 			.required('Будь ласка, введіть свій пароль.')
 	})
-
-	const handleLogin = values => {
-		console.log('Loggin user in', values)
-		setNotification({
-			message: `Сайт працює в тестовому режимі,
-				тому ви не можете зараз увійти в систему,
-				але дякуємо за участь у тестуванні сайту!`,
-			variant: 'success'
-		}, 5)
-	}
 
 	// password visibility
 	const [passHidden, setPassVis] = useState(false)

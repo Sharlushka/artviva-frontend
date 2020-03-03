@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { ParallaxProvider } from 'react-scroll-parallax'
@@ -21,9 +21,7 @@ import { setUserFromLocalStorage } from './reducers/userReducer'
 import './css/index.css'
 import { Container } from 'react-bootstrap'
 
-// eslint-disable-next-line
 const App = (props) => {
-	/*
 	useEffect(() => {
 		if (!props.user) {
 			const loggedUserJSON = window.localStorage.getItem('loggedUserJSON')
@@ -39,7 +37,6 @@ const App = (props) => {
 			)
 		}
 	}, [props, props.user, props.setUserFromLocalStorage])
-	*/
 
 	return (
 		<ParallaxProvider>
