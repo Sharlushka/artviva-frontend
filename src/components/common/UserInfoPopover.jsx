@@ -9,7 +9,7 @@ const UserInfoPopover = ({ user }) => {
 
 	const popover = (
 		<Popover id="popover-basic">
-			<Popover.Title as="h3">Hi, {user ? user.username : 'Default user'}!</Popover.Title>
+			<Popover.Title as="h3">{user ? `Hi, ${user.name} ${user.middlename} ${user.lastname}` : 'Default user'}!</Popover.Title>
 			<Popover.Content>
 				<ListGroup variant="flush">
 					<ListGroup.Item className="p-1">{user.email}</ListGroup.Item>
@@ -21,7 +21,7 @@ const UserInfoPopover = ({ user }) => {
 	)
 
 	return (
-		<div className="d-flex justify-content-end align-items-center px-2">
+		<div className="d-flex justify-content-end align-items-center p-2">
 			<OverlayTrigger
 				trigger="click"
 				placement="left"
@@ -30,7 +30,6 @@ const UserInfoPopover = ({ user }) => {
 			</OverlayTrigger>
 		</div>
 	)
-
 }
 
 const mapStateToProps = (state) => {
