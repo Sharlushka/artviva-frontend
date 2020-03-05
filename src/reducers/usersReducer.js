@@ -6,6 +6,8 @@ const usersReducer = (state = null, action) => {
 		return action.data
 	case 'GET_USER_BY_ID':
 		return action.data
+	case 'SIGN_UP_USER':
+		return action.data
 	default:
 		return state
 	}
@@ -17,6 +19,22 @@ export const getUsersList = () => {
 		dispatch ({
 			type: 'GET_USERS_LIST',
 			data: users
+		})
+	}
+}
+
+export const signUpUser = ({ email, name, middlename, lastname, password }) => {
+	return async dispatch => {
+		const user = await userService.signUp({
+			email,
+			name,
+			middlename,
+			lastname,
+			password
+		})
+		dispatch ({
+			type: 'SIGN_UP_USER',
+			data: user
 		})
 	}
 }

@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { setNotification } from '../../reducers/notificationReducer'
+import { signUpUser } from '../../reducers/usersReducer'
 import { Container, Col, Form, InputGroup, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import ButtonComponent from '../common/Button'
@@ -9,17 +10,30 @@ import * as Yup from 'yup'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 
-const RegisterForm = ({ setNotification }) => {
+const RegisterForm = ({ setNotification, ...props }) => {
 	// Minimum eight characters, at least one uppercase letter, one lowercase letter and one number
 	const mediumStrPass = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/
 
 	const loginFormSchema = Yup.object().shape({
+		/*
 		userType: Yup.string()
 			.oneOf(['Вчитель', 'Батько'], 'Ви вчитель чи батько?')
-			.required('Будь ласка, виберіть, хто ви є.'),
+			.required('Будь ласка, виберіть, хто ви є.'),*/
 		email: Yup.string()
 			.email('Адреса електронної пошти недійсна.')
 			.required('Введіть свою електронну пошту.'),
+		name: Yup.string()
+			.min(2, 'Не менш 3 символів.')
+			.max(45, 'Максимум 45 символів.')
+			.required('Введіть ім\'я.'),
+		middlename: Yup.string()
+			.min(2, 'Не менш 3 символів.')
+			.max(45, 'Максимум 45 символів.')
+			.required('Введіть по батькові.'),
+		lastname: Yup.string()
+			.min(2, 'Не менш 3 символів.')
+			.max(45, 'Максимум 45 символів.')
+			.required('Введіть прізвище.'),
 		password: Yup.string()
 			.min(8, 'Мінімум 8 символів.')
 			.matches(mediumStrPass, 'Мінімум 8 символів, принаймні одна велика літера, одна маленька літера та одне число.')
@@ -38,13 +52,29 @@ const RegisterForm = ({ setNotification }) => {
 	})
 
 	const handleRegister = values => {
-		console.log('Loggin user in', values)
-		setNotification({
-			message: `Сайт працює в тестовому режимі,
-				тому ви не можете зараз зареєструватися,
-				але дякуємо за участь у тестуванні сайту!`,
-			variant: 'success'
-		}, 5)
+		console.log('Registering user', values)
+		const userCreds = {
+			email: values.email,
+			name: values.name,
+			middlename: values.middlename,
+			lastname: values.lastname,
+			password : values.password
+		}
+		props.signUpUser(userCreds)
+			.then(() => {
+				setNotification({
+					message: 'Ви отримаєте електронний лист із посиланням для активації свого акаунта.',
+					variant: 'success'
+				}, 5)
+				// document.location.href='/'
+			})
+			.catch(error => {
+				const notification = JSON.parse(error.request.responseText)
+				setNotification({
+					message: notification.error,
+					variant: 'danger'
+				}, 5)
+			})
 	}
 
 	const checkboxLabel = () => <>Я погоджуюся з <Link to="#">умовами</Link> використання сайту</>
@@ -73,8 +103,11 @@ const RegisterForm = ({ setNotification }) => {
 			</h1>
 			<Formik
 				initialValues={{
-					userType: '',
+					/*userType: '',*/
 					email: '',
+					name: '',
+					middlename: '',
+					lastname: '',
 					password: '',
 					passwordConfirm: '',
 					termsCheckbox: false
@@ -97,7 +130,7 @@ const RegisterForm = ({ setNotification }) => {
 						onSubmit={handleSubmit}
 						className="text-left"
 					>
-						<Form.Row className="d-flex justify-content-center">
+						{/*<Form.Row className="d-flex justify-content-center">
 							<Form.Group
 								controlId="userTypeSelect"
 								as={Col}
@@ -125,9 +158,9 @@ const RegisterForm = ({ setNotification }) => {
 									{errors.userType}
 								</Form.Control.Feedback>
 							</Form.Group>
-						</Form.Row>
+						</Form.Row>*/}
 
-						{/* Message sender email input */}
+						{/* User email input */}
 						<Form.Row className="d-flex justify-content-center">
 							<Form.Group
 								controlId="userEmailInput"
@@ -141,6 +174,7 @@ const RegisterForm = ({ setNotification }) => {
 									type="email"
 									name="email"
 									data-cy="emailInput"
+									placeholder="Ваш майбутній логін"
 									onChange={handleChange}
 									onBlur={handleBlur}
 									value={values.email}
@@ -152,6 +186,93 @@ const RegisterForm = ({ setNotification }) => {
 								</Form.Control.Feedback>
 								<Form.Control.Feedback type="invalid">
 									{errors.email}
+								</Form.Control.Feedback>
+							</Form.Group>
+						</Form.Row>
+
+						{/* User name input */}
+						<Form.Row className="d-flex justify-content-center">
+							<Form.Group
+								controlId="userNameInput"
+								as={Col}
+								className="col-md-10 col-lg-7"
+							>
+								<Form.Label>
+									Ваше ім&apos;я
+								</Form.Label>
+								<Form.Control
+									type="text"
+									name="name"
+									data-cy="nameInput"
+									onChange={handleChange}
+									onBlur={handleBlur}
+									value={values.name}
+									isValid={touched.name && !errors.name}
+									isInvalid={touched.name && !!errors.name}
+								/>
+								<Form.Control.Feedback>
+									Ok
+								</Form.Control.Feedback>
+								<Form.Control.Feedback type="invalid">
+									{errors.name}
+								</Form.Control.Feedback>
+							</Form.Group>
+						</Form.Row>
+
+						{/* User middle name input */}
+						<Form.Row className="d-flex justify-content-center">
+							<Form.Group
+								controlId="userMiddlenameInput"
+								as={Col}
+								className="col-md-10 col-lg-7"
+							>
+								<Form.Label>
+									По батькові
+								</Form.Label>
+								<Form.Control
+									type="text"
+									name="middlename"
+									data-cy="middlenameInput"
+									onChange={handleChange}
+									onBlur={handleBlur}
+									value={values.middlename}
+									isValid={touched.middlename && !errors.middlename}
+									isInvalid={touched.middlename && !!errors.middlename}
+								/>
+								<Form.Control.Feedback>
+									Ok
+								</Form.Control.Feedback>
+								<Form.Control.Feedback type="invalid">
+									{errors.middlename}
+								</Form.Control.Feedback>
+							</Form.Group>
+						</Form.Row>
+
+						{/* User last name input */}
+						<Form.Row className="d-flex justify-content-center">
+							<Form.Group
+								controlId="userLastnameInput"
+								as={Col}
+								className="col-md-10 col-lg-7"
+							>
+								<Form.Label>
+									Прізвище
+								</Form.Label>
+								<Form.Control
+									type="text"
+									name="lastname"
+									data-cy="lastnameInput"
+									onChange={handleChange}
+									onBlur={handleBlur}
+									value={values.lastname}
+									isValid={touched.lastname && !errors.lastname}
+									isInvalid={touched.lastname && !!errors.lastname}
+								/>
+								<Form.Control.Feedback>
+									Ok
+								</Form.Control.Feedback>
+								<Form.Control.Feedback type="invalid">
+									{errors.lastname}
 								</Form.Control.Feedback>
 							</Form.Group>
 						</Form.Row>
@@ -298,6 +419,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
+	signUpUser,
 	setNotification
 }
 

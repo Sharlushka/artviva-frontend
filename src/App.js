@@ -17,7 +17,7 @@ import TeachersView from './components/views/TeachersView'
 import RecoverView from './components/views/RecoverView'
 import ScrollToTop from './components/common/ScrollToTop'
 
-import { setUserFromLocalStorage } from './reducers/userReducer'
+import { setUserFromLocalStorage } from './reducers/loginReducer'
 import './css/index.css'
 import { Container } from 'react-bootstrap'
 

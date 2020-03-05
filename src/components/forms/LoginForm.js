@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
-import { login } from '../../reducers/userReducer'
+import { login } from '../../reducers/loginReducer'
 import { setNotification } from '../../reducers/notificationReducer'
 import { Container, Col, Form, InputGroup, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
