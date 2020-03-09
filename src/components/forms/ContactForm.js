@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { setNotification } from '../../reducers/notificationReducer'
+import emailService from '../../services/email'
 import { Container, Row, Col, Form, Button } from 'react-bootstrap'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
@@ -21,14 +22,20 @@ const ContactForm = ({ setNotification }) => {
 			.required('Будь ласка, введіть своє повідомлення.')
 	})
 
-	const sendContactMessage = values => {
-		console.log('Sending message', values)
-		setNotification({
-			message: `Сайт працює в тестовому режимі,
-				повідомлення наразі не надсилаються, але дякуємо
-				за участь у тестуванні сайту! )`,
-			variant: 'success'
-		}, 5)
+	const sendContactMessage = async values => {
+		await emailService.sendContactEmail(values)
+			.then(() => {
+				setNotification({
+					message: 'Ваше повідомлення надіслано, дякуємо вам.',
+					variant: 'success'
+				}, 5)
+			})
+			.catch(error => {
+				setNotification({
+					message: `На жаль, нам не вдалося надіслати ваше повідомлення, ось помилка: ${error.message}`,
+					variant: 'danger'
+				}, 5)
+			})
 	}
 
 	return (
