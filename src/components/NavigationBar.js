@@ -71,10 +71,7 @@ const NavigationBar = ({ user }) => {
 							</Nav.Link>
 						</Link>
 
-						{user
-							? <UserInfoPopover />
-							: null
-						}
+						<UserInfoPopover />
 
 					</Nav>
 				</Navbar.Collapse>
