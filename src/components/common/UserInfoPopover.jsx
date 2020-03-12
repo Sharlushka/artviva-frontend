@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { ListGroup, Popover, OverlayTrigger } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser } from '@fortawesome/free-solid-svg-icons'
 import Logout from './Logout'
@@ -9,12 +10,24 @@ const UserInfoPopover = ({ user }) => {
 
 	const popover = (
 		<Popover id="popover-basic">
-			<Popover.Title as="h3">{user ? `Hi, ${user.name} ${user.middlename} ${user.lastname}` : 'Default user'}!</Popover.Title>
+			<Popover.Title as="h3">{user ? `Hi, ${user.name} ${user.middlename} ${user.lastname}` : 'Hi'}!</Popover.Title>
 			<Popover.Content>
 				<ListGroup variant="flush">
-					<ListGroup.Item className="p-1">{user.email}</ListGroup.Item>
-					<ListGroup.Item className="p-1">{user.id}</ListGroup.Item>
-					<ListGroup.Item className="text-center"><Logout /></ListGroup.Item>
+					{user ?
+						<>
+							<ListGroup.Item className="p-1">{user.email}</ListGroup.Item>
+							<ListGroup.Item className="p-1">{user.id}</ListGroup.Item>
+						</>
+						: null
+					}
+					<ListGroup.Item className="text-center">
+						{user
+							? <Logout />
+							: <Link to={'/login'}>
+									Логін
+							</Link>
+						}
+					</ListGroup.Item>
 				</ListGroup>
 			</Popover.Content>
 		</Popover>
@@ -25,7 +38,9 @@ const UserInfoPopover = ({ user }) => {
 			<OverlayTrigger
 				trigger="click"
 				placement="left"
-				overlay={popover}>
+				overlay={popover}
+				rootClose
+			>
 				<FontAwesomeIcon icon={faUser} className="user-status-icon"/>
 			</OverlayTrigger>
 		</div>

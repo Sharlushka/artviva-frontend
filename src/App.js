@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { ParallaxProvider } from 'react-scroll-parallax'
+import { loadReCaptcha } from 'react-recaptcha-google'
 
 import Notification from './components/Notification'
 import NavigationBar from './components/NavigationBar'
@@ -37,6 +38,10 @@ const App = (props) => {
 			)
 		}
 	}, [props, props.user, props.setUserFromLocalStorage])
+
+	useEffect(() => {
+		loadReCaptcha()
+	}, [])
 
 	return (
 		<ParallaxProvider>

@@ -1,6 +1,6 @@
 {
   "name": "artviva-frontend",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": false,
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.27",
@@ -16,6 +16,7 @@
     "react-bootstrap": "^1.0.0-beta.16",
     "react-dom": "^16.12.0",
     "react-facebook": "^8.1.4",
+    "react-recaptcha-google": "^1.1.1",
     "react-redux": "^7.1.3",
     "react-router-dom": "^5.1.2",
     "react-scripts": "^3.3.0",

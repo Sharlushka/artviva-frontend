@@ -4,6 +4,7 @@ import { login } from '../../reducers/loginReducer'
 import { setNotification } from '../../reducers/notificationReducer'
 import { Container, Col, Form, InputGroup, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
+import ReCaptchaComp from '../common/ReCaptchaComp'
 
 import { Formik } from 'formik'
 import * as Yup from 'yup'
@@ -60,6 +61,20 @@ const LoginForm = ({ setNotification, ...props }) => {
 		} else {
 			passInput.type = 'text'
 		}
+	}
+
+	// recaptcha
+	const reCaptchaRef = React.createRef()
+	const [score, setScore] = useState(null)
+
+	const setRecaptchaScore = score => {
+		if (score <= .1) {
+			setNotification({
+				message: `Ваша оцінка recaptcha занизька: ${score}, спробуйте оновити сторінку.`,
+				variant: 'warning'
+			}, 5)
+		}
+		setScore(score)
 	}
 
 	return (
@@ -183,6 +198,7 @@ const LoginForm = ({ setNotification, ...props }) => {
 									variant="primary"
 									data-cy="contactMsgBtn"
 									className="primary-color-shadow px-5"
+									disabled={score <= .1 ? true : false }
 								>
 									Логін
 								</Button>
@@ -191,6 +207,14 @@ const LoginForm = ({ setNotification, ...props }) => {
 					</Form>
 				)}
 			</Formik>
+			<ReCaptchaComp
+				ref={reCaptchaRef}
+				size="invisible"
+				render="explicit"
+				badge="bottomleft"
+				hl="uk"
+				setScore={setRecaptchaScore}
+			/>
 		</Container>
 	)
 }
