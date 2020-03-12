@@ -1,5 +1,5 @@
 import axios from 'axios'
-const baseUrl = '/api/email'
+const baseUrl = `${process.env.REACT_APP_API_URL}/api/email`
 
 /**
 * Send contact form message
