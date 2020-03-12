@@ -61,23 +61,27 @@ const TeacherCard = ({ teacher }) => {
 								</span>
 							</li>
 							<li>
-								<em className="spec-title"><strong>Освіта: </strong></em>
-								{teacher.education}
+								<em className="spec-title">Освіта: </em>
+								<strong>{teacher.education}</strong>
 							</li>
 							<li>
-								<em className="spec-title"><strong>Предмет: </strong></em>
-								{teacher.speciality}
+								<em className="spec-title">Предмет: </em>
+								<strong>{teacher.speciality}</strong>
 							</li>
 							<li>
-								{ teacher.description
-									? <>
-										<p>
-											{teacher.description.intro}
-										</p>
+								<p>
+									{teacher.description.intro}
+								</p>
+								{teacher.description.text ?
+									<>
 										<Collapse in={open}>
-											<p id="more-info" className="text-left more-info">
-												{teacher.description.more}
-											</p>
+											<div id="more-info">
+												{teacher.description.text.map((paragraph, idx) =>
+													<p key={idx} className="text-left more-info">
+														{paragraph}
+													</p>
+												)}
+											</div>
 										</Collapse>
 										<div className="text-right pt-3">
 											<button

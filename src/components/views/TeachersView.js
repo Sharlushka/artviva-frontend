@@ -13,7 +13,7 @@ const TeachersView = () => {
 				Наші вчітели
 			</h1>
 			<Row className="p-2 d-flex justify-content-center">
-				<Col xs={12} sm={10} className="p-0">
+				<Col xs={12} className="p-0">
 					{teachers.map(teacher =>
 						<TeacherCard key={teacher.id} teacher={teacher} />
 					)}
