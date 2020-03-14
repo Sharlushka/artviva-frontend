@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { ParallaxProvider } from 'react-scroll-parallax'
 import { loadReCaptcha } from 'react-recaptcha-google'
 
@@ -12,15 +12,14 @@ import AboutView from './components/views/AboutView'
 import LoginView from './components/views/LoginView'
 import RegisterView from './components/views/RegisterView'
 import BlogView from './components/views/BlogView'
-// import DebugView from './components/views/DebugView'
 import ContactsView from './components/views/ContactsView'
 import TeachersView from './components/views/TeachersView'
 import RecoverView from './components/views/RecoverView'
+import Profile from './components/views/Profile'
 import ScrollToTop from './components/common/ScrollToTop'
 
 import { setUserFromLocalStorage } from './reducers/loginReducer'
 import './css/index.css'
-import { Container } from 'react-bootstrap'
 
 const App = (props) => {
 	useEffect(() => {
@@ -44,53 +43,25 @@ const App = (props) => {
 	}, [])
 
 	return (
-		<ParallaxProvider>
-			<Router>
-				<NavigationBar />
-				<Container role="main" className="px-0 mx-0" fluid data-cy="mainContainer">
-					<Notification />
-					<Route exact path="/" render={() =>
-						<MainPage />
-					} />
-
-					<Route exact path="/about" render={() =>
-						<AboutView />
-					} />
-
-					<Route exact path="/teachers" render={() =>
-						<TeachersView />
-					} />
-
-					<Route exact path="/login" render={() =>
-						<LoginView />
-					} />
-
-					<Route exact path="/recover" render={() =>
-						<RecoverView />
-					} />
-
-					<Route exact path="/register" render={() =>
-						<RegisterView />
-					} />
-
-					<Route exact path="/blog" render={() =>
-						<BlogView />
-					} />
-
-					<Route exact path="/contacts" render={() =>
-						<ContactsView />
-					} />
-
-					{/*
-					<Route exact path="/debug" render={() =>
-						<DebugView />
-					} />*/}
-
-				</Container>
-				<Footer />
-				<ScrollToTop />
-			</Router>
-		</ParallaxProvider>
+		<Router>
+			<NavigationBar />
+			<Notification />
+			<Switch>
+				<ParallaxProvider>
+					<Route path="/" exact component={MainPage} />
+					<Route path="/about" component={AboutView} />
+					<Route path="/teachers" component={TeachersView} />
+					<Route path="/login" component={LoginView} />
+					<Route path="/recover" component={RecoverView} />
+					<Route path="/register" component={RegisterView} />
+					<Route path="/blog" component={BlogView} />
+					<Route path="/contacts" component={ContactsView} />
+					<Route path="/profile" compoent={Profile} />
+				</ParallaxProvider>
+			</Switch>
+			<Footer />
+			<ScrollToTop />
+		</Router>
 	)
 }
 
