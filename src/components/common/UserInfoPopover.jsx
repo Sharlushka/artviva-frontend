@@ -15,8 +15,13 @@ const UserInfoPopover = ({ user }) => {
 				<ListGroup variant="flush">
 					{user ?
 						<>
-							<ListGroup.Item className="p-1">{user.email}</ListGroup.Item>
-							<ListGroup.Item className="p-1">{user.id}</ListGroup.Item>
+							<ListGroup.Item className="p-2">{user.email}</ListGroup.Item>
+							<ListGroup.Item className="p-2">
+								<Link to={'/profile'}>Профіль</Link>
+							</ListGroup.Item>
+							<ListGroup.Item className="p-2">
+								{user.id}
+							</ListGroup.Item>
 						</>
 						: null
 					}
@@ -34,7 +39,7 @@ const UserInfoPopover = ({ user }) => {
 	)
 
 	return (
-		<div className="d-flex justify-content-end align-items-center p-2">
+		<div className="d-flex justify-content-end align-items-center px-2 py-2 py-sm-0">
 			<OverlayTrigger
 				trigger="click"
 				placement="left"

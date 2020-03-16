@@ -71,7 +71,7 @@ html
 	path
 		fill: $lightGrey
 	&:hover path
-		fill: $facebookColor
+		fill: $primary-color
 
 .spec-title
 	color: $primary-color-muted
@@ -79,25 +79,20 @@ html
 .more-info
 	padding-top: .5rem
 
-.nav-link
-	transition: color ease-in 250ms, border-bottom ease-in 250ms
-	line-height: .4
-	border-bottom: .1rem solid rgba(0,0,0,0)
-	padding: .7rem 0
-
+// navigation bar links
 .navbar-nav
 	a
 		text-decoration: none
-
-.nav-link
-	&:hover
-		color: $facebookColor !important
-		border-bottom: .1rem solid $facebookColor
-
-span.active
-	font-weight: 500
-	color: $facebookColor !important
-	border-bottom: .1rem solid $facebookColor
+		color: $grayish
+		border-bottom: .1rem solid transparent
+		transition: color ease-in 250ms, border-bottom ease-in 250ms
+		align-self: flex-start
+		&:hover
+			color: $primary-color
+			border-bottom: .1rem solid $primary-color
+	a.active
+		color: $primary-color
+		border-bottom: .1rem solid $primary-color
 
 .carousel-container
 	img
@@ -161,8 +156,13 @@ nav
 	cursor: pointer
 	color: $lightGrey
 	&:hover
-		color: $facebookColor
+		color: $primary-color
 
 .grecaptcha-badge
 	z-index: 4
 	margin-bottom: 3.5rem
+
+.profile-tab
+	a
+		color: red
+		padding: 2rem
