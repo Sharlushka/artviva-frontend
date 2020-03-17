@@ -56,7 +56,7 @@ const App = (props) => {
 					<Route path="/register" component={RegisterView} />
 					<Route path="/blog" component={BlogView} />
 					<Route path="/contacts" component={ContactsView} />
-					<Route path="/profile" compoent={ProfileView} />
+					<Route path="/profile" component={ProfileView} />
 				</ParallaxProvider>
 			</Switch>
 			<Footer />

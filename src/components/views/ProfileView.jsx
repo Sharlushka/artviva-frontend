@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { Container, Row, Col, Tabs, Tab, ListGroup } from 'react-bootstrap'
 
 const ProfileView = ({ user }) => {
-	console.log('Profile')
 	return (
 		<>
 			<h1 className="pt-5">Profile</h1>
