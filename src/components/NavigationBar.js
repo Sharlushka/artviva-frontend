@@ -84,7 +84,7 @@ const NavigationBar = () => {
 				<Navbar.Brand href="/" className="d-flex align-items-center py-0">
 					<Image
 						alt="Лого"
-						src="img/schoolLogo-transparent.png"
+						src="/img/schoolLogo-transparent.png"
 						width="30"
 						height="30"
 					/>{' '}

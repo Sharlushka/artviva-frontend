@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { setNotification } from '../../reducers/notificationReducer'
-import { signUpUser } from '../../reducers/usersReducer'
+import { signUpUser } from '../../reducers/accountReducer'
+import emailService from '../../services/email'
 import { Container, Col, Form, InputGroup, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import ButtonComponent from '../common/Button'
@@ -10,7 +11,7 @@ import * as Yup from 'yup'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 
-const RegisterForm = ({ setNotification, ...props }) => {
+const RegisterForm = ({ setNotification, account, ...props }) => {
 	// Minimum eight characters, at least one uppercase letter, one lowercase letter and one number
 	const mediumStrPass = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/
 
@@ -66,6 +67,7 @@ const RegisterForm = ({ setNotification, ...props }) => {
 					message: 'Ви отримаєте електронний лист із посиланням для активації свого акаунта.',
 					variant: 'success'
 				}, 5)
+				// redirect to success page
 				// document.location.href='/'
 			})
 			.catch(error => {
@@ -76,6 +78,29 @@ const RegisterForm = ({ setNotification, ...props }) => {
 				}, 5)
 			})
 	}
+
+	useEffect(() => {
+		console.log('Account changed', account)
+		// send activation email
+		async function sendActivation() {
+			await emailService.sendAccountActivationEmail(account)
+				.then(() => {
+					setNotification({
+						message: 'Ваше повідомлення надіслано, дякуємо вам.',
+						variant: 'success'
+					}, 5)
+				})
+				.catch(error => {
+					setNotification({
+						message: `На жаль, нам не вдалося надіслати ваше повідомлення, ось помилка: ${error.message}`,
+						variant: 'danger'
+					}, 5)
+				})
+		}
+		if (account) {
+			sendActivation()
+		}
+	}, [account, setNotification])
 
 	const checkboxLabel = () => <>Я погоджуюся з <Link to="#">умовами</Link> використання сайту</>
 
@@ -414,7 +439,8 @@ const RegisterForm = ({ setNotification, ...props }) => {
 
 const mapStateToProps = (state) => {
 	return {
-		user: state.user
+		user: state.user,
+		account: state.account
 	}
 }
 

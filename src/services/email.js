@@ -11,4 +11,14 @@ const sendContactEmail = async payload => {
 	return response.data
 }
 
-export default { sendContactEmail }
+/**
+* Send email with account activation link
+* @param {Object} payload User name, email address and UUID
+*/
+
+const sendAccountActivationEmail = async payload => {
+	const response = await axios.post(`${baseUrl}/activation`, payload)
+	return response.data
+}
+
+export default { sendContactEmail, sendAccountActivationEmail }

@@ -1,4 +1,4 @@
-import userService from '../services/usersList'
+import userService from '../services/users'
 
 const usersReducer = (state = null, action) => {
 	switch (action.type) {
@@ -7,6 +7,8 @@ const usersReducer = (state = null, action) => {
 	case 'GET_USER_BY_ID':
 		return action.data
 	case 'SIGN_UP_USER':
+		return action.data
+	case 'ACTIVATE_ACCOUNT':
 		return action.data
 	default:
 		return state
@@ -34,6 +36,18 @@ export const signUpUser = ({ email, name, middlename, lastname, password }) => {
 		})
 		dispatch ({
 			type: 'SIGN_UP_USER',
+			data: user
+		})
+	}
+}
+
+export const activateAccount = ({ uuid }) => {
+	return async dispatch => {
+		const user = await userService.activate({
+			uuid
+		})
+		dispatch ({
+			type: 'ACTIVATE_ACCOUNT',
 			data: user
 		})
 	}

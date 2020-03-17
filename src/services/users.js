@@ -26,4 +26,10 @@ const signUp = async (credentials) => {
 	return response.data
 }
 
-export default { getUsersList, signUp, setToken }
+// activate by UUID
+const activate = async (uuid) => {
+	const response = await axios.post(`${baseUrl}/activate`, uuid)
+	return response.data
+}
+
+export default { getUsersList, signUp, setToken, activate }

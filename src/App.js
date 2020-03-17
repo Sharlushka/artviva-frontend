@@ -16,6 +16,7 @@ import ContactsView from './components/views/ContactsView'
 import TeachersView from './components/views/TeachersView'
 import RecoverView from './components/views/RecoverView'
 import ProfileView from './components/views/ProfileView'
+import ActivateAccountView from './components/views/ActivateAccountView'
 import ScrollToTop from './components/common/ScrollToTop'
 
 import { setUserFromLocalStorage } from './reducers/loginReducer'
@@ -57,6 +58,7 @@ const App = (props) => {
 					<Route path="/blog" component={BlogView} />
 					<Route path="/contacts" component={ContactsView} />
 					<Route path="/profile" component={ProfileView} />
+					<Route path="/activate/:uuid" exact component={ActivateAccountView} />
 				</ParallaxProvider>
 			</Switch>
 			<Footer />
