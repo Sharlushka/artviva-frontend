@@ -1,9 +1,9 @@
 ## Frontend for artviva.school
 [Шпитьківська дитяча школа мистецтв](https://artviva.school)
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/87644f91-b3d0-4a87-ac7a-eaecb6e39c5f/deploy-status)](https://app.netlify.com/sites/artviva/deploys)
+[![Heroku](https://heroku-badge.herokuapp.com/?app=artviva)]
 
-Work in progress. Preview deployed on netlify: [artviva.netlify.com](https://artviva.netlify.com)
+Work in progress. Current progress deployed on heroku: [artviva.herokuapp.com](https://artviva.herokuapp.com)
 ### React, Redux, Redux Thunk, React router, Axios, Cypress, ESLint
 
 ### Build Setup
