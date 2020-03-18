@@ -15,3 +15,11 @@ const render = () => {
 
 render()
 store.subscribe(render)
+
+const debugInfo = {
+	currentMode: process.env.NODE_ENV,
+	apiPath: process.env.REACT_APP_API_URL
+}
+
+console.log('Some debug info:')
+console.table(debugInfo)

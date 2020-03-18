@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { setNotification } from '../reducers/notificationReducer'
+import { setNotification } from '../../reducers/notificationReducer'
 import { Button } from 'react-bootstrap'
 
 const Logout = ({ setNotification }) => {
@@ -11,7 +11,7 @@ const Logout = ({ setNotification }) => {
 			window.localStorage.removeItem('loggedUserJSON')
 			document.location.href='/'
 			setNotification({
-				message: 'Successfully logged out.',
+				message: 'Ви успішно вийшли з системи.',
 				variant: 'info'
 			}, 3)
 		} catch (error) {
@@ -29,10 +29,9 @@ const Logout = ({ setNotification }) => {
 				onClick={handleLogout}
 				type="button"
 				data-cy="logoutBtn"
-				variant="outline-secondary"
-				className="mx-3"
+				variant="outline-primary"
 			>
-				Logout
+				Вийти
 			</Button>
 		</>
 	)

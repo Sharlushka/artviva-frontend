@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useCallback } from 'react'
-import { Link } from 'react-router-dom'
-import { connect } from 'react-redux'
-// import Logout from './Logout'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { Navbar, Nav, Image } from 'react-bootstrap'
+import UserInfoPopover from '../components/common/UserInfoPopover'
+import NavBarLink from '../components/common/NavBarLink'
+import NavTogglerIcon from '../components/common/NavTogglerIcon'
 
-// eslint-disable-next-line
-const NavigationBar = ({ user }) => {
+const NavigationBar = () => {
 
+	// navbar visibility and hiding on scroll
 	const [visibility, setVisibility] = useState(true)
 	const [prevScrollpos, setScrollPosition] = useState(window.pageYOffset)
 
@@ -19,76 +19,96 @@ const NavigationBar = ({ user }) => {
 	}, [prevScrollpos])
 
 	useEffect(() => {
-		window.addEventListener('scroll', handleScroll)
-		return () => window.removeEventListener('scroll', handleScroll)
+		document.addEventListener('scroll', handleScroll)
+		return () => document.removeEventListener('scroll', handleScroll)
 	}, [handleScroll])
+
+	// closing on click outside
+	const navBarRef = useRef(null)
+	const [isExpanded, setExpanded] = useState(false)
+
+	useEffect(() => {
+		document.addEventListener('mousedown', handleClickOutside, false)
+		return () => document.removeEventListener('mousedown', handleClickOutside, false)
+	},[])
+
+	const toggleExpanded = () => {
+		setExpanded(!isExpanded)
+	}
+
+	const handleClickOutside = event => {
+		if (navBarRef.current.contains(event.target)) {
+			return
+		}
+		setExpanded(false)
+	}
+
+	// list of links
+	const linkClassList = 'pt-2 px-2 py-sm-0'
+	const navLinks = [
+		{
+			to: '/about',
+			label: 'Історія',
+			className: linkClassList
+		},
+		{
+			to: '/teachers',
+			label: 'Наші вчителі',
+			className: linkClassList
+		},
+		{
+			to: '/blog',
+			label: 'Блог',
+			className: linkClassList
+		},
+		{
+			to: '/contacts',
+			label: 'Контакти',
+			className: linkClassList
+		}
+	]
 
 	return (
 		<header>
-			<Navbar fixed="top" collapseOnSelect expand="sm" bg="light" variant="light"
+			<Navbar
+				ref={navBarRef}
+				fixed="top"
+				collapseOnSelect
+				onToggle={toggleExpanded}
+				expanded={isExpanded}
+				expand="sm"
+				bg="light"
+				variant="light"
 				className={visibility ? 'navbar-visible' : 'navbar-hidden' }
 			>
-				<Navbar.Brand href="/" className="d-flex align-items-center">
+				<Navbar.Brand href="/" className="d-flex align-items-center py-0">
 					<Image
 						alt="Лого"
-						src="img/schoolLogo-transparent.png"
+						src="/img/schoolLogo-transparent.png"
 						width="30"
 						height="30"
 					/>{' '}
 					<span className="pl-2 nav-logo-font">ArtViva</span>
 				</Navbar.Brand>
-				<Navbar.Toggle aria-controls="responsive-navbar-nav" />
+				<Navbar.Toggle
+					// children={<NavTogglerIcon />}
+					aria-controls="responsive-navbar-nav"
+				>
+					<NavTogglerIcon type={isExpanded}/>
+				</Navbar.Toggle>
 				<Navbar.Collapse id="responsive-navbar-nav">
-					<Nav className="ml-auto pl-2 d-flex align-items-left">
-
-						<Link to="/about" className="d-flex align-items-center">
-							<Nav.Link as="span" href="/about" activeclassname="active">
-								Історія
-							</Nav.Link>
-						</Link>
-
-						{/*
-						<Link to="/debug" className="d-flex align-items-center">
-							<Nav.Link href="#" as="span">
-								Debug
-							</Nav.Link>
-						</Link>*/}
-
-						<Link to="/teachers" className="d-flex align-items-center">
-							<Nav.Link as="span" href="/teachers" activeclassname="active">
-								Наші вчителі
-							</Nav.Link>
-						</Link>
-
-						<Link to="/blog" className="d-flex align-items-center">
-							<Nav.Link as="span" href="/blog" activeclassname="active">
-								Блог
-							</Nav.Link>
-						</Link>
-
-						<Link to="/contacts" className="d-flex align-items-center">
-							<Nav.Link as="span" href="/contacts" activeclassname="active">
-								Контакти
-							</Nav.Link>
-						</Link>
-
-						{/*<Nav.Link
-							className="d-flex justify-content-end"
-							href="/login"
-							as="span"
-							activeclassname="active"
-						>
-							{user
-								? <>
-									<em className="d-flex align-items-center">
-										{user.username} logged in
-									</em>
-									<Logout />
-								</>
-								: <Link to="/login">Логін</Link>
-							}
-						</Nav.Link>*/}
-
+					<Nav className="ml-auto">
+						{navLinks.map(link =>
+							<NavBarLink
+								key={link.to}
+								to={link.to}
+								className={link.className}
+								href={link.to}
+								label={link.label}
+								onClick={toggleExpanded}
+							/>
+						)}
+						<UserInfoPopover />
 					</Nav>
 				</Navbar.Collapse>
 			</Navbar>
@@ -96,12 +116,4 @@ const NavigationBar = ({ user }) => {
 	)
 }
 
-const mapStateToProps = (state) => {
-	return {
-		user: state.user
-	}
-}
-
-export default connect(
-	mapStateToProps
-)(NavigationBar)
+export default NavigationBar

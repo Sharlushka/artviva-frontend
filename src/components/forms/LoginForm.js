@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
-import { login } from '../../reducers/userReducer'
+import { login } from '../../reducers/loginReducer'
 import { setNotification } from '../../reducers/notificationReducer'
 import { Container, Col, Form, InputGroup, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
+import ReCaptchaComp from '../common/ReCaptchaComp'
 
 import { Formik } from 'formik'
 import * as Yup from 'yup'
@@ -11,19 +12,17 @@ import * as Yup from 'yup'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 
-// eslint-disable-next-line
-const LoginForm = ({ setNotification }) => {
+const LoginForm = ({ setNotification, ...props }) => {
 
-	/*
-	const handleLogin = async event => {
-		event.preventDefault()
+	const handleLogin = async (values) => {
 		const userCreds = {
-			email: email.value,
-			password : password.value
+			email: values.email,
+			password : values.password
 		}
+
 		props.login(userCreds)
 			.then(() => {
-				props.setNotification({
+				setNotification({
 					message: 'Logged in successfully',
 					variant: 'info'
 				}, 5)
@@ -31,14 +30,12 @@ const LoginForm = ({ setNotification }) => {
 			})
 			.catch(error => {
 				const notification = JSON.parse(error.request.responseText)
-				props.setNotification({
+				setNotification({
 					message: notification.error,
 					variant: 'danger'
 				}, 5)
 			})
-		resetEmail('')
-		resetPass('')
-	}*/
+	}
 
 	// Minimum eight characters, at least one uppercase letter, one lowercase letter and one number
 	const mediumStrPass = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/
@@ -53,16 +50,6 @@ const LoginForm = ({ setNotification }) => {
 			.required('Будь ласка, введіть свій пароль.')
 	})
 
-	const handleLogin = values => {
-		console.log('Loggin user in', values)
-		setNotification({
-			message: `Сайт працює в тестовому режимі,
-				тому ви не можете зараз увійти в систему,
-				але дякуємо за участь у тестуванні сайту!`,
-			variant: 'success'
-		}, 5)
-	}
-
 	// password visibility
 	const [passHidden, setPassVis] = useState(false)
 
@@ -74,6 +61,20 @@ const LoginForm = ({ setNotification }) => {
 		} else {
 			passInput.type = 'text'
 		}
+	}
+
+	// recaptcha
+	const reCaptchaRef = React.createRef()
+	const [score, setScore] = useState(null)
+
+	const setRecaptchaScore = score => {
+		if (score <= .1) {
+			setNotification({
+				message: `Ваша оцінка recaptcha занизька: ${score}, спробуйте оновити сторінку.`,
+				variant: 'warning'
+			}, 5)
+		}
+		setScore(score)
 	}
 
 	return (
@@ -197,6 +198,7 @@ const LoginForm = ({ setNotification }) => {
 									variant="primary"
 									data-cy="contactMsgBtn"
 									className="primary-color-shadow px-5"
+									disabled={score <= .1 ? true : false }
 								>
 									Логін
 								</Button>
@@ -205,6 +207,14 @@ const LoginForm = ({ setNotification }) => {
 					</Form>
 				)}
 			</Formik>
+			<ReCaptchaComp
+				ref={reCaptchaRef}
+				size="invisible"
+				render="explicit"
+				badge="bottomleft"
+				hl="uk"
+				setScore={setRecaptchaScore}
+			/>
 		</Container>
 	)
 }

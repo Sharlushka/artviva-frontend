@@ -1,6 +1,6 @@
 import loginService from '../services/login'
 
-const userReducer = (state = null, action) => {
+const loginReducer = (state = null, action) => {
 	switch (action.type) {
 	case 'LOGIN':
 		return action.user
@@ -33,4 +33,4 @@ export const setUserFromLocalStorage = user => {
 	}
 }
 
-export default userReducer
+export default loginReducer
