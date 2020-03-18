@@ -1,7 +1,7 @@
 ## Frontend for artviva.school
 [Шпитьківська дитяча школа мистецтв](https://artviva.school)
 
-[![Heroku](https://heroku-badge.herokuapp.com/?app=artviva)]
+![Heroku](https://heroku-badge.herokuapp.com/?app=artviva)
 
 Work in progress. Current progress deployed on heroku: [artviva.herokuapp.com](https://artviva.herokuapp.com)
 ### React, Redux, Redux Thunk, React router, Axios, Cypress, ESLint
