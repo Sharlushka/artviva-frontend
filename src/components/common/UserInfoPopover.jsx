@@ -10,7 +10,7 @@ const UserInfoPopover = ({ user }) => {
 
 	const popover = (
 		<Popover id="popover-basic">
-			<Popover.Title as="h3">{user ? `Hi, ${user.name} ${user.middlename} ${user.lastname}` : 'Hi'}!</Popover.Title>
+			<Popover.Title as="h3">{user ? `Hello, ${user.name} ${user.middlename} ${user.lastname}` : 'Hello'}!</Popover.Title>
 			<Popover.Content>
 				<ListGroup variant="flush">
 					{user ?

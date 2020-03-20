@@ -2,21 +2,28 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Container, Row, Col } from 'react-bootstrap'
 import * as data from '../../data/teachers.json'
-import TeacherCard from '../common/TeacherCard.jsx'
+import TeacherCard from '../teachers/TeacherCard'
+import DepartmentsAccordion from '../teachers/DepartmentsAccordion'
 
 const TeachersView = () => {
-	const { teachers } = data
+	const { administration, departments } = data
 
 	return (
 		<Container className="pt-5">
-			<h1 className="text-center custom-font pt-4 pb-2">
-				Наші вчітели
-			</h1>
+			<h3 className="text-center custom-font pt-4 pb-2">
+				Адміністрація
+			</h3>
 			<Row className="p-2 d-flex justify-content-center">
 				<Col xs={12} className="p-0">
-					{teachers.map(teacher =>
-						<TeacherCard key={teacher.id} teacher={teacher} />
+					{administration.map(person =>
+						<TeacherCard key={person.id} person={person} />
 					)}
+				</Col>
+				<h3 className="text-center custom-font pt-4 pb-2">
+					Наші вчітели
+				</h3>
+				<Col xs={12} className="p-0">
+					<DepartmentsAccordion departments={departments}/>
 				</Col>
 			</Row>
 		</Container>
