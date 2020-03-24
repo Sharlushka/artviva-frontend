@@ -42,7 +42,7 @@ const UserInfoPopover = ({ user }) => {
 		<div className="d-flex justify-content-end align-items-center px-2 py-2 py-sm-0">
 			<OverlayTrigger
 				trigger="click"
-				placement="left"
+				placement="bottom"
 				overlay={popover}
 				rootClose
 			>

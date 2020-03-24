@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { setNotification } from '../../reducers/notificationReducer'
 import { signUpUser } from '../../reducers/accountReducer'
-import emailService from '../../services/email'
+import passwordService from '../../services/password'
 import { Container, Col, Form, InputGroup, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import ButtonComponent from '../common/Button'
@@ -83,7 +83,7 @@ const RegisterForm = ({ setNotification, account, ...props }) => {
 		console.log('Account changed', account)
 		// send activation email
 		async function sendActivation() {
-			await emailService.sendAccountActivationEmail(account)
+			await passwordService.sendAccountActivationEmail(account)
 				.then(() => {
 					setNotification({
 						message: 'Ваше повідомлення надіслано, дякуємо вам.',

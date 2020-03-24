@@ -28,8 +28,7 @@ const RecoverForm = ({ setNotification }) => {
 	return (
 		<Formik
 			initialValues={{
-				email: '',
-				password: ''
+				email: ''
 			}}
 			onSubmit={async (values, { resetForm }) => {
 				await handleRecover(values)
