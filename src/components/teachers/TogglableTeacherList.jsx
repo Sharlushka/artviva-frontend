@@ -1,6 +1,6 @@
 import React, { useState, useImperativeHandle } from 'react'
 import PropTypes from 'prop-types'
-import { Button } from 'react-bootstrap'
+import { Button, Row } from 'react-bootstrap'
 
 // eslint-disable-next-line
 const Togglable = React.forwardRef((props, ref) => {
@@ -20,7 +20,7 @@ const Togglable = React.forwardRef((props, ref) => {
 	})
 
 	return (
-		<div>
+		<Row className="border border-primary">
 			<div style={hideWhenVisible} className="text-center">
 				<Button
 					className="my-3"
@@ -44,7 +44,7 @@ const Togglable = React.forwardRef((props, ref) => {
 					</Button>
 				</div>
 			</div>
-		</div>
+		</Row>
 	)
 })
 

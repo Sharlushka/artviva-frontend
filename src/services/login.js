@@ -1,8 +1,17 @@
 import axios from 'axios'
 const baseUrl = `${process.env.REACT_APP_API_URL}/api/login`
 
-const login = async credentials => {
-	const response = await axios.post(baseUrl, credentials)
+/**
+* Login existing user
+* @param {Object} data - Data for the user login
+* @param {string} data.email - User email
+* @param {string} data.password - User password
+*
+* @returns {Object} - Response data
+*/
+
+const login = async data => {
+	const response = await axios.post(baseUrl, data)
 	return response.data
 }
 

@@ -5,10 +5,10 @@ import { faAngleUp } from '@fortawesome/free-solid-svg-icons'
 import { faFacebookF, faInstagram, faYoutube } from '@fortawesome/free-brands-svg-icons'
 import PropTypes from 'prop-types'
 
-const TeacherCard = ({ teacher }) => {
+const TeacherCard = ({ person }) => {
 	const [open, setOpen] = useState(false)
 
-	const openTeacherDescr = () => {
+	const openPersonDescr = () => {
 		setOpen(!open)
 	}
 
@@ -28,27 +28,27 @@ const TeacherCard = ({ teacher }) => {
 	}
 
 	return (
-		<Card key={teacher.id} className="mb-4">
+		<Card key={person.id} className="mb-4">
 			<Card.Body>
 				<Row className="d-flex justify-content-center">
 					<Col xs={8} sm={6} md={4} className="pb-3">
 						<Image
-							src={`img/teachers/${teacher.image}`}
+							src={`img/teachers/${person.image}`}
 							className="teacher-avatar"
 							rounded
-							alt={`Фото ${teacher.name}`}
+							alt={`Фото ${person.name}`}
 						/>
 					</Col>
 					<Col xs={12} md={8}>
 						<ul className="teacher-specs-list">
 							<li className="d-flex justify-content-between align-items-center">
 								<strong className="custom-font teacher-name text-left">
-									{teacher.name}
+									{person.name}
 								</strong>
 								<span className="d-flex justify-content-end">
-									{ teacher.social
+									{ person.social
 										?
-										teacher.social.map(social =>
+										person.social.map(social =>
 											<a key={social.link} href={social.link}
 												alt={`Посилання на профіль вчителя в соціальній мережі ${social.icon}`}
 												aria-label={social.icon} target="_blank" rel="noopener noreferrer"
@@ -60,23 +60,23 @@ const TeacherCard = ({ teacher }) => {
 									}
 								</span>
 							</li>
-							<li>
+							{/*<li>
 								<em className="spec-title">Освіта: </em>
-								<strong>{teacher.education}</strong>
-							</li>
+								<strong>{person.education}</strong>
+							</li>*/}
 							<li>
-								<em className="spec-title">Предмет: </em>
-								<strong>{teacher.speciality}</strong>
+								<em className="spec-title">Посада: </em>
+								<strong>{person.speciality}</strong>
 							</li>
 							<li>
 								<p>
-									{teacher.description.intro}
+									{person.description.intro}
 								</p>
-								{teacher.description.text ?
+								{person.description.text ?
 									<>
 										<Collapse in={open}>
 											<div id="more-info">
-												{teacher.description.text.map((paragraph, idx) =>
+												{person.description.text.map((paragraph, idx) =>
 													<p key={idx} className="text-left more-info">
 														{paragraph}
 													</p>
@@ -86,7 +86,7 @@ const TeacherCard = ({ teacher }) => {
 										<div className="text-right pt-3">
 											<button
 												className="more-teacher-info"
-												onClick={() => openTeacherDescr()}
+												onClick={() => openPersonDescr()}
 												aria-controls="more-info"
 												aria-expanded={open}
 											>
@@ -109,7 +109,7 @@ const TeacherCard = ({ teacher }) => {
 }
 
 TeacherCard.propTypes = {
-	teacher: PropTypes.object.isRequired
+	person: PropTypes.object.isRequired
 }
 
 export default TeacherCard
