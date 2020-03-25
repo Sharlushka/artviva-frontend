@@ -1,33 +1,39 @@
-import React, { useEffect, useCallback } from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { Container, Spinner } from 'react-bootstrap'
 import { setNotification } from '../../reducers/notificationReducer'
-import { activateAccount } from '../../reducers/accountReducer'
+import userService from '../../services/users'
 
-const ActivateAccountView = ({ account, match, activateAccount, setNotification }) => {
+const ActivateAccountView = ({ match, setNotification }) => {
 
-	const payload = {
-		uuid: match.params.uuid
+	const [activated, setActivated] = useState(false)
+	const [activationError, setActivationError] = useState(null)
+	const [processingActivation, setProcessingActivation] = useState(true)
+
+	// activation data to send
+	const data = {
+		email: match.params.email,
+		activationToken: match.params.uuid
 	}
 
-	const sendActivationData = useCallback(async payload => {
-		await activateAccount(payload)
+	useEffect(() => {
+		userService.activate(data)
 			.then(() => {
 				setNotification({
 					message: 'Ваш обліковий запис активовано, ви можете увійти.',
 					variant: 'success'
 				}, 5)
+				setActivated(true)
 			})
 			.catch(error => {
+				const { message } = { ...error.response.data }
+				setActivationError(message)
 				setNotification({
-					message: `Нам не вдалося активувати ваш рахунок: ${error.message}`,
+					message: `Нам не вдалося активувати ваш акаунт: ${message}`,
 					variant: 'danger'
 				}, 5)
 			})
-	}, [activateAccount, setNotification])
-
-	useEffect(() => {
-		sendActivationData(payload)
+			.finally(() => setProcessingActivation(false))
 	// eslint-disable-next-line
 	},[])
 
@@ -36,12 +42,9 @@ const ActivateAccountView = ({ account, match, activateAccount, setNotification 
 			<h1 className="custom-font py-4">
 				Активація облікового запису...
 			</h1>
-			{account
-				? <h5>
-						Ваш обліковий запис активовано, ви можете увійти.
-				</h5>
-				: <Spinner animation="border" variant="primary" />
-			}
+			{ processingActivation ? <Spinner animation="border" variant="primary" /> : null }
+			{ activated ? <h5>Ваш обліковий запис активовано, ви можете увійти.</h5> : null }
+			{ activationError ? <h5>{activationError}</h5> : null }
 		</Container>
 	)
 }
@@ -53,7 +56,6 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-	activateAccount,
 	setNotification
 }
 

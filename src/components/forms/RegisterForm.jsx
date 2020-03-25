@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { setNotification } from '../../reducers/notificationReducer'
-import { signUpUser } from '../../reducers/accountReducer'
-import passwordService from '../../services/password'
+import userService from '../../services/users'
 import { Container, Col, Form, InputGroup, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import ButtonComponent from '../common/Button'
@@ -11,15 +10,11 @@ import * as Yup from 'yup'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 
-const RegisterForm = ({ setNotification, account, ...props }) => {
+const RegisterForm = ({ setNotification }) => {
 	// Minimum eight characters, at least one uppercase letter, one lowercase letter and one number
 	const mediumStrPass = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/
 
 	const loginFormSchema = Yup.object().shape({
-		/*
-		userType: Yup.string()
-			.oneOf(['Вчитель', 'Батько'], 'Ви вчитель чи батько?')
-			.required('Будь ласка, виберіть, хто ви є.'),*/
 		email: Yup.string()
 			.email('Адреса електронної пошти недійсна.')
 			.required('Введіть свою електронну пошту.'),
@@ -52,55 +47,30 @@ const RegisterForm = ({ setNotification, account, ...props }) => {
 			.oneOf([true], 'Будь ласка, погодьтеся з умовами використання сайту.')
 	})
 
-	const handleRegister = values => {
-		console.log('Registering user', values)
+	const handleRegister = ({ email, name, middlename, lastname, password }) => {
+		console.log('Registering user', email)
 		const userCreds = {
-			email: values.email,
-			name: values.name,
-			middlename: values.middlename,
-			lastname: values.lastname,
-			password : values.password
+			email,
+			name,
+			middlename,
+			lastname: lastname,
+			password
 		}
-		props.signUpUser(userCreds)
+		userService.signUp(userCreds)
 			.then(() => {
 				setNotification({
 					message: 'Ви отримаєте електронний лист із посиланням для активації свого акаунта.',
 					variant: 'success'
 				}, 5)
-				// redirect to success page
-				// document.location.href='/'
 			})
 			.catch(error => {
-				const notification = JSON.parse(error.request.responseText)
+				const { message } = { ...error.response.data }
 				setNotification({
-					message: notification.error,
+					message,
 					variant: 'danger'
 				}, 5)
 			})
 	}
-
-	useEffect(() => {
-		console.log('Account changed', account)
-		// send activation email
-		async function sendActivation() {
-			await passwordService.sendAccountActivationEmail(account)
-				.then(() => {
-					setNotification({
-						message: 'Ваше повідомлення надіслано, дякуємо вам.',
-						variant: 'success'
-					}, 5)
-				})
-				.catch(error => {
-					setNotification({
-						message: `На жаль, нам не вдалося надіслати ваше повідомлення, ось помилка: ${error.message}`,
-						variant: 'danger'
-					}, 5)
-				})
-		}
-		if (account) {
-			sendActivation()
-		}
-	}, [account, setNotification])
 
 	const checkboxLabel = () => <>Я погоджуюся з <Link to="#">умовами</Link> використання сайту</>
 
@@ -128,7 +98,6 @@ const RegisterForm = ({ setNotification, account, ...props }) => {
 			</h1>
 			<Formik
 				initialValues={{
-					/*userType: '',*/
 					email: '',
 					name: '',
 					middlename: '',
@@ -155,36 +124,6 @@ const RegisterForm = ({ setNotification, account, ...props }) => {
 						onSubmit={handleSubmit}
 						className="text-left"
 					>
-						{/*<Form.Row className="d-flex justify-content-center">
-							<Form.Group
-								controlId="userTypeSelect"
-								as={Col}
-								className="col-md-10 col-lg-7"
-							>
-								<Form.Label>Ви вчитель чи батько?</Form.Label>
-								<Form.Control
-									as="select"
-									name="userType"
-									data-cy="userTypeSelect"
-									onChange={handleChange}
-									onBlur={handleBlur}
-									value={values.userType}
-									isValid={touched.userType && !errors.userType}
-									isInvalid={touched.userType && !!errors.userType}
-								>
-									<option>Виберіть...</option>
-									<option>Вчитель</option>
-									<option>Батько</option>
-								</Form.Control>
-								<Form.Control.Feedback>
-									Ok
-								</Form.Control.Feedback>
-								<Form.Control.Feedback type="invalid">
-									{errors.userType}
-								</Form.Control.Feedback>
-							</Form.Group>
-						</Form.Row>*/}
-
 						{/* User email input */}
 						<Form.Row className="d-flex justify-content-center">
 							<Form.Group
@@ -330,8 +269,8 @@ const RegisterForm = ({ setNotification, account, ...props }) => {
 											onClick={() => togglePassFieldType('pass')}
 										>
 											{passHidden
-												? <FontAwesomeIcon icon={faEyeSlash} />
-												: <FontAwesomeIcon icon={faEye} />
+												? <FontAwesomeIcon icon={faEye} />
+												: <FontAwesomeIcon icon={faEyeSlash} />
 											}
 										</Button>
 									</InputGroup.Append>
@@ -373,8 +312,8 @@ const RegisterForm = ({ setNotification, account, ...props }) => {
 											onClick={() => togglePassFieldType('passConfirm')}
 										>
 											{passConfirmHidden
-												? <FontAwesomeIcon icon={faEyeSlash} />
-												: <FontAwesomeIcon icon={faEye} />
+												? <FontAwesomeIcon icon={faEye} />
+												: <FontAwesomeIcon icon={faEyeSlash} />
 											}
 										</Button>
 									</InputGroup.Append>
@@ -445,7 +384,6 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-	signUpUser,
 	setNotification
 }
 

@@ -1,12 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { setNotification } from '../../reducers/notificationReducer'
+import passwordService from '../../services/password'
 import { Col, Form, Button } from 'react-bootstrap'
 
 import { Formik } from 'formik'
 import * as Yup from 'yup'
 
-// eslint-disable-next-line
+
 const RecoverForm = ({ setNotification }) => {
 
 	const recoverFormSchema = Yup.object().shape({
@@ -17,12 +18,20 @@ const RecoverForm = ({ setNotification }) => {
 
 	const handleRecover = values => {
 		console.log('Sending pass recovery email', values)
-		setNotification({
-			message: `Сайт працює в тестовому режимі,
-				тому ви не можете зараз відновити пароль,
-				але дякуємо за участь у тестуванні сайту!`,
-			variant: 'success'
-		}, 5)
+		passwordService.sendRecoveryEmail(values)
+			.then(() => {
+				setNotification({
+					message: 'Інструкції щодо відновлення пароля були надіслані на вашу електронну адресу.',
+					variant: 'success'
+				}, 5)
+			})
+			.catch(error => {
+				const { message } = { ...error.response.data }
+				setNotification({
+					message,
+					variant: 'danger'
+				}, 5)
+			})
 	}
 
 	return (

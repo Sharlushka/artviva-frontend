@@ -11,46 +11,31 @@ import * as Yup from 'yup'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 
-const PassResetForm = ({ setNotification, passResetToken, ...props }) => {
+const PassResetForm = ({ setNotification, passResetToken, email }) => {
 
-	// console.log(props)
-
-	const handlePassReset = async values => {
-		// console.log('Pass reset values are:', values)
+	const handlePassReset = values => {
+		console.log('Pass reset values are:', values)
 		const data = {
+			email,
 			passResetToken: passResetToken,
 			password: values.password
 		}
-		try {
-			const result = await passwordService.resetUserPassword(data)
-			console.log(result.message)
-		} catch (error) {
-			console.log(error.message)
-			console.log(error.response.data.message)
-		}
-		/*
-		const data = {
-			UUID
-		}*/
 
-		/*
-		props.login(userCreds)
+		passwordService.resetUserPassword(data)
 			.then(() => {
 				setNotification({
-					message: 'Logged in successfully',
-					variant: 'info'
+					message: 'Password was succesfully reset, you may login now.',
+					variant: 'success'
 				}, 5)
-				document.location.href='/'
 			})
 			.catch(error => {
-				const notification = JSON.parse(error.request.responseText)
+				const { message } = { ...error.response.data }
 				setNotification({
-					message: notification.error,
+					message,
 					variant: 'danger'
 				}, 5)
-			})*/
+			})
 	}
-
 	// Minimum eight characters, at least one uppercase letter, one lowercase letter and one number
 	const mediumStrPass = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/
 
@@ -66,7 +51,7 @@ const PassResetForm = ({ setNotification, passResetToken, ...props }) => {
 
 	const togglePassVis = () => {
 		setPassVis(!passHidden)
-		let passInput = document.getElementById('loginPass')
+		let passInput = document.getElementById('NewUserPass')
 		if (passHidden) {
 			passInput.type = 'password'
 		} else {
@@ -78,7 +63,7 @@ const PassResetForm = ({ setNotification, passResetToken, ...props }) => {
 		<Container className="pb-4">
 			<Formik
 				initialValues={{
-					password: 'Propane1'
+					password: ''
 				}}
 				onSubmit={async (values, { resetForm }) => {
 					await handlePassReset(values)

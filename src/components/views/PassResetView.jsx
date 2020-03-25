@@ -4,7 +4,6 @@ import PassResetForm from '../forms/PassResetForm'
 import { Container, Row, Col } from 'react-bootstrap'
 
 const PassResetView = ({ match }) => {
-	console.log(match.params)
 	return (
 		<Container className="pt-4">
 			<Row className="pt-4">
@@ -12,7 +11,10 @@ const PassResetView = ({ match }) => {
 					<h1 className="text-center custom-font py-4">
 						Введіть новий пароль
 					</h1>
-					<PassResetForm passResetToken={match.params.uuid} userEmail={match.params.email}/>
+					<PassResetForm
+						passResetToken={match.params.uuid}
+						email={match.params.email}
+					/>
 				</Col>
 			</Row>
 		</Container>

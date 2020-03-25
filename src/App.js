@@ -59,7 +59,7 @@ const App = (props) => {
 					<Route path="/blog" component={BlogView} />
 					<Route path="/contacts" component={ContactsView} />
 					<Route path="/profile" component={ProfileView} />
-					<Route path="/activate/:uuid" exact component={ActivateAccountView} />
+					<Route path="/activate/:email/:uuid" exact component={ActivateAccountView} />
 					<Route path="/reset/:email/:uuid" exact component={PassResetView} />
 				</ParallaxProvider>
 			</Switch>
