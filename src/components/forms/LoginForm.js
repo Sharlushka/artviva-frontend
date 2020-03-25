@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { login } from '../../reducers/loginReducer'
 import { setNotification } from '../../reducers/notificationReducer'
@@ -14,24 +15,26 @@ import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 
 const LoginForm = ({ setNotification, ...props }) => {
 
-	const handleLogin = async (values) => {
+	const [redirectAfterLogin, setRedirectAfterLogin] = useState(false)
+
+	const handleLogin = async ({ email, password }) => {
 		const userCreds = {
-			email: values.email,
-			password : values.password
+			email: email,
+			password : password
 		}
 
 		props.login(userCreds)
 			.then(() => {
 				setNotification({
-					message: 'Logged in successfully',
+					message: 'Ви успішно ввійшли в систему.',
 					variant: 'info'
 				}, 5)
-				document.location.href='/'
+				setRedirectAfterLogin(true)
 			})
 			.catch(error => {
-				const notification = JSON.parse(error.request.responseText)
+				const { message } = { ...error.response.data }
 				setNotification({
-					message: notification.error,
+					message,
 					variant: 'danger'
 				}, 5)
 			})
@@ -78,144 +81,147 @@ const LoginForm = ({ setNotification, ...props }) => {
 	}
 
 	return (
-		<Container className="pb-4">
-			<h1 className="text-center custom-font py-4">
-				Логін
-			</h1>
-			<Formik
-				initialValues={{
-					email: '',
-					password: ''
-				}}
-				onSubmit={async (values, { resetForm }) => {
-					await handleLogin(values)
-					resetForm()
-				}}
-				validationSchema={loginFormSchema}
-			>
-				{({ handleSubmit,
-					handleChange,
-					handleBlur,
-					values,
-					touched,
-					errors
-				}) => (
-					<Form data-cy="loginForm"
-						noValidate
-						onSubmit={handleSubmit}
-					>
+		<>
+			{ redirectAfterLogin ? <Redirect to="/" /> : null }
+			<Container className="pb-4">
+				<h1 className="text-center custom-font py-4">
+					Логін
+				</h1>
+				<Formik
+					initialValues={{
+						email: '',
+						password: ''
+					}}
+					onSubmit={async (values, { resetForm }) => {
+						await handleLogin(values)
+						resetForm()
+					}}
+					validationSchema={loginFormSchema}
+				>
+					{({ handleSubmit,
+						handleChange,
+						handleBlur,
+						values,
+						touched,
+						errors
+					}) => (
+						<Form data-cy="loginForm"
+							noValidate
+							onSubmit={handleSubmit}
+						>
 
-						{/* Message sender email input */}
-						<Form.Row className="d-flex justify-content-center">
-							<Form.Group as={Col} sm="10">
-								<Form.Label>
-									Ваша електронна пошта
-								</Form.Label>
-								<Form.Control
-									type="email"
-									name="email"
-									data-cy="emailInput"
-									onChange={handleChange}
-									onBlur={handleBlur}
-									value={values.email}
-									isValid={touched.email && !errors.email}
-									isInvalid={touched.email && !!errors.email}
-								/>
-								<Form.Control.Feedback>
-									Ok
-								</Form.Control.Feedback>
-								<Form.Control.Feedback type="invalid">
-									{errors.email}
-								</Form.Control.Feedback>
-							</Form.Group>
-						</Form.Row>
-
-						{/* User password input */}
-						<Form.Row className="d-flex justify-content-center">
-							<Form.Group as={Col} sm="10" >
-								<Form.Label>
-									Ваш пароль
-								</Form.Label>
-								<InputGroup>
+							{/* Message sender email input */}
+							<Form.Row className="d-flex justify-content-center">
+								<Form.Group as={Col} sm="10">
+									<Form.Label>
+										Ваша електронна пошта
+									</Form.Label>
 									<Form.Control
-										id="loginPass"
-										className="elevated-z-index"
-										type="password"
-										name="password"
-										data-cy="passwordInput"
+										type="email"
+										name="email"
+										data-cy="emailInput"
 										onChange={handleChange}
 										onBlur={handleBlur}
-										value={values.password}
-										isValid={touched.password && !errors.password}
-										isInvalid={touched.password && !!errors.password}
+										value={values.email}
+										isValid={touched.email && !errors.email}
+										isInvalid={touched.email && !!errors.email}
 									/>
-									<InputGroup.Append>
-										<Button
-											variant="outline-secondary border rounded-right"
-											onClick={() => togglePassVis()}
-										>
-											{passHidden
-												? <FontAwesomeIcon icon={faEyeSlash} />
-												: <FontAwesomeIcon icon={faEye} />
-											}
-										</Button>
-									</InputGroup.Append>
 									<Form.Control.Feedback>
 										Ok
 									</Form.Control.Feedback>
 									<Form.Control.Feedback type="invalid">
-										{errors.password}
+										{errors.email}
 									</Form.Control.Feedback>
-								</InputGroup>
-							</Form.Group>
-						</Form.Row>
+								</Form.Group>
+							</Form.Row>
 
-						{/* Button */}
-						<Form.Row className="d-flex justify-content-center">
-							<Form.Group
-								as={Col}
-								sm="10"
-								className="d-flex
-								justify-content-between
-								align-items-center"
-							>
-								<Link to="/register">
-									Реєстрація
-								</Link>
-								<Link to="/recover">
-									Відновлення паролю
-								</Link>
-							</Form.Group>
-							<Form.Group
-								as={Col}
-								sm="10"
-								className="d-flex pt-3
-									justify-content-center
+							{/* User password input */}
+							<Form.Row className="d-flex justify-content-center">
+								<Form.Group as={Col} sm="10" >
+									<Form.Label>
+										Ваш пароль
+									</Form.Label>
+									<InputGroup>
+										<Form.Control
+											id="loginPass"
+											className="elevated-z-index"
+											type="password"
+											name="password"
+											data-cy="passwordInput"
+											onChange={handleChange}
+											onBlur={handleBlur}
+											value={values.password}
+											isValid={touched.password && !errors.password}
+											isInvalid={touched.password && !!errors.password}
+										/>
+										<InputGroup.Append>
+											<Button
+												variant="outline-secondary border rounded-right"
+												onClick={() => togglePassVis()}
+											>
+												{passHidden
+													? <FontAwesomeIcon icon={faEyeSlash} />
+													: <FontAwesomeIcon icon={faEye} />
+												}
+											</Button>
+										</InputGroup.Append>
+										<Form.Control.Feedback>
+											Ok
+										</Form.Control.Feedback>
+										<Form.Control.Feedback type="invalid">
+											{errors.password}
+										</Form.Control.Feedback>
+									</InputGroup>
+								</Form.Group>
+							</Form.Row>
+
+							{/* Button */}
+							<Form.Row className="d-flex justify-content-center">
+								<Form.Group
+									as={Col}
+									sm="10"
+									className="d-flex
+									justify-content-between
 									align-items-center"
-							>
-								<Button
-									type="submit"
-									variant="primary"
-									data-cy="contactMsgBtn"
-									className="primary-color-shadow px-5"
-									disabled={score <= .1 ? true : false }
 								>
-									Логін
-								</Button>
-							</Form.Group>
-						</Form.Row>
-					</Form>
-				)}
-			</Formik>
-			<ReCaptchaComp
-				ref={reCaptchaRef}
-				size="invisible"
-				render="explicit"
-				badge="bottomleft"
-				hl="uk"
-				setScore={setRecaptchaScore}
-			/>
-		</Container>
+									<Link to="/register">
+										Реєстрація
+									</Link>
+									<Link to="/recover">
+										Відновлення паролю
+									</Link>
+								</Form.Group>
+								<Form.Group
+									as={Col}
+									sm="10"
+									className="d-flex pt-3
+										justify-content-center
+										align-items-center"
+								>
+									<Button
+										type="submit"
+										variant="primary"
+										data-cy="contactMsgBtn"
+										className="primary-color-shadow px-5"
+										disabled={score <= .1 ? true : false }
+									>
+										Логін
+									</Button>
+								</Form.Group>
+							</Form.Row>
+						</Form>
+					)}
+				</Formik>
+				<ReCaptchaComp
+					ref={reCaptchaRef}
+					size="invisible"
+					render="explicit"
+					badge="bottomleft"
+					hl="uk"
+					setScore={setRecaptchaScore}
+				/>
+			</Container>
+		</>
 	)
 }
 
