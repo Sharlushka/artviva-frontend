@@ -10,7 +10,8 @@ import * as Yup from 'yup'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 
-const RegisterForm = ({ setNotification }) => {
+const RegisterForm = ({ setNotification, completeRegistration }) => {
+	console.log(completeRegistration)
 	// Minimum eight characters, at least one uppercase letter, one lowercase letter and one number
 	const mediumStrPass = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/
 
@@ -62,6 +63,7 @@ const RegisterForm = ({ setNotification }) => {
 					message: 'Ви отримаєте електронний лист із посиланням для активації свого акаунта.',
 					variant: 'success'
 				}, 5)
+				completeRegistration()
 			})
 			.catch(error => {
 				const { message } = { ...error.response.data }
