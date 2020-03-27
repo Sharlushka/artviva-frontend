@@ -1,0 +1,16 @@
+.lazy-loading-image
+	display: block
+	width: 100%
+
+	@keyframes loaded
+		0%
+			opacity: 0.1
+		100%
+			opacity: 1
+
+	&.loaded:not(.has-error)
+		animation: loaded 300ms ease-in-out
+
+	&.has-error
+		content: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mOcXQQAAa4BD0ZXfxUAAAAASUVORK5CYII=)
+

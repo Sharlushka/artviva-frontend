@@ -6,7 +6,6 @@ import TeacherCard from './TeacherCard'
 import PropTypes from 'prop-types'
 
 const DepartmentsAccordion = ({ departments }) => {
-	console.log('Props are', departments)
 	return (
 		<Accordion defaultActiveKey={departments[0].id}>
 			{departments.map(department =>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { Row, Col, Card, Image, Collapse } from 'react-bootstrap'
+import { Row, Col, Card, Collapse } from 'react-bootstrap'
+import LazyLoadedImage from '../common/LazyLoadedImage'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleUp } from '@fortawesome/free-solid-svg-icons'
 import { faFacebookF, faInstagram, faYoutube } from '@fortawesome/free-brands-svg-icons'
@@ -28,13 +29,13 @@ const TeacherCard = ({ person }) => {
 	}
 
 	return (
-		<Card key={person.id} className="mb-4">
+		<Card className="mb-4">
 			<Card.Body>
 				<Row className="d-flex justify-content-center">
 					<Col xs={8} sm={6} md={4} className="pb-3">
-						<Image
+						<LazyLoadedImage
 							src={`img/teachers/${person.image}`}
-							className="teacher-avatar"
+							classList="teacher-avatar"
 							rounded
 							alt={`Фото ${person.name}`}
 						/>
