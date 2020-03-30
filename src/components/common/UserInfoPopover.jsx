@@ -43,7 +43,12 @@ const UserInfoPopover = ({ user }) => {
 								<>
 									<ListGroup.Item className="p-2">{user.email}</ListGroup.Item>
 									<ListGroup.Item className="p-2">
-										<Link to={'/profile'}>Профіль</Link>
+										<Link
+											to={'/profile'}
+											onClick={closePopover}
+										>
+											Профіль
+										</Link>
 									</ListGroup.Item>
 									<ListGroup.Item className="p-2">
 										{user.id}

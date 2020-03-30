@@ -15,7 +15,7 @@ import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 
 const LoginForm = ({ setNotification, ...props }) => {
 
-	const [redirectAfterLogin, setRedirectAfterLogin] = useState(false)
+	const [loginSuccessful, setLoginSuccessful] = useState(false)
 
 	const handleLogin = async ({ email, password }) => {
 		const userCreds = {
@@ -29,7 +29,7 @@ const LoginForm = ({ setNotification, ...props }) => {
 					message: 'Ви успішно ввійшли в систему.',
 					variant: 'info'
 				}, 5)
-				setRedirectAfterLogin(true)
+				setLoginSuccessful(true)
 			})
 			.catch(error => {
 				const { message } = { ...error.response.data }
@@ -82,7 +82,7 @@ const LoginForm = ({ setNotification, ...props }) => {
 
 	return (
 		<>
-			{ redirectAfterLogin ? <Redirect to="/" /> : null }
+			{ loginSuccessful ? <Redirect to="/" /> : null }
 			<Container className="pb-4">
 				<h1 className="text-center custom-font py-4">
 					Логін
@@ -94,7 +94,7 @@ const LoginForm = ({ setNotification, ...props }) => {
 					}}
 					onSubmit={async (values, { resetForm }) => {
 						await handleLogin(values)
-						resetForm()
+						if (loginSuccessful) resetForm()
 					}}
 					validationSchema={loginFormSchema}
 				>

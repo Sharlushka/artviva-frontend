@@ -5,20 +5,23 @@ import RegisterForm from '../forms/RegisterForm'
 
 const RegisterView = () => {
 
-	const [regComplete, setRegComplete] = useState(false)
-	const completeRegistration = () => setRegComplete(true)
+	const [registrationSuccessful, setRegistrationSuccessful] = useState(false)
+	// const completeRegistration = () => setRegComplete(true)
 
 	return (
 		<Container className="pt-4">
 			<Row className="pt-4 d-flex justify-content-center align-items-center">
 				<Col xs={12} sm={10} md={8} className="text-center">
-					{ regComplete
+					{ registrationSuccessful
 						? <h5 className="pt-4">
 							Щоб активувати обліковий запис користувача,
 							дотримуйтесь інструкцій у електронному
 							повідомленні, надісланому на вашу електронну адресу.
 						</h5>
-						: <RegisterForm completeRegistration={completeRegistration} />
+						: <RegisterForm
+							setRegistrationSuccessful={setRegistrationSuccessful}
+							registrationSuccessful={registrationSuccessful}
+						/>
 					}
 				</Col>
 			</Row>
