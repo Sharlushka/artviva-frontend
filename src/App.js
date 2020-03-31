@@ -52,7 +52,7 @@ const App = (props) => {
 				<ParallaxProvider>
 					<Route path="/" exact component={MainPage} />
 					<Route path="/about" component={AboutView} />
-					<Route path="/teachers" component={TeachersView} />
+					<Route path="/teachers/:department?" component={TeachersView} />
 					<Route path="/login" component={LoginView} />
 					<Route path="/recover" component={RecoverView} />
 					<Route path="/register" component={RegisterView} />

@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { connect } from 'react-redux'
 import { Container, Row, Col } from 'react-bootstrap'
 import * as data from '../../data/teachers'
 import TeacherCard from '../teachers/TeacherCard'
 import Department from '../teachers/Department'
+import { shuffle } from '../../utils/shuffleArray'
 
-const TeachersView = () => {
+const TeachersView = ({ match }) => {
 	const [administration, setAdministration] = useState(null)
 	const [departments, setDepartments] = useState(null)
 
@@ -20,13 +20,13 @@ const TeachersView = () => {
 				Адміністрація
 			</h3>
 			<Row className="p-2 d-flex justify-content-center">
-				{<Col xs={12} className="p-0">
-					{ administration
+				<Col xs={12} className="p-0">
+					{administration
 						? administration.map(person =>
 							<TeacherCard key={person.id} person={person} />)
 						: null
 					}
-				</Col>}
+				</Col>
 				<h3 className="custom-font pt-4 pb-2">
 					Наші вчітели
 				</h3>
@@ -36,7 +36,8 @@ const TeachersView = () => {
 							<Department
 								key={department.id}
 								name={department.name}
-								teachers={department.teachers}
+								teachers={shuffle(department.teachers)}
+								scrollTo={match.params.department}
 							/>)
 						: null
 					}
@@ -46,12 +47,4 @@ const TeachersView = () => {
 	)
 }
 
-const mapStateToProps = (state) => {
-	return {
-		user: state.user
-	}
-}
-
-export default connect(
-	mapStateToProps
-)(TeachersView)
+export default TeachersView

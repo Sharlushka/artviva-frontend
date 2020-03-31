@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 
 export const useField = (type) => {
 	const [value, setValue] = useState('')
@@ -17,4 +17,11 @@ export const useField = (type) => {
 		onChange,
 		reset
 	}
+}
+
+export const useScroll = () => {
+	const htmlElRef = useRef(null)
+	const executeScroll = () => htmlElRef.current.scrollIntoView()
+
+	return [executeScroll, htmlElRef]
 }

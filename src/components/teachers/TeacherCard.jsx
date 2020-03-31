@@ -34,7 +34,7 @@ const TeacherCard = ({ person }) => {
 				<Row className="d-flex justify-content-center">
 					<Col xs={8} sm={6} md={4} className="pb-3">
 						<LazyLoadedImage
-							src={`img/teachers/${person.image}`}
+							src={`/img/teachers/${person.image}`}
 							classList="teacher-avatar"
 							rounded
 							alt={`Фото ${person.name}`}
