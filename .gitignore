@@ -8,8 +8,8 @@
 # testing
 /coverage
 /cypress/integration/sample_spec.js
-/src/components/__tests__/__snapshots__
-/src/components/views/DebugView.js
+src/__tests__/__snapshots__
+src/components/views/DebugView.js
 
 # production
 /build

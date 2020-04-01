@@ -1,25 +1,34 @@
 import React from 'react'
 import { Provider } from 'react-redux'
-import { render, waitForElement, fireEvent, cleanup } from '@testing-library/react'
+import { render, fireEvent, cleanup } from '@testing-library/react'
 import App from '../App'
 import store from '../store'
 import user from '../__mocks__/testUser'
+import { act } from 'react-dom/test-utils'
 
 afterEach(cleanup)
 
-describe('<App />', () => {
-	it('it renders home page correctly', async () => {
-		const { container, getByText } = render(
+describe('Artiva main page', () => {
+	it('renders main page correctly', () => {
+		const { getByText } = render(
 			<Provider store={store}>
 				<App />
 			</Provider>
 		)
-		// login link is present
-		expect(container).toHaveTextContent('login')
-		// default intro
-		expect(getByText(/Login or/i).textContent).toBe('Login or sign up to add something')
-		// footer
-		expect(getByText(/React/i).textContent).toBe('React Redux blog app.')
+		expect(getByText(/artViva — дитяча школа мистецтв./i)).toBeInTheDocument()
+	})
+
+	it('when no user is logged in, login button is present', async () => {
+		const { container, getByTestId } = render(
+			<Provider store={store}>
+				<App />
+			</Provider>
+		)
+		await act(async () => {
+			fireEvent.click(getByTestId('navbarUserIcon'))
+		})
+
+		expect(container).toHaveTextContent('Логін')
 	})
 
 	describe('when user is logged in', () => {
@@ -37,24 +46,24 @@ describe('<App />', () => {
 			)
 		})
 
-		it('\'new blog\' button is visible and is clickable', () => {
-			expect(app.getByText(/new/i).textContent).toBe('new blog')
-			fireEvent.click(app.getByText('new blog'))
-			expect(app.container).toHaveTextContent(
-				'Blog add form'
-			)
+		it('logout button is present', async () => {
+			await act(async () => {
+				fireEvent.click(app.getByTestId('navbarUserIcon'))
+			})
+
+			expect(app.container).toHaveTextContent('Профіль')
+			expect(app.container).toHaveTextContent('Вийти')
 		})
 
-		it('logout button is visible', () => {
-			expect(app.container).toHaveTextContent(
-				'Logout'
-			)
-		})
+		it('user can logout', async () => {
+			await act(async () => {
+				fireEvent.click(app.getByTestId('navbarUserIcon'))
+			})
 
-		it('user can logout', () => {
-			fireEvent.click(app.getByText('Logout'))
+			fireEvent.click(app.getByText('Вийти'))
+
 			expect(window.localStorage.getItem('loggedUserJSON')).toBe(undefined)
-			expect(app.container).toHaveTextContent('Successfully logged out')
+			expect(app.container).toHaveTextContent('Ви успішно вийшли з системи.')
 		})
 	})
 })

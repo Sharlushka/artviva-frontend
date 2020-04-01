@@ -26,6 +26,7 @@ const UserInfoPopover = ({ user }) => {
 				icon={faUser}
 				onClick={handleClick}
 				className="user-status-icon"
+				data-cy="navbarUserIcon"
 			/>
 			<Overlay
 				show={show}
