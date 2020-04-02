@@ -1,10 +1,10 @@
 import React from 'react'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router'
-import { render, waitForElement, cleanup } from '@testing-library/react'
+import { render, waitFor, cleanup } from '@testing-library/react'
 import Users from '../components/UsersList'
 import store from '../store'
-jest.mock('../services/usersList')
+jest.mock('../services/users')
 
 afterEach(cleanup)
 
@@ -17,7 +17,7 @@ describe('Users list', () => {
 				</MemoryRouter>
 			</Provider>
 		)
-		await waitForElement(() => container)
+		await waitFor(() => container)
 
 		expect(container).toHaveTextContent('Dale \'tester\' Gribble')
 		expect(container.querySelectorAll('.list-group-item')).toHaveLength(4)

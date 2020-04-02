@@ -4,8 +4,10 @@ import * as data from '../../data/teachers'
 import TeacherCard from '../teachers/TeacherCard'
 import Department from '../teachers/Department'
 import { shuffle } from '../../utils/shuffleArray'
+import PropTypes from 'prop-types'
 
 const TeachersView = ({ match }) => {
+	// console.log('Match is ', match.params)
 	const [administration, setAdministration] = useState(null)
 	const [departments, setDepartments] = useState(null)
 
@@ -37,7 +39,7 @@ const TeachersView = ({ match }) => {
 								key={department.id}
 								name={department.name}
 								teachers={shuffle(department.teachers)}
-								scrollTo={match.params.department}
+								scrollTo={match ? match.params.department : 'default'}
 							/>)
 						: null
 					}
@@ -45,6 +47,10 @@ const TeachersView = ({ match }) => {
 			</Row>
 		</Container>
 	)
+}
+
+TeachersView.propTypes = {
+	match: PropTypes.object
 }
 
 export default TeachersView

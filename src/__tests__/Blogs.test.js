@@ -1,9 +1,11 @@
 import React from 'react'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router'
-import { render, waitForElement, cleanup } from '@testing-library/react'
+import { render, waitFor, cleanup } from '@testing-library/react'
 import Blogs from '../components/Blogs'
 import store from '../store'
+import '@testing-library/jest-dom/extend-expect'
+
 jest.mock('../services/blogs')
 
 afterEach(cleanup)
@@ -17,7 +19,7 @@ describe('Blogs list', () => {
 				</MemoryRouter>
 			</Provider>
 		)
-		await waitForElement(() => component.container)
+		await waitFor(() => component.container)
 		expect(component.container).toHaveTextContent('Test title one')
 		const blogsList = component.container.querySelectorAll('.card-body')
 		expect(blogsList.length).toBe(2)

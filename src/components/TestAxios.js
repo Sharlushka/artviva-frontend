@@ -16,7 +16,7 @@ const TestAxios = (props) => {
 		<div>
 			<h1>Axios Test</h1>
 			{state
-				? <p data-testid="title">{state.title}</p>
+				? <p data-cy="title">{state.title}</p>
 				: <p>...Loading</p>
 			}
 		</div>

@@ -90,6 +90,7 @@ const TeacherCard = ({ person }) => {
 												onClick={() => openPersonDescr()}
 												aria-controls="more-info"
 												aria-expanded={open}
+												data-cy="moreInfoBtn"
 											>
 												{ open
 													? <em><FontAwesomeIcon icon={faAngleUp} /></em>
