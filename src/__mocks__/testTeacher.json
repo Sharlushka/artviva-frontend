@@ -1,0 +1,15 @@
+{
+	"id": "500",
+	"name": "Єсіненко Дан Миколайович",
+	"image": "esinenko.jpg",
+	"education": "",
+	"speciality": "Викладач фортепіано, музично-теоретичних дисциплін, концертмейстер.",
+	"description": {
+		"intro": "Some test intro",
+		"text": [
+			"Some additional test text",
+			"Yet some more text for the second paragraph"
+		]
+	},
+	"social": []
+}

@@ -10,7 +10,7 @@ import * as Yup from 'yup'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 
-const RegisterForm = ({ setNotification }) => {
+const RegisterForm = ({ setNotification, setRegistrationSuccessful, registrationSuccessful }) => {
 	// Minimum eight characters, at least one uppercase letter, one lowercase letter and one number
 	const mediumStrPass = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/
 
@@ -47,8 +47,7 @@ const RegisterForm = ({ setNotification }) => {
 			.oneOf([true], 'Будь ласка, погодьтеся з умовами використання сайту.')
 	})
 
-	const handleRegister = ({ email, name, middlename, lastname, password }) => {
-		console.log('Registering user', email)
+	const handleRegister = ({ email, name, middlename, lastname, password }, setErrors ) => {
 		const userCreds = {
 			email,
 			name,
@@ -62,9 +61,13 @@ const RegisterForm = ({ setNotification }) => {
 					message: 'Ви отримаєте електронний лист із посиланням для активації свого акаунта.',
 					variant: 'success'
 				}, 5)
+				setRegistrationSuccessful(true)
 			})
 			.catch(error => {
-				const { message } = { ...error.response.data }
+				const { message, cause } = { ...error.response.data }
+				if (cause === 'email') {
+					setErrors({ email: message })
+				}
 				setNotification({
 					message,
 					variant: 'danger'
@@ -106,9 +109,9 @@ const RegisterForm = ({ setNotification }) => {
 					passwordConfirm: '',
 					termsCheckbox: false
 				}}
-				onSubmit={async (values, { resetForm }) => {
-					await handleRegister(values)
-					resetForm()
+				onSubmit={async (values, { resetForm, setErrors }) => {
+					await handleRegister(values, setErrors)
+					if (registrationSuccessful) resetForm()
 				}}
 				validationSchema={loginFormSchema}
 			>

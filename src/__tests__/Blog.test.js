@@ -6,6 +6,7 @@ import Blog from '../components/Blog'
 import store from '../store'
 import blog from '../__mocks__/singleTestBlog'
 import user from '../__mocks__/testUser'
+import '@testing-library/jest-dom/extend-expect'
 
 afterEach(cleanup)
 

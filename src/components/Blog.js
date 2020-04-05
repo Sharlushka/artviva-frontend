@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { addLike, deleteBlog } from '../reducers/blogsReducer'
-import { setUserFromLocalStorage } from '../reducers/userReducer'
+import { setUserFromLocalStorage } from '../reducers/loginReducer'
 import { setNotification } from '../reducers/notificationReducer'
 import { Card, Button } from 'react-bootstrap'
 

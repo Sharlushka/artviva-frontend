@@ -33,7 +33,7 @@ describe('Blog add form', () => {
 		urlInput = wrapper.getByLabelText('Url')
 	})
 
-	it('submits form data correctly', async () => {
+	it.only('submits form data correctly', async () => {
 
 		fireEvent.change(titleInput, { target: { value: 'Test title' } })
 		expect(titleInput.value).toBe('Test title')
@@ -51,10 +51,10 @@ describe('Blog add form', () => {
 		// maybe use a button that is visible to the user?
 		fireEvent.submit(wrapper.getByTestId('addBlogForm'), {
 			target:	{
-					title: { value: 'Test title' },
-					author: { value: 'Test author' },
-					url: { value: 'Test url' }
-				}
+				title: { value: 'Test title' },
+				author: { value: 'Test author' },
+				url: { value: 'Test url' }
+			}
 		})
 
 		// visible only after submmiting the form
@@ -66,10 +66,10 @@ describe('Blog add form', () => {
 	it('displays error if input data is missing', async () => {
 		fireEvent.submit(wrapper.getByTestId('addBlogForm'), {
 			target:	{
-					title: { value: '' },
-					author: { value: 'Test author' },
-					url: { value: 'Test url' }
-				}
+				title: { value: '' },
+				author: { value: 'Test author' },
+				url: { value: 'Test url' }
+			}
 		})
 
 		const alert = await wrapper.findByRole('alert')

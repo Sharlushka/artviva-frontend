@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import User from './User'
-import { getUsersList } from '../reducers/usersReducer'
+import { getUsersList } from '../reducers/accountReducer'
 import { ListGroup } from 'react-bootstrap'
-import userService from '../services/usersList' // user??
+import userService from '../services/users'
 import { setNotification } from '../reducers/notificationReducer'
 
 const UsersList = (props) => {
@@ -17,7 +17,7 @@ const UsersList = (props) => {
 				props.setNotification({
 					message: notification.error,
 					variant: 'danger'
-				 }, 5)
+				}, 5)
 			})
 		// eslint-disable-next-line
 	}, [])
@@ -27,16 +27,16 @@ const UsersList = (props) => {
 			<>
 				<h3>Users</h3>
 				<ListGroup variant="flush">
-						{props.users.map(user =>
-							<ListGroup.Item
-								key={user.id}
-							>
+					{props.users.map(user =>
+						<ListGroup.Item
+							key={user.id}
+						>
 							<User
 								key={user.id}
 								userData={user}
 							/>
-							</ListGroup.Item>
-						)}
+						</ListGroup.Item>
+					)}
 				</ListGroup>
 			</>
 		)
