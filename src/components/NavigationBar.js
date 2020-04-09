@@ -47,18 +47,23 @@ const NavigationBar = () => {
 	const linkClassList = 'pt-2 px-2 py-sm-0'
 	const navLinks = [
 		{
+			to: '/teachers',
+			label: 'Вчителі',
+			className: linkClassList
+		},
+		{
 			to: '/about',
 			label: 'Історія',
 			className: linkClassList
 		},
 		{
-			to: '/teachers',
-			label: 'Наші вчителі',
+			to: '/blog',
+			label: 'Блог',
 			className: linkClassList
 		},
 		{
-			to: '/blog',
-			label: 'Блог',
+			to: '/pay',
+			label: 'Оплата',
 			className: linkClassList
 		},
 		{

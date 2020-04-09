@@ -16,6 +16,7 @@ import ContactsView from './components/views/ContactsView'
 import TeachersView from './components/views/TeachersView'
 import RecoverView from './components/views/RecoverView'
 import ProfileView from './components/views/ProfileView'
+import PaymentView from './components/views/PaymentView'
 import ActivateAccountView from './components/views/ActivateAccountView'
 import PassResetView from './components/views/PassResetView'
 import ScrollToTop from './components/common/ScrollToTop'
@@ -59,6 +60,7 @@ const App = (props) => {
 					<Route path="/blog" component={BlogView} />
 					<Route path="/contacts" component={ContactsView} />
 					<Route path="/profile" component={ProfileView} />
+					<Route path="/pay" component={PaymentView} />
 					<Route path="/activate/:email/:uuid" exact component={ActivateAccountView} />
 					<Route path="/reset/:email/:uuid" exact component={PassResetView} />
 				</ParallaxProvider>
