@@ -62,7 +62,7 @@ const NavigationBar = () => {
 			className: linkClassList
 		},
 		{
-			to: '/pay',
+			to: '/pay/form',
 			label: 'Оплата',
 			className: linkClassList
 		},

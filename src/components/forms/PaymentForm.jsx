@@ -7,6 +7,7 @@ import * as Yup from 'yup'
 import { v4 as uuidv4 } from 'uuid'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHryvnia } from '@fortawesome/free-solid-svg-icons'
+import { minDate, maxDate } from '../../utils/datesAndTime'
 
 const PaymentForm = () => {
 
@@ -95,7 +96,8 @@ const PaymentForm = () => {
 			.oneOf(specialtyList, 'Виберіть предмет викладача')
 			.required('Виберіть предмет викладача'),
 		date: Yup.date()
-			.min(new Date().toISOString().substr(0,10), 'Дата повинна бути сьогодні або в майбутньому')
+			.min(minDate(3), 'Дата повинна бути не менше ніж за три місяці до сьогодні')
+			.max(maxDate(12), 'Дата повинна бути не більше року після сьогоднішнього дня')
 			.required('Введіть дату початку навчання'),
 		months: Yup.number()
 			.max(12, 'Не більше 12 місяців')
@@ -134,6 +136,7 @@ const PaymentForm = () => {
 					method="POST"
 					action={process.env.REACT_APP_LIQPAY_API_URL}
 					acceptCharset="utf-8"
+					className="text-left"
 				>
 
 					{/* Teacher name input */}
@@ -227,7 +230,7 @@ const PaymentForm = () => {
 					</Form.Row>
 
 					{/* Date input */}
-					<Form.Row>
+					<Form.Row className="d-flex align-items-end mb-5">
 						<Form.Group
 							controlId="paymentForm.dateInput"
 							as={Col}
