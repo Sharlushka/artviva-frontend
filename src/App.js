@@ -31,8 +31,6 @@ const App = (props) => {
 			if (loggedUserJSON) {
 				const loggedUser = JSON.parse(loggedUserJSON)
 				props.setUserFromLocalStorage(loggedUser)
-			} else {
-				console.log('No user.')
 			}
 		} else {
 			window.localStorage.setItem(

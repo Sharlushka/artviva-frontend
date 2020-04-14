@@ -2,19 +2,19 @@ import React, { useState, useEffect, useRef } from 'react'
 import { Col, Form, Button } from 'react-bootstrap'
 import paymentService from '../../services/payment'
 import { setNotification } from '../../reducers/notificationReducer'
-import { Formik } from 'formik'
+import { Formik, FieldArray, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import { v4 as uuidv4 } from 'uuid'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHryvnia } from '@fortawesome/free-solid-svg-icons'
-import { minDate, maxDate } from '../../utils/datesAndTime'
+import { schoolYearMonths } from '../../utils/datesAndTime'
 
 const PaymentForm = () => {
 
-	const [orderData, setOrderData] = useState({
+	let [orderData, setOrderData] = useState({
 		teacher: null,
 		specialty: null,
-		months: 1,
+		months: [],
 		baseCost: 200,
 		total: null
 	})
@@ -22,6 +22,8 @@ const PaymentForm = () => {
 
 	// calculate total to show when filling the form
 	const processOrderData = ({ target }) => {
+		let months
+		let position
 		switch (target.name) {
 		case 'teacher':
 			setOrderData({ ...orderData, teacher: target.value })
@@ -30,7 +32,15 @@ const PaymentForm = () => {
 			setOrderData({ ...orderData, specialty: target.value })
 			break
 		case 'months':
-			setOrderData({ ...orderData, months: target.value })
+			months = orderData.months
+			position = months.indexOf(target.value)
+			if ( ~position ) {
+				months.splice(position, 1)
+			} else {
+				months.push(target.value)
+			}
+			setOrderData({ ...orderData, months })
+			console.log('Result', orderData.months)
 			break
 		default:
 			return
@@ -43,7 +53,7 @@ const PaymentForm = () => {
 		const preliminaryPaymentData = () => teacher && specialty && months ? true : false
 
 		if (preliminaryPaymentData()) {
-			setTotal(baseCost * months)
+			setTotal(baseCost * months.length)
 		}
 	}, [orderData])
 
@@ -57,7 +67,7 @@ const PaymentForm = () => {
 			action: 'pay',
 			amount: total,
 			currency: 'UAH',
-			description: `Оплата за ${months} міс. Учень: ${pupil}, викладач: ${teacher}, предмет: ${specialty}.`,
+			description: `Оплата за${months.map(month => ` ${month}`)} міс. Учень: ${pupil}, викладач: ${teacher}, предмет: ${specialty}.`,
 			order_id: uuidv4(),
 			version: '3',
 			language: 'uk',
@@ -81,7 +91,7 @@ const PaymentForm = () => {
 	// Form data from db?
 	const teachersList = ['Wolfgang Amadeus Mozart', 'Elvis Aaron Presley', 'Kurt Donald Cobain', 'Louis Daniel Armstrong']
 	const specialtyList = ['Saxophone', 'Piano', 'Guitar', 'Vocals']
-	const monthsQuantity = 12
+	const months = schoolYearMonths('uk-ua')
 
 	// Form schema
 	const paymentFormSchema = Yup.object().shape({
@@ -95,13 +105,9 @@ const PaymentForm = () => {
 		specialty: Yup.string()
 			.oneOf(specialtyList, 'Виберіть предмет викладача')
 			.required('Виберіть предмет викладача'),
-		date: Yup.date()
-			.min(minDate(3), 'Дата повинна бути не менше ніж за три місяці до сьогодні')
-			.max(maxDate(12), 'Дата повинна бути не більше року після сьогоднішнього дня')
-			.required('Введіть дату початку навчання'),
-		months: Yup.number()
-			.max(12, 'Не більше 12 місяців')
-			.required()
+		months: Yup.array()
+			// .oneOf(months, 'Ви повинні вибрати не менше одного місяця.')
+			.required('Ви повинні вибрати не менше одного місяця.')
 	})
 
 	// Form itself
@@ -111,18 +117,17 @@ const PaymentForm = () => {
 				teacher: '',
 				pupil: '',
 				specialty: '',
-				date: new Date().toISOString().substr(0,10),
-				months: 1
+				months: []
 			}}
-			onSubmit={async (values, { resetForm, setErrors }) => {
+			onSubmit={async (values, { setErrors }) => {
 				await handlePayment(values, setErrors)
-				resetForm()
 			}}
 			validationSchema={paymentFormSchema}
 		>
 			{({ handleSubmit,
 				handleChange,
 				handleBlur,
+				handleReset,
 				values,
 				touched,
 				errors,
@@ -150,7 +155,6 @@ const PaymentForm = () => {
 								name="teacher"
 								data-cy="teacherNameInput"
 								onChange={handleChange}
-								onBlur={handleBlur}
 								value={values.teacher}
 								isValid={touched.teacher && !errors.teacher}
 								isInvalid={touched.teacher && !!errors.teacher}
@@ -183,7 +187,6 @@ const PaymentForm = () => {
 								name="pupil"
 								data-cy="pupilNameInput"
 								onChange={handleChange}
-								onBlur={handleBlur}
 								value={values.pupil}
 								isValid={touched.pupil && !errors.pupil}
 								isInvalid={touched.pupil && !!errors.pupil}
@@ -210,7 +213,6 @@ const PaymentForm = () => {
 								name="specialty"
 								data-cy="specialtyInput"
 								onChange={handleChange}
-								onBlur={handleBlur}
 								value={values.specialty}
 								isValid={touched.specialty && !errors.specialty}
 								isInvalid={touched.specialty && !!errors.specialty}
@@ -229,94 +231,94 @@ const PaymentForm = () => {
 						</Form.Group>
 					</Form.Row>
 
-					{/* Date input */}
-					<Form.Row className="d-flex align-items-end mb-5">
-						<Form.Group
-							controlId="paymentForm.dateInput"
-							as={Col}
-						>
-							<Form.Label>
-								Дата початку навчання
-							</Form.Label>
-
-							<Form.Control
-								type="date"
-								name="date"
-								data-cy="dateInput"
-								onChange={handleChange}
-								onBlur={handleBlur}
-								value={values.date}
-								isValid={touched.date && !errors.date}
-								isInvalid={touched.date && !!errors.date}
-							/>
-							<Form.Control.Feedback>
-								Ok
-							</Form.Control.Feedback>
-							<Form.Control.Feedback type="invalid">
-								{errors.date}
-							</Form.Control.Feedback>
-						</Form.Group>
-
-						<Form.Group
-							controlId="paymentForm.monthsInput"
-							as={Col}
-						>
-
-							{/* Months duration */}
-							<Form.Label>
-								Скільки місяців?
-							</Form.Label>
-							<Form.Control as="select"
-								name="months"
-								data-cy="monthsInput"
-								onChange={handleChange}
-								onBlur={handleBlur}
-								value={values.months}
-								isValid={touched.months && !errors.months}
-								isInvalid={touched.months && !!errors.months}
-							>
-								{[...Array(monthsQuantity)].map((value, index) =>
-									index === 0
-										? <option value={index + 1} defaultValue key={index}>{index + 1}</option>
-										: <option value={index + 1} key={index}>{index + 1}</option>
-								)}
-							</Form.Control>
-							<Form.Control.Feedback>
-								Ok
-							</Form.Control.Feedback>
-							<Form.Control.Feedback type="invalid">
-								{errors.months}
-							</Form.Control.Feedback>
-
-						</Form.Group>
+					<Form.Row>
+						<FieldArray
+							name='months'
+							onChange={handleChange}
+							onBlur={handleBlur}
+							render={arrayHelpers => (
+								<Col className="d-flex flex-wrap pt-3">
+									{months.map(month => (
+										<Col key={month} xs={4} className="my-2 px-1">
+											<Form.Check
+												inline
+												custom
+												name="months"
+												type="checkbox"
+												id={month}
+												value={month}
+												label={month}
+												checked={values.months.includes(month)}
+												isValid={touched.months && !errors.months}
+												isInvalid={touched.months && !!errors.months}
+												onChange={event => {
+													if (event.target.checked) arrayHelpers.push(month)
+													else {
+														const index = values.months.indexOf(month)
+														arrayHelpers.remove(index)
+													}
+												}}
+											/>
+										</Col>
+									))}
+									<ErrorMessage
+										name="months"
+										render={msg => (
+											<span className="form-validation-error">
+												{msg}
+											</span>
+										)}
+									/>
+								</Col>
+							)}
+						/>
 					</Form.Row>
-					{total
-						? <>
-							<h5 className="d-inline">
-								{`Всього: ${total} `}
-							</h5>
-							<FontAwesomeIcon icon={faHryvnia} />
-						</>
-						: <h6 className="text-muted">
-								Заповніть форму для розрахунку вартості
-						</h6>
-					}
+
+					<Form.Row className="py-3">
+						<Col>
+							{total
+								? <>
+									<h5 className="d-inline">
+										{`Всього: ${total} `}
+									</h5>
+									<FontAwesomeIcon icon={faHryvnia} />
+								</>
+								: <h6 className="text-muted">
+										Заповніть форму для розрахунку вартості
+								</h6>
+							}
+						</Col>
+					</Form.Row>
 
 					<input type="hidden" name="data" value={liqpayData.data || ''} />
 					<input type="hidden" name="signature" value={liqpayData.signature || ''} />
 					<input type="hidden" name="language" value="uk" />
 
 					{/* Pay button */}
-					<Form.Row className="d-flex justify-content-center">
-						<Button
-							type="submit"
-							block
-							variant="primary"
-							data-cy="payBtn"
-							className="primary-color-shadow my-3 mx-1"
-						>
-								Оплатити
-						</Button>
+					<Form.Row className="d-flex justify-content-around py-4">
+						<Col>
+							<Button
+								block
+								type="submit"
+								variant="primary"
+								data-cy="payBtn"
+								className="primary-color-shadow"
+							>
+									Оплатити
+							</Button>
+						</Col>
+						<Col>
+							<Button
+								block
+								type="reset"
+								variant="light"
+								data-cy="payBtn"
+								className=""
+								onClick={handleReset}
+							>
+									Очистити
+							</Button>
+						</Col>
 					</Form.Row>
 
 				</Form>
