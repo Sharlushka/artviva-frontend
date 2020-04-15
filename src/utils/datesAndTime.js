@@ -61,7 +61,7 @@ export const schoolYearMonths = locale => {
 	}
 
 	// finally
-	const currentDate = new Date(2019, 8)
+	const currentDate = new Date()
 	let endingMonth
 
 	if (currentDate.getMonth() === 8 || isSummer(currentDate)) { // september or summer

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { login } from '../../reducers/loginReducer'
@@ -14,6 +14,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 
 const LoginForm = ({ setNotification, ...props }) => {
+	const unmounted = useRef(false)
+	useEffect(() => {
+		return () => { unmounted.current = true }
+	}, [])
 
 	const [loginSuccessful, setLoginSuccessful] = useState(false)
 
@@ -71,13 +75,15 @@ const LoginForm = ({ setNotification, ...props }) => {
 	const [score, setScore] = useState(null)
 
 	const setRecaptchaScore = score => {
-		if (score <= .1) {
-			setNotification({
-				message: `Ваша оцінка recaptcha занизька: ${score}, спробуйте оновити сторінку.`,
-				variant: 'warning'
-			}, 5)
+		if (!unmounted.current) {
+			if (score <= .1) {
+				setNotification({
+					message: `Ваша оцінка recaptcha занизька: ${score}, спробуйте оновити сторінку.`,
+					variant: 'warning'
+				}, 5)
+			}
+			setScore(score)
 		}
-		setScore(score)
 	}
 
 	return (

@@ -1,19 +1,22 @@
-import React, { useEffect, useRef, useImperativeHandle } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { ReCaptcha } from 'react-recaptcha-google'
 import recaptchaService from '../../services/recaptcha'
 import PropTypes from 'prop-types'
 
+// eslint-disable-next-line
 const ReCaptchaComp = React.forwardRef(({ setScore, size, render, badge, hl }, ref) => {
 
 	useEffect(() => {
 		onLoadRecaptcha()
-	},[])
+	}, [])
 
-	const recaptchaRef = useRef()
+	const recaptchaRef = useRef(null)
 
-	const verifyCallback = async recaptchaToken => {
-		const { result } = await recaptchaService.verify(recaptchaToken)
-		setScore(result.score)
+	const verifyCallback = recaptchaToken => {
+		recaptchaService.verify(recaptchaToken)
+			.then(({ result }) =>
+				setScore(result.score))
+			.catch(error => console.error(error))
 	}
 
 	const onLoadRecaptcha = () => {
@@ -22,13 +25,6 @@ const ReCaptchaComp = React.forwardRef(({ setScore, size, render, badge, hl }, r
 			recaptchaRef.current.execute()
 		}
 	}
-
-	useImperativeHandle(ref, () => {
-		return {
-			verifyCallback,
-			onLoadRecaptcha
-		}
-	})
 
 	ReCaptchaComp.displayName = 'ReCaptchaComp'
 
