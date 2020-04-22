@@ -15,10 +15,11 @@ const BranchesList = ({ user, initializeBranches, branches }) => {
 	if (branches) {
 		return (
 			<>
-				<h4>Всі філії</h4>
+				<h5 className="py-2">Всі філії</h5>
 				<ListGroup>
 					{branches.map(branch =>
 						<ListGroup.Item
+							className="px-0 py-1"
 							key={branch.id}
 						>
 							<Branch branch={branch} />

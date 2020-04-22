@@ -20,7 +20,7 @@ const BranchDeleteModal = ({ branch, handleDelete, ...props }) => {
 	return (
 		<Modal
 			{...props}
-			size="md"
+			size="lg"
 			aria-labelledby="contained-modal-title-vcenter"
 			centered
 		>
@@ -38,6 +38,7 @@ const BranchDeleteModal = ({ branch, handleDelete, ...props }) => {
 					<Form.Control
 						size="sm"
 						type="text"
+						autoComplete="off"
 						placeholder="Місто філії"
 						onChange={handleChange}
 					/>

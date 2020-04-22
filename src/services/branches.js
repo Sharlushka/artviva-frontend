@@ -44,9 +44,11 @@ const create = async payload => {
 /**
  * Delete single branch
  * @param {string} id - Branch ID
+ *
+ * @returns {Object} - Response data
  */
 
-const deleteBranch = async id => {
+const deleteById = async id => { // just delete
 	const config = {
 		headers: { Authorization: token }
 	}
@@ -54,4 +56,22 @@ const deleteBranch = async id => {
 	return request.then(response => response.data)
 }
 
-export default { getAll, setToken, create, deleteBranch }
+/**
+ * Update branch
+ * @param {string} id - Id of the branch
+ * @param {Object} payload - Updated branch data
+ * @param {string} payload.name - Unique branch name
+ * @param {string} payload.town - City/town
+ * @param {string} payload.address - Full address
+ * @param {string} payload.phone - phone number
+ * @param {string} payload.info - Additional info
+ *
+ * @returns {Object} - Response data
+ */
+
+const update = async (id, payload) => {
+	const request = axios.put(`${baseUrl}/${id}`, payload)
+	return request.then(response => response.data)
+}
+
+export default { getAll, setToken, create, deleteById, update }

@@ -8,6 +8,12 @@ const branchesReducer = (state = [], action) => {
 		return state.filter(branch => branch.id !== action.data)
 	case 'INIT_BRANCHES':
 		return action.data
+	case 'UPDATE_BRANCH': {
+		const updatedBranch = action.data
+		return state.map(branch =>
+			branch.id !== action.data.id ? branch : updatedBranch
+		)
+	}
 	default:
 		return state
 	}
@@ -51,10 +57,26 @@ export const initializeBranches = () => {
  */
 export const deleteBranch = id => {
 	return async dispatch => {
-		await branchesService.deleteBranch(id)
+		await branchesService.deleteById(id)
 		dispatch ({
 			type: 'DELETE_BRANCH',
 			data: id
+		})
+	}
+}
+
+/**
+ * Update branch details
+ * @param {string} id - Id of the branch to update
+ * @param {Object} branch - Branch to update
+ */
+
+export const updateBranch = (id, branch) => {
+	return async dispatch => {
+		const updatedBranch = await branchesService.update(id, branch)
+		dispatch ({
+			type: 'UPDATE_BRANCH',
+			data: updatedBranch
 		})
 	}
 }

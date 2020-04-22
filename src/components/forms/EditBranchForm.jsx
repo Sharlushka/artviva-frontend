@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { setNotification } from '../../reducers/notificationReducer'
-import { createBranch } from '../../reducers/branchesReducer'
+import { updateBranch } from '../../reducers/branchesReducer'
 import { Container, Col, Form } from 'react-bootstrap'
 import ButtonComponent from '../common/Button'
 import { Formik } from 'formik'
@@ -9,7 +9,7 @@ import * as Yup from 'yup'
 import { formatPhoneNumber } from '../../utils/formatPhoneNumber'
 import branchService from '../../services/branches'
 
-const NewBranchForm = ({ user, setNotification, createBranch }) => {
+const EditBranchForm = ({ user, setNotification, updateBranch, branch }) => {
 	const phoneNumber = /^\+?([0-9]{0,2}) ?\(?([0-9]{0,3})\)? ?[-. ]?([0-9]{0,3})[-. ]?([0-9]{0,2})-?([0-9]{0,2})$/
 
 	const branchFormSchema = Yup.object().shape({
@@ -41,14 +41,13 @@ const NewBranchForm = ({ user, setNotification, createBranch }) => {
 		branchService.setToken(user.token)
 	}, [user])
 
-	const addNewBranch = (values, setErrors, resetForm ) => {
-		createBranch(values)
+	const saveBranchEdits = (values, setErrors ) => {
+		updateBranch(branch.id, values)
 			.then(() => {
 				setNotification({
-					message: 'Нова філія була успішно додана.',
+					message: 'Зміни успішно збережено.',
 					variant: 'success'
 				}, 5)
-				resetForm()
 			})
 			.catch(error => {
 				const { message, cause } = { ...error.response.data }
@@ -63,20 +62,20 @@ const NewBranchForm = ({ user, setNotification, createBranch }) => {
 	}
 
 	return (
-		<Container>
+		<Container fluid>
 			<h2 className="text-center custom-font py-4">
-				Додати філію
+				Редагувати філію
 			</h2>
 			<Formik
 				initialValues={{
-					name: '',
-					town: '',
-					address: '',
-					phone: '',
-					info: ''
+					name: branch.name,
+					town: branch.town,
+					address: branch.address,
+					phone: branch.phone,
+					info: branch.info
 				}}
-				onSubmit={async (values, { resetForm, setErrors }) => {
-					await addNewBranch(values, setErrors, resetForm)
+				onSubmit={async (values, { setErrors }) => {
+					await saveBranchEdits(values, setErrors)
 				}}
 				validationSchema={branchFormSchema}
 			>
@@ -96,7 +95,7 @@ const NewBranchForm = ({ user, setNotification, createBranch }) => {
 						{/* Branch full name input */}
 						<Form.Row className="d-flex justify-content-center">
 							<Form.Group
-								controlId="branchNameInput"
+								controlId={`${branch.id}branchNameInput`}
 								as={Col}
 							>
 								<Form.Label>
@@ -124,7 +123,7 @@ const NewBranchForm = ({ user, setNotification, createBranch }) => {
 						{/* Branch town input */}
 						<Form.Row className="d-flex justify-content-center">
 							<Form.Group
-								controlId="branchTownInput"
+								controlId={`${branch.id}branchTownInput`}
 								as={Col}
 							>
 								<Form.Label>
@@ -152,7 +151,7 @@ const NewBranchForm = ({ user, setNotification, createBranch }) => {
 						{/* Branch address input */}
 						<Form.Row className="d-flex justify-content-center">
 							<Form.Group
-								controlId="branchAddressInput"
+								controlId={`${branch.id}branchAddressInput`}
 								as={Col}
 							>
 								<Form.Label>
@@ -181,7 +180,7 @@ const NewBranchForm = ({ user, setNotification, createBranch }) => {
 						{/* Branch phone number input */}
 						<Form.Row className="d-flex justify-content-center">
 							<Form.Group
-								controlId="branchPhoneInput"
+								controlId={`${branch.id}branchPhoneInput`}
 								as={Col}
 							>
 								<Form.Label>
@@ -208,9 +207,9 @@ const NewBranchForm = ({ user, setNotification, createBranch }) => {
 						</Form.Row>
 
 						{/* Branch info / descr input */}
-						<Form.Row className="d-flex justify-content-center">
+						<Form.Row className="d-flex justify-content-center pb-4">
 							<Form.Group
-								controlId="branchInfoInput"
+								controlId={`${branch.id}branchInfoInput`}
 								as={Col}
 							>
 								<Form.Label>
@@ -240,14 +239,13 @@ const NewBranchForm = ({ user, setNotification, createBranch }) => {
 						<Form.Row className="d-flex justify-content-center text-center">
 							<Form.Group
 								as={Col}
-								className="pt-4"
 							>
 								<ButtonComponent
 									block
-									className="px-4 primary-color-shadow"
-									variant="primary"
+									className="px-4"
+									variant="success"
 									type="submit"
-									label="Додати"
+									label="Зберегти"
 								/>
 							</Form.Group>
 						</Form.Row>
@@ -266,10 +264,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
 	setNotification,
-	createBranch
+	updateBranch
 }
 
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(NewBranchForm)
+)(EditBranchForm)

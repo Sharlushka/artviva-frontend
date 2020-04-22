@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { connect } from 'react-redux'
 import { Container, Row, Col, Collapse, Button } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -8,9 +8,11 @@ import { setNotification } from '../../reducers/notificationReducer'
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons'
 import ButtonComponent from '../common/Button'
 import BranchDeleteModal from './BranchDeleteModal'
+import Toggler from '../common/Toggler'
+import EditBranchForm from '../forms/EditBranchForm'
 
 const Branch = ({ user, branch, deleteBranch }) => {
-
+	const editBranchFormRef = useRef(null)
 	const [open, setOpen] = useState(false)
 	const [modalShow, setModalShow] = useState(false)
 
@@ -24,7 +26,6 @@ const Branch = ({ user, branch, deleteBranch }) => {
 	}, [user])
 
 	const handleDelete = id => {
-		console.log('Deleting branch with id', id)
 		deleteBranch(id)
 			.then(() => {
 				setNotification({
@@ -60,7 +61,7 @@ const Branch = ({ user, branch, deleteBranch }) => {
 				}
 			</Button>
 			<Collapse in={open}>
-				<Container className="text-left">
+				<Container fluid className="text-left">
 					<Row>
 						<Col>
 							<p>Назва: {branch.name}</p>
@@ -70,16 +71,18 @@ const Branch = ({ user, branch, deleteBranch }) => {
 							<p>Інфо: {branch.info}</p>
 						</Col>
 					</Row>
-					<Row>
-						<Col>
+
+					<Row className="d-flex justify-content-center">
+						<Col md={8} lg={6} xl={4}>
+							<Toggler
+								buttonLabel="Редагувати філію"
+								dataCy="editBranchBtn"
+								ref={editBranchFormRef}
+							>
+								<EditBranchForm branch={branch}/>
+							</Toggler>
 							<ButtonComponent
-								label="Редагуваті"
-								variant="primary"
-								type="button"
-							/>
-						</Col>
-						<Col className="d-flex justify-content-end">
-							<ButtonComponent
+								block
 								label="Видалити"
 								variant="danger"
 								type="button"
