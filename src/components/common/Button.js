@@ -2,9 +2,10 @@ import React from 'react'
 import { Button } from 'react-bootstrap'
 import PropTypes from 'prop-types'
 
-const ButtonComponent = ({ className, variant, type, handleClick, label }) => {
+const ButtonComponent = ({ className, variant, type, handleClick, label, block }) => {
 	return (
 		<Button
+			block={block}
 			className={className}
 			variant={variant}
 			type={type}

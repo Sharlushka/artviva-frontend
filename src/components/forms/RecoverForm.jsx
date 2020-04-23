@@ -52,7 +52,8 @@ const RecoverForm = ({ setNotification }) => {
 				touched,
 				errors
 			}) => (
-				<Form data-cy="recoverForm"
+				<Form
+					data-cy="recover-form"
 					noValidate
 					onSubmit={handleSubmit}
 				>
@@ -66,7 +67,7 @@ const RecoverForm = ({ setNotification }) => {
 							<Form.Control
 								type="email"
 								name="email"
-								data-cy="emailInput"
+								data-cy="email-input"
 								onChange={handleChange}
 								onBlur={handleBlur}
 								value={values.email}
@@ -86,7 +87,7 @@ const RecoverForm = ({ setNotification }) => {
 					<Form.Row className="d-flex justify-content-center">
 						<Form.Group
 							as={Col}
-							sm="8"
+							sm={8}
 							className="d-flex pt-3
 								justify-content-center
 								align-items-center"
@@ -94,7 +95,7 @@ const RecoverForm = ({ setNotification }) => {
 							<Button
 								type="submit"
 								variant="primary"
-								data-cy="recoverPassBtn"
+								data-cy="recover-pass-btn"
 								className="primary-color-shadow"
 							>
 								Надіслати скидання пароля

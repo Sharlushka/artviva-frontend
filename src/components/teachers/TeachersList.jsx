@@ -1,28 +1,28 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { setNotification } from '../../reducers/notificationReducer'
-import { initializeBranches } from '../../reducers/branchesReducer'
+import { initializeTeachers } from '../../reducers/teachersReducer'
 import { ListGroup } from 'react-bootstrap'
-import Branch from './Branch'
+import Teacher from './Teacher'
 
-const BranchesList = ({ initializeBranches, branches }) => {
+const TeachersList = ({ initializeTeachers, teachers }) => {
 
 	useEffect(() => {
-		initializeBranches()
+		initializeTeachers()
 	// eslint-disable-next-line
 	}, [])
 
-	if (branches) {
+	if (teachers) {
 		return (
 			<>
-				<h5 className="py-2">Всі філії</h5>
+				<h5 className="py-2">Вчітелі</h5>
 				<ListGroup>
-					{branches.map(branch =>
+					{teachers.map(teacher =>
 						<ListGroup.Item
 							className="px-0 py-1"
-							key={branch.id}
+							key={teacher.id}
 						>
-							<Branch branch={branch} />
+							<Teacher teacher={teacher} />
 						</ListGroup.Item>
 					)}
 				</ListGroup>
@@ -37,16 +37,16 @@ const BranchesList = ({ initializeBranches, branches }) => {
 
 const mapStateToProps = (state) => {
 	return {
-		branches: state.branches
+		teachers: state.teachers
 	}
 }
 
 const mapDispatchToProps = {
 	setNotification,
-	initializeBranches
+	initializeTeachers
 }
 
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(BranchesList)
+)(TeachersList)

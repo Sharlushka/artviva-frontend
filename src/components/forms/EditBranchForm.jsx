@@ -41,7 +41,7 @@ const EditBranchForm = ({ user, setNotification, updateBranch, branch }) => {
 		branchService.setToken(user.token)
 	}, [user])
 
-	const saveBranchEdits = (values, setErrors ) => {
+	const saveBranchEdits = (values, setErrors) => {
 		updateBranch(branch.id, values)
 			.then(() => {
 				setNotification({
@@ -87,7 +87,8 @@ const EditBranchForm = ({ user, setNotification, updateBranch, branch }) => {
 					errors,
 					setFieldValue
 				}) => (
-					<Form data-cy="registerForm"
+					<Form
+						data-cy="edit-branch-form"
 						noValidate
 						onSubmit={handleSubmit}
 						className="text-left"
@@ -95,7 +96,7 @@ const EditBranchForm = ({ user, setNotification, updateBranch, branch }) => {
 						{/* Branch full name input */}
 						<Form.Row className="d-flex justify-content-center">
 							<Form.Group
-								controlId={`${branch.id}branchNameInput`}
+								controlId={`${branch.id}-branch-name-input`}
 								as={Col}
 							>
 								<Form.Label>
@@ -104,7 +105,7 @@ const EditBranchForm = ({ user, setNotification, updateBranch, branch }) => {
 								<Form.Control
 									type="text"
 									name="name"
-									data-cy="nameInput"
+									data-cy="name-input"
 									onChange={handleChange}
 									onBlur={handleBlur}
 									value={values.name}
@@ -123,7 +124,7 @@ const EditBranchForm = ({ user, setNotification, updateBranch, branch }) => {
 						{/* Branch town input */}
 						<Form.Row className="d-flex justify-content-center">
 							<Form.Group
-								controlId={`${branch.id}branchTownInput`}
+								controlId={`${branch.id}-branch-town-input`}
 								as={Col}
 							>
 								<Form.Label>
@@ -132,7 +133,7 @@ const EditBranchForm = ({ user, setNotification, updateBranch, branch }) => {
 								<Form.Control
 									type="text"
 									name="town"
-									data-cy="branchTownInput"
+									data-cy="branch-town-input"
 									onChange={handleChange}
 									onBlur={handleBlur}
 									value={values.town}
@@ -151,7 +152,7 @@ const EditBranchForm = ({ user, setNotification, updateBranch, branch }) => {
 						{/* Branch address input */}
 						<Form.Row className="d-flex justify-content-center">
 							<Form.Group
-								controlId={`${branch.id}branchAddressInput`}
+								controlId={`${branch.id}-branch-address-input`}
 								as={Col}
 							>
 								<Form.Label>
@@ -161,7 +162,7 @@ const EditBranchForm = ({ user, setNotification, updateBranch, branch }) => {
 									as="textarea"
 									name="address"
 									rows="2"
-									data-cy="branchAddressInput"
+									data-cy="branch-address-input"
 									onChange={handleChange}
 									onBlur={handleBlur}
 									value={values.address}
@@ -180,7 +181,7 @@ const EditBranchForm = ({ user, setNotification, updateBranch, branch }) => {
 						{/* Branch phone number input */}
 						<Form.Row className="d-flex justify-content-center">
 							<Form.Group
-								controlId={`${branch.id}branchPhoneInput`}
+								controlId={`${branch.id}-branch-phone-input`}
 								as={Col}
 							>
 								<Form.Label>
@@ -189,7 +190,7 @@ const EditBranchForm = ({ user, setNotification, updateBranch, branch }) => {
 								<Form.Control
 									type="text"
 									name="phone"
-									data-cy="branchPhoneInput"
+									data-cy="branch-phone-input"
 									onChange={handleChange}
 									onKeyUp={event => formatPhoneNumber(event, 'phone', setFieldValue)}
 									onBlur={handleBlur}
@@ -209,7 +210,7 @@ const EditBranchForm = ({ user, setNotification, updateBranch, branch }) => {
 						{/* Branch info / descr input */}
 						<Form.Row className="d-flex justify-content-center pb-4">
 							<Form.Group
-								controlId={`${branch.id}branchInfoInput`}
+								controlId={`${branch.id}-branch-info-input`}
 								as={Col}
 							>
 								<Form.Label>
@@ -219,7 +220,7 @@ const EditBranchForm = ({ user, setNotification, updateBranch, branch }) => {
 									as="textarea"
 									name="info"
 									rows="3"
-									data-cy="branchInfoInput"
+									data-cy="branch-info-input"
 									onChange={handleChange}
 									onBlur={handleBlur}
 									value={values.info}

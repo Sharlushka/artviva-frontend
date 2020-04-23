@@ -134,7 +134,7 @@ const PaymentForm = () => {
 			}) => (
 				<Form
 					ref={paymentFormEl}
-					data-cy="paymentForm"
+					data-cy="payment-form"
 					noValidate
 					onSubmit={handleSubmit}
 					onChange={event => processOrderData(event)}
@@ -147,13 +147,13 @@ const PaymentForm = () => {
 					{/* Teacher name input */}
 					<Form.Row>
 						<Form.Group
-							controlId="teacherNameInput"
+							controlId="teacher-name-input"
 							as={Col}
 						>
 							<Form.Label>Викладач</Form.Label>
 							<Form.Control as="select"
 								name="teacher"
-								data-cy="teacherNameInput"
+								data-cy="teacher-name-input"
 								onChange={handleChange}
 								value={values.teacher}
 								isValid={touched.teacher && !errors.teacher}
@@ -185,7 +185,7 @@ const PaymentForm = () => {
 							<Form.Control
 								type="text"
 								name="pupil"
-								data-cy="pupilNameInput"
+								data-cy="pupil-name-input"
 								onChange={handleChange}
 								value={values.pupil}
 								isValid={touched.pupil && !errors.pupil}
@@ -203,7 +203,7 @@ const PaymentForm = () => {
 					{/* Specialty input */}
 					<Form.Row>
 						<Form.Group
-							controlId="paymentForm.specialtyInput"
+							controlId="specialty-input"
 							as={Col}
 						>
 							<Form.Label>
@@ -211,7 +211,7 @@ const PaymentForm = () => {
 							</Form.Label>
 							<Form.Control as="select"
 								name="specialty"
-								data-cy="specialtyInput"
+								data-cy="specialty-input"
 								onChange={handleChange}
 								value={values.specialty}
 								isValid={touched.specialty && !errors.specialty}

@@ -2,17 +2,17 @@ import React, { useState, useEffect, useRef } from 'react'
 import { connect } from 'react-redux'
 import { Container, Row, Col, Collapse, Button } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { deleteBranch } from '../../reducers/branchesReducer'
-import branchService from '../../services/branches'
+import { deleteTeacher } from '../../reducers/teachersReducer'
+import teachersService from '../../services/teachers'
 import { setNotification } from '../../reducers/notificationReducer'
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons'
 import ButtonComponent from '../common/Button'
-import BranchDeleteModal from './BranchDeleteModal'
+import TeacherDeleteModal from './TeacherDeleteModal' // should be one HOC component i guess
 import Toggler from '../common/Toggler'
-import EditBranchForm from '../forms/EditBranchForm'
+import EditTeacherForm from '../forms/EditTeacherForm'
 
-const Branch = ({ user, branch, deleteBranch }) => {
-	const editBranchFormRef = useRef(null)
+const Teacher = ({ user, teacher, deleteTeacher }) => {
+	const editTeacherFormRef = useRef(null)
 	const [open, setOpen] = useState(false)
 	const [modalShow, setModalShow] = useState(false)
 
@@ -22,14 +22,14 @@ const Branch = ({ user, branch, deleteBranch }) => {
 
 	// set auth token
 	useEffect(() => {
-		branchService.setToken(user.token)
+		teachersService.setToken(user.token)
 	}, [user])
 
 	const handleDelete = id => {
-		deleteBranch(id)
+		deleteTeacher(id)
 			.then(() => {
 				setNotification({
-					message: 'Філія успішно видалена.',
+					message: 'Вчітель успішно видален.',
 					variant: 'success'
 				}, 5)
 			})
@@ -47,13 +47,13 @@ const Branch = ({ user, branch, deleteBranch }) => {
 			<Button
 				block
 				onClick={() => setOpen(!open)}
-				aria-controls="department-collapse"
+				aria-controls="specialty-collapse"
 				aria-expanded={open}
 				variant="link"
 				className="d-flex justify-content-between align-items-center"
 			>
 				<span>
-					{branch.town}
+					{teacher.name}
 				</span>
 				{ open
 					? <FontAwesomeIcon icon={faAngleUp} />
@@ -64,22 +64,18 @@ const Branch = ({ user, branch, deleteBranch }) => {
 				<Container fluid className="text-left">
 					<Row>
 						<Col>
-							<p>Назва: {branch.name}</p>
-							<p>Місто: {branch.town}</p>
-							<p>Тел: {branch.phone}</p>
-							<p>Адреса: {branch.address}</p>
-							<p>Інфо: {branch.info}</p>
+							<p>Им&apos;я: {teacher.name}</p>
 						</Col>
 					</Row>
 
 					<Row className="d-flex justify-content-center">
 						<Col md={8} lg={6} xl={4}>
 							<Toggler
-								buttonLabel="Редагувати філію"
-								data-cy="edit-branch-btn"
-								ref={editBranchFormRef}
+								buttonLabel="Редагувати данні вчітеля"
+								dataCy="edit-teacher-btn"
+								ref={editTeacherFormRef}
 							>
-								<EditBranchForm branch={branch}/>
+								<EditTeacherForm teacher={teacher}/>
 							</Toggler>
 							<ButtonComponent
 								block
@@ -92,9 +88,9 @@ const Branch = ({ user, branch, deleteBranch }) => {
 					</Row>
 				</Container>
 			</Collapse>
-			{/* Branch delete modal */}
-			<BranchDeleteModal
-				branch={branch}
+			{/* Teacher delete modal */}
+			<TeacherDeleteModal
+				teacher={teacher}
 				show={modalShow}
 				handleDelete={handleDelete}
 				onHide={() => setModalShow(false)}
@@ -111,10 +107,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
 	setNotification,
-	deleteBranch
+	deleteTeacher
 }
 
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(Branch)
+)(Teacher)

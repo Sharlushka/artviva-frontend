@@ -1,28 +1,28 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { setNotification } from '../../reducers/notificationReducer'
-import { initializeBranches } from '../../reducers/branchesReducer'
+import { initializeSpecialties } from '../../reducers/specialtiesReducer'
 import { ListGroup } from 'react-bootstrap'
-import Branch from './Branch'
+import Specialty from './Specialty'
 
-const BranchesList = ({ initializeBranches, branches }) => {
+const SpecialtiesList = ({ initializeSpecialties, specialties }) => {
 
 	useEffect(() => {
-		initializeBranches()
+		initializeSpecialties()
 	// eslint-disable-next-line
 	}, [])
 
-	if (branches) {
+	if (specialties) {
 		return (
 			<>
-				<h5 className="py-2">Всі філії</h5>
+				<h5 className="py-2">Спеціальності</h5>
 				<ListGroup>
-					{branches.map(branch =>
+					{specialties.map(specialty =>
 						<ListGroup.Item
 							className="px-0 py-1"
-							key={branch.id}
+							key={specialty.id}
 						>
-							<Branch branch={branch} />
+							<Specialty specialty={specialty} />
 						</ListGroup.Item>
 					)}
 				</ListGroup>
@@ -37,16 +37,16 @@ const BranchesList = ({ initializeBranches, branches }) => {
 
 const mapStateToProps = (state) => {
 	return {
-		branches: state.branches
+		specialties: state.specialties
 	}
 }
 
 const mapDispatchToProps = {
 	setNotification,
-	initializeBranches
+	initializeSpecialties
 }
 
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(BranchesList)
+)(SpecialtiesList)

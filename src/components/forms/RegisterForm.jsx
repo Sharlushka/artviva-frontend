@@ -122,7 +122,8 @@ const RegisterForm = ({ setNotification, setRegistrationSuccessful, registration
 					touched,
 					errors
 				}) => (
-					<Form data-cy="registerForm"
+					<Form
+						data-cy="register-form"
 						noValidate
 						onSubmit={handleSubmit}
 						className="text-left"
@@ -130,7 +131,7 @@ const RegisterForm = ({ setNotification, setRegistrationSuccessful, registration
 						{/* User email input */}
 						<Form.Row className="d-flex justify-content-center">
 							<Form.Group
-								controlId="userEmailInput"
+								controlId="user-email-input"
 								as={Col}
 								className="col-md-10 col-lg-7"
 							>
@@ -140,7 +141,7 @@ const RegisterForm = ({ setNotification, setRegistrationSuccessful, registration
 								<Form.Control
 									type="email"
 									name="email"
-									data-cy="emailInput"
+									data-cy="email-input"
 									placeholder="Ваш майбутній логін"
 									onChange={handleChange}
 									onBlur={handleBlur}
@@ -160,7 +161,7 @@ const RegisterForm = ({ setNotification, setRegistrationSuccessful, registration
 						{/* User name input */}
 						<Form.Row className="d-flex justify-content-center">
 							<Form.Group
-								controlId="userNameInput"
+								controlId="user-name-input"
 								as={Col}
 								className="col-md-10 col-lg-7"
 							>
@@ -170,7 +171,7 @@ const RegisterForm = ({ setNotification, setRegistrationSuccessful, registration
 								<Form.Control
 									type="text"
 									name="name"
-									data-cy="nameInput"
+									data-cy="name-input"
 									onChange={handleChange}
 									onBlur={handleBlur}
 									value={values.name}
@@ -189,7 +190,7 @@ const RegisterForm = ({ setNotification, setRegistrationSuccessful, registration
 						{/* User middle name input */}
 						<Form.Row className="d-flex justify-content-center">
 							<Form.Group
-								controlId="userMiddlenameInput"
+								controlId="user-middlename-input"
 								as={Col}
 								className="col-md-10 col-lg-7"
 							>
@@ -199,7 +200,7 @@ const RegisterForm = ({ setNotification, setRegistrationSuccessful, registration
 								<Form.Control
 									type="text"
 									name="middlename"
-									data-cy="middlenameInput"
+									data-cy="middlename-input"
 									onChange={handleChange}
 									onBlur={handleBlur}
 									value={values.middlename}
@@ -218,7 +219,7 @@ const RegisterForm = ({ setNotification, setRegistrationSuccessful, registration
 						{/* User last name input */}
 						<Form.Row className="d-flex justify-content-center">
 							<Form.Group
-								controlId="userLastnameInput"
+								controlId="user-lastname-input"
 								as={Col}
 								className="col-md-10 col-lg-7"
 							>
@@ -228,7 +229,7 @@ const RegisterForm = ({ setNotification, setRegistrationSuccessful, registration
 								<Form.Control
 									type="text"
 									name="lastname"
-									data-cy="lastnameInput"
+									data-cy="lastname-input"
 									onChange={handleChange}
 									onBlur={handleBlur}
 									value={values.lastname}
@@ -247,7 +248,7 @@ const RegisterForm = ({ setNotification, setRegistrationSuccessful, registration
 						{/* User password input */}
 						<Form.Row className="d-flex justify-content-center">
 							<Form.Group
-								controlId="userPassInput"
+								controlId="user-pass-input"
 								as={Col}
 								className="col-md-10 col-lg-7"
 							>
@@ -259,7 +260,7 @@ const RegisterForm = ({ setNotification, setRegistrationSuccessful, registration
 										className="elevated-z-index"
 										type={passHidden ? 'text' : 'password'}
 										name="password"
-										data-cy="passwordInput"
+										data-cy="password-input"
 										onChange={handleChange}
 										onBlur={handleBlur}
 										value={values.password}
@@ -290,7 +291,7 @@ const RegisterForm = ({ setNotification, setRegistrationSuccessful, registration
 						{/* User password confirmation input */}
 						<Form.Row className="d-flex justify-content-center">
 							<Form.Group
-								controlId="userPassConfirmInput"
+								controlId="user-pass-confirm-input"
 								as={Col}
 								className="col-md-10 col-lg-7"
 							>
@@ -302,7 +303,7 @@ const RegisterForm = ({ setNotification, setRegistrationSuccessful, registration
 										className="elevated-z-index"
 										type={passConfirmHidden ? 'text' : 'password'}
 										name="passwordConfirm"
-										data-cy="passwordConfirmInput"
+										data-cy="password-confirm-input"
 										onChange={handleChange}
 										onBlur={handleBlur}
 										value={values.passwordConfirm}
@@ -339,9 +340,9 @@ const RegisterForm = ({ setNotification, setRegistrationSuccessful, registration
 								<Form.Check
 									custom
 									name='termsCheckbox'
-									type={'checkbox'}
-									id={'termsCheckbox'}
-									data-cy='termsCheckbox'
+									type="checkbox"
+									id="terms-checkbox"
+									data-cy="terms-checkbox"
 									onChange={handleChange}
 									onBlur={handleBlur}
 									value={values.termsCheckbox}

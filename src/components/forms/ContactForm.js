@@ -62,14 +62,15 @@ const ContactForm = ({ setNotification }) => {
 							touched,
 							errors
 						}) => (
-							<Form data-cy="contactForm"
+							<Form
+								data-cy="contact-form"
 								noValidate
 								onSubmit={handleSubmit}
 							>
 
 								{/* Message sender name input */}
 								<Form.Row>
-									<Form.Group controlId="nameInput" as={Col}>
+									<Form.Group controlId="name-input" as={Col}>
 										<Form.Label>
 											Ваше ім&apos;я
 											<span className="required-text">*</span>
@@ -77,7 +78,7 @@ const ContactForm = ({ setNotification }) => {
 										<Form.Control
 											type="text"
 											name="name"
-											data-cy="nameInput"
+											data-cy="name-input"
 											onChange={handleChange}
 											onBlur={handleBlur}
 											value={values.name}
@@ -95,7 +96,7 @@ const ContactForm = ({ setNotification }) => {
 
 								{/* Message sender email input */}
 								<Form.Row>
-									<Form.Group controlId="emailInput" as={Col}>
+									<Form.Group controlId="email-input" as={Col}>
 										<Form.Label>
 											Ваша електронна пошта
 											<span className="required-text">*</span>
@@ -103,7 +104,7 @@ const ContactForm = ({ setNotification }) => {
 										<Form.Control
 											type="email"
 											name="email"
-											data-cy="emailInput"
+											data-cy="email-input"
 											onChange={handleChange}
 											onBlur={handleBlur}
 											value={values.email}
@@ -121,7 +122,7 @@ const ContactForm = ({ setNotification }) => {
 
 								{/* Message body input */}
 								<Form.Row>
-									<Form.Group controlId="messageInput" as={Col}>
+									<Form.Group controlId="message-input" as={Col}>
 										<Form.Label>
 											Ваше повідомлення
 											<span className="required-text">*</span>
@@ -130,7 +131,7 @@ const ContactForm = ({ setNotification }) => {
 											as="textarea"
 											name="message"
 											rows="6"
-											data-cy="messageInput"
+											data-cy="message-input"
 											onChange={handleChange}
 											onBlur={handleBlur}
 											value={values.message}
@@ -151,7 +152,7 @@ const ContactForm = ({ setNotification }) => {
 									<Button
 										type="submit"
 										variant="primary"
-										data-cy="contactMsgBtn"
+										data-cy="contact-msg-btn"
 										className="primary-color-shadow px-5"
 									>
 										Відправити

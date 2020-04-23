@@ -62,7 +62,7 @@ const LoginForm = ({ setNotification, ...props }) => {
 
 	const togglePassVis = () => {
 		setPassVis(!passHidden)
-		let passInput = document.getElementById('loginPass')
+		let passInput = document.getElementById('login-pass')
 		if (passHidden) {
 			passInput.type = 'password'
 		} else {
@@ -111,7 +111,8 @@ const LoginForm = ({ setNotification, ...props }) => {
 						touched,
 						errors
 					}) => (
-						<Form data-cy="loginForm"
+						<Form
+							data-cy="login-form"
 							noValidate
 							onSubmit={handleSubmit}
 						>
@@ -125,7 +126,7 @@ const LoginForm = ({ setNotification, ...props }) => {
 									<Form.Control
 										type="email"
 										name="email"
-										data-cy="emailInput"
+										data-cy="email-input"
 										onChange={handleChange}
 										onBlur={handleBlur}
 										value={values.email}
@@ -149,11 +150,11 @@ const LoginForm = ({ setNotification, ...props }) => {
 									</Form.Label>
 									<InputGroup>
 										<Form.Control
-											id="loginPass"
+											id="login-pass"
 											className="elevated-z-index"
 											type="password"
 											name="password"
-											data-cy="passwordInput"
+											data-cy="password-input"
 											onChange={handleChange}
 											onBlur={handleBlur}
 											value={values.password}
@@ -207,7 +208,7 @@ const LoginForm = ({ setNotification, ...props }) => {
 									<Button
 										type="submit"
 										variant="primary"
-										data-cy="contactMsgBtn"
+										data-cy="contact-msg-btn"
 										className="primary-color-shadow px-5"
 										disabled={score <= .1 ? true : false }
 									>

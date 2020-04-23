@@ -88,7 +88,8 @@ const NewBranchForm = ({ user, setNotification, createBranch }) => {
 					errors,
 					setFieldValue
 				}) => (
-					<Form data-cy="registerForm"
+					<Form
+						data-cy="new-branch-form"
 						noValidate
 						onSubmit={handleSubmit}
 						className="text-left"
@@ -96,7 +97,7 @@ const NewBranchForm = ({ user, setNotification, createBranch }) => {
 						{/* Branch full name input */}
 						<Form.Row className="d-flex justify-content-center">
 							<Form.Group
-								controlId="branchNameInput"
+								controlId="branch-name-input"
 								as={Col}
 							>
 								<Form.Label>
@@ -105,7 +106,7 @@ const NewBranchForm = ({ user, setNotification, createBranch }) => {
 								<Form.Control
 									type="text"
 									name="name"
-									data-cy="nameInput"
+									data-cy="name-input"
 									onChange={handleChange}
 									onBlur={handleBlur}
 									value={values.name}
@@ -124,7 +125,7 @@ const NewBranchForm = ({ user, setNotification, createBranch }) => {
 						{/* Branch town input */}
 						<Form.Row className="d-flex justify-content-center">
 							<Form.Group
-								controlId="branchTownInput"
+								controlId="branch-town-input"
 								as={Col}
 							>
 								<Form.Label>
@@ -133,7 +134,7 @@ const NewBranchForm = ({ user, setNotification, createBranch }) => {
 								<Form.Control
 									type="text"
 									name="town"
-									data-cy="branchTownInput"
+									data-cy="branch-town-input"
 									onChange={handleChange}
 									onBlur={handleBlur}
 									value={values.town}
@@ -152,7 +153,7 @@ const NewBranchForm = ({ user, setNotification, createBranch }) => {
 						{/* Branch address input */}
 						<Form.Row className="d-flex justify-content-center">
 							<Form.Group
-								controlId="branchAddressInput"
+								controlId="branch-address-input"
 								as={Col}
 							>
 								<Form.Label>
@@ -162,7 +163,7 @@ const NewBranchForm = ({ user, setNotification, createBranch }) => {
 									as="textarea"
 									name="address"
 									rows="2"
-									data-cy="branchAddressInput"
+									data-cy="branch-address-input"
 									onChange={handleChange}
 									onBlur={handleBlur}
 									value={values.address}
@@ -181,7 +182,7 @@ const NewBranchForm = ({ user, setNotification, createBranch }) => {
 						{/* Branch phone number input */}
 						<Form.Row className="d-flex justify-content-center">
 							<Form.Group
-								controlId="branchPhoneInput"
+								controlId="branch-phone-input"
 								as={Col}
 							>
 								<Form.Label>
@@ -190,7 +191,7 @@ const NewBranchForm = ({ user, setNotification, createBranch }) => {
 								<Form.Control
 									type="text"
 									name="phone"
-									data-cy="branchPhoneInput"
+									data-cy="branch-phone-input"
 									onChange={handleChange}
 									onKeyUp={event => formatPhoneNumber(event, 'phone', setFieldValue)}
 									onBlur={handleBlur}
@@ -210,7 +211,7 @@ const NewBranchForm = ({ user, setNotification, createBranch }) => {
 						{/* Branch info / descr input */}
 						<Form.Row className="d-flex justify-content-center">
 							<Form.Group
-								controlId="branchInfoInput"
+								controlId="branch-info-input"
 								as={Col}
 							>
 								<Form.Label>
@@ -220,7 +221,7 @@ const NewBranchForm = ({ user, setNotification, createBranch }) => {
 									as="textarea"
 									name="info"
 									rows="3"
-									data-cy="branchInfoInput"
+									data-cy="branch-info-input"
 									onChange={handleChange}
 									onBlur={handleBlur}
 									value={values.info}
