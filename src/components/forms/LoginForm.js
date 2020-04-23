@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { login } from '../../reducers/loginReducer'
@@ -14,6 +14,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 
 const LoginForm = ({ setNotification, ...props }) => {
+	const unmounted = useRef(false)
+	useEffect(() => {
+		return () => { unmounted.current = true }
+	}, [])
 
 	const [loginSuccessful, setLoginSuccessful] = useState(false)
 
@@ -58,7 +62,7 @@ const LoginForm = ({ setNotification, ...props }) => {
 
 	const togglePassVis = () => {
 		setPassVis(!passHidden)
-		let passInput = document.getElementById('loginPass')
+		let passInput = document.getElementById('login-pass')
 		if (passHidden) {
 			passInput.type = 'password'
 		} else {
@@ -71,13 +75,15 @@ const LoginForm = ({ setNotification, ...props }) => {
 	const [score, setScore] = useState(null)
 
 	const setRecaptchaScore = score => {
-		if (score <= .1) {
-			setNotification({
-				message: `Ваша оцінка recaptcha занизька: ${score}, спробуйте оновити сторінку.`,
-				variant: 'warning'
-			}, 5)
+		if (!unmounted.current) {
+			if (score <= .1) {
+				setNotification({
+					message: `Ваша оцінка recaptcha занизька: ${score}, спробуйте оновити сторінку.`,
+					variant: 'warning'
+				}, 5)
+			}
+			setScore(score)
 		}
-		setScore(score)
 	}
 
 	return (
@@ -105,7 +111,8 @@ const LoginForm = ({ setNotification, ...props }) => {
 						touched,
 						errors
 					}) => (
-						<Form data-cy="loginForm"
+						<Form
+							data-cy="login-form"
 							noValidate
 							onSubmit={handleSubmit}
 						>
@@ -119,7 +126,7 @@ const LoginForm = ({ setNotification, ...props }) => {
 									<Form.Control
 										type="email"
 										name="email"
-										data-cy="emailInput"
+										data-cy="email-input"
 										onChange={handleChange}
 										onBlur={handleBlur}
 										value={values.email}
@@ -143,11 +150,11 @@ const LoginForm = ({ setNotification, ...props }) => {
 									</Form.Label>
 									<InputGroup>
 										<Form.Control
-											id="loginPass"
+											id="login-pass"
 											className="elevated-z-index"
 											type="password"
 											name="password"
-											data-cy="passwordInput"
+											data-cy="password-input"
 											onChange={handleChange}
 											onBlur={handleBlur}
 											value={values.password}
@@ -201,7 +208,7 @@ const LoginForm = ({ setNotification, ...props }) => {
 									<Button
 										type="submit"
 										variant="primary"
-										data-cy="contactMsgBtn"
+										data-cy="contact-msg-btn"
 										className="primary-color-shadow px-5"
 										disabled={score <= .1 ? true : false }
 									>

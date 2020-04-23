@@ -1,0 +1,73 @@
+export const minDate = months => {
+	let minDate = new Date()
+	minDate.setMonth(minDate.getMonth() - months)
+	return minDate
+}
+
+export const maxDate = months => {
+	let maxDate = new Date()
+	maxDate.setMonth(maxDate.getMonth() + months)
+	return maxDate
+}
+
+export const schoolYearMonths = locale => {
+
+	// check if date is in summer
+	const isSummer = date => {
+		const summerMonths = [5, 6, 7]
+		if (summerMonths.includes(date.getMonth())) {
+			return true
+		}
+		return false
+	}
+
+	// how many months left till the end of the school year
+	const monthsTillSummer = month => {
+		const studyMonths = 9
+		if (month > 8) {
+			return (studyMonths - month) + studyMonths
+		} else {
+			return (studyMonths - month) - 3 // months of the summer
+		}
+	}
+
+	// get array of period months based on the current and ending month
+	const getPeriodMonths = (currentMonth, endingMonth) => {
+		const date = new Date()
+		const result = []
+		while (endingMonth !== currentMonth) {
+			date.setMonth(endingMonth - 1)
+			result.push(date.toLocaleString(locale, { month:'long' }))
+			endingMonth--
+		}
+		return result.reverse()
+	}
+
+	const fullYear = () => {
+		let date = new Date()
+		const result = []
+		try {
+			// nine being months in a school year
+			[...Array(9).keys()].map(month => {
+				// start from september
+				date.setMonth(8 + month)
+				result.push(date.toLocaleString(locale, { month:'long' }))
+				return null
+			})
+		} catch (error) {
+			console.error(error)
+		}
+		return result
+	}
+
+	// finally
+	const currentDate = new Date()
+	let endingMonth
+
+	if (currentDate.getMonth() === 8 || isSummer(currentDate)) { // september or summer
+		return fullYear()
+	} else { // not september nor summer, i.e. middle of the year
+		endingMonth = (currentDate.getMonth() - 1) + monthsTillSummer(currentDate.getMonth())
+		return getPeriodMonths(currentDate.getMonth(), endingMonth)
+	}
+}

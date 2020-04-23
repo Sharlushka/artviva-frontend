@@ -51,7 +51,7 @@ const PassResetForm = ({ setNotification, passResetToken, email }) => {
 
 	const togglePassVis = () => {
 		setPassVis(!passHidden)
-		let passInput = document.getElementById('NewUserPass')
+		let passInput = document.getElementById('new-user-pass')
 		if (passHidden) {
 			passInput.type = 'password'
 		} else {
@@ -78,7 +78,8 @@ const PassResetForm = ({ setNotification, passResetToken, email }) => {
 					touched,
 					errors
 				}) => (
-					<Form data-cy="loginForm"
+					<Form
+						data-cy="pass-reset-form"
 						noValidate
 						onSubmit={handleSubmit}
 					>
@@ -90,11 +91,11 @@ const PassResetForm = ({ setNotification, passResetToken, email }) => {
 								</Form.Label>
 								<InputGroup>
 									<Form.Control
-										id="NewUserPass"
+										id="new-user-pass"
 										className="elevated-z-index"
 										type="password"
 										name="password"
-										data-cy="passwordInput"
+										data-cy="password-input"
 										onChange={handleChange}
 										onBlur={handleBlur}
 										value={values.password}
@@ -134,7 +135,7 @@ const PassResetForm = ({ setNotification, passResetToken, email }) => {
 								<Button
 									type="submit"
 									variant="primary"
-									data-cy="PassResetBtn"
+									data-cy="pass-reset-btn"
 									className="primary-color-shadow px-5"
 								>
 									Змінити пароль

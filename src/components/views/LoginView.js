@@ -1,5 +1,4 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import LoginForm from '../forms/LoginForm'
 import { Container, Row, Col, Image } from 'react-bootstrap'
 
@@ -23,12 +22,4 @@ const LoginView = () => {
 	)
 }
 
-const mapStateToProps = (state) => {
-	return {
-		user: state.user
-	}
-}
-
-export default connect(
-	mapStateToProps
-)(LoginView)
+export default LoginView
