@@ -1,5 +1,5 @@
 import axios from 'axios'
-const baseUrl = `${process.env.REACT_APP_API_URL}/api/teachers`
+const baseUrl = `${process.env.REACT_APP_API_URL}/api/pupils`
 
 let token = null
 
@@ -13,7 +13,7 @@ const setToken = newToken => {
 }
 
 /**
- * Get list of all teachers
+ * Get list of all pupils
  *
  * @returns {Object} - Response data
  */
@@ -23,9 +23,10 @@ const getAll = async () => {
 }
 
 /**
- * Create new teacher
+ * Create new pupil
  * @param {Object} payload - New specialty data
- * @param {string} payload.name - Unique teacher name /? really
+ * @param {string} payload.name - Unique pupil name
+ * @param {string} payload.info - Some optional pupil info
  *
  * @returns {Object} - Response data
  */
@@ -38,8 +39,8 @@ const create = async payload => {
 }
 
 /**
- * Delete single teacher
- * @param {string} id - Teacher ID
+ * Delete single pupil
+ * @param {string} id - Pupil ID
  *
  * @returns {Object} - Response data
  */
@@ -53,10 +54,10 @@ const deleteById = async id => {
 }
 
 /**
- * Update teacher's data
- * @param {string} id - Teacher's id
- * @param {Object} payload - Updated teacher's data
- * @param {string} payload.name - Unique teacher's name
+ * Update pupil's data
+ * @param {string} id - Pupil's id
+ * @param {Object} payload - Updated pupil's data
+ * @param {string} payload.name - Unique pupil name
  *
  * @returns {Object} - Response data
  */
