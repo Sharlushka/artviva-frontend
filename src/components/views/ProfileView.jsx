@@ -1,16 +1,19 @@
 import React, { useRef } from 'react'
 import { connect } from 'react-redux'
-import { Container, Row, Col, Tabs, Tab, ListGroup } from 'react-bootstrap'
+import { Container, Row, Col, Tabs, Tab } from 'react-bootstrap'
 import NewTeacherForm from '../forms/NewTeacherForm'
+import NewPupilForm from '../forms/NewPupilForm'
 import NewBranchForm from '../forms/NewBranchForm'
 import NewSpecialtyForm from '../forms/NewSpecialtyForm'
 import Toggler from '../common/Toggler'
 import TeachersList from '../teachers/TeachersList'
+import PupilsList from '../pupils/PupilsList'
 import BranchesList from '../branches/BranchesList'
 import SpecialtiesList from '../specialties/SpecialtiesList'
 
 const ProfileView = ({ user }) => {
 	const newTeacherFormRef = useRef(null)
+	const newPupilFormRef = useRef(null)
 	const newBranchFormRef = useRef(null)
 	const newSpecialtyFormRef = useRef(null)
 
@@ -23,21 +26,7 @@ const ProfileView = ({ user }) => {
 							<h4 className="text-left custom-font py-4">
 								Ваш профіль, {user.name}.
 							</h4>
-							<Tabs defaultActiveKey="teachers" id="profileTabs">
-								{/* Profile tab */}
-								<Tab eventKey="profile" title="Профіль" className="profile-tab">
-									<ListGroup variant="flush">
-										<ListGroup.Item>
-											{user.name} {user.middlename} {user.lastname}
-										</ListGroup.Item>
-										<ListGroup.Item>
-											{user.email}
-										</ListGroup.Item>
-										<ListGroup.Item>
-											{user.id}
-										</ListGroup.Item>
-									</ListGroup>
-								</Tab>
+							<Tabs defaultActiveKey="pupils" id="profile-tabs">
 
 								{/* Teachers list tab */}
 								<Tab eventKey="teachers" title="Вчителі">
@@ -53,6 +42,26 @@ const ProfileView = ({ user }) => {
 													ref={newTeacherFormRef}
 												>
 													<NewTeacherForm />
+												</Toggler>
+											</Col>
+										</Row>
+									</Container>
+								</Tab>
+
+								{/* Pupils tab */}
+								<Tab eventKey="pupils" title="Учні">
+									<Col className="px-0">
+										<PupilsList />
+									</Col>
+									<Container fluid>
+										<Row className="d-flex justify-content-center">
+											<Col md={8} lg={6} xl={4}>
+												<Toggler
+													buttonLabel="Додати нового учня"
+													data-cy="add-new-branch-btn"
+													ref={newPupilFormRef}
+												>
+													<NewPupilForm />
 												</Toggler>
 											</Col>
 										</Row>

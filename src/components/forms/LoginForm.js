@@ -6,12 +6,11 @@ import { setNotification } from '../../reducers/notificationReducer'
 import { Container, Col, Form, InputGroup, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import ReCaptchaComp from '../common/ReCaptchaComp'
-
 import { Formik } from 'formik'
 import * as Yup from 'yup'
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
+import BtnWithSpinner from '../common/BtnWithSpinner'
 
 const LoginForm = ({ setNotification, ...props }) => {
 	const unmounted = useRef(false)
@@ -20,13 +19,14 @@ const LoginForm = ({ setNotification, ...props }) => {
 	}, [])
 
 	const [loginSuccessful, setLoginSuccessful] = useState(false)
+	const [logginIn, setLogginIn] = useState(false)
 
 	const handleLogin = async ({ email, password }) => {
 		const userCreds = {
 			email: email,
 			password : password
 		}
-
+		setLogginIn(true)
 		props.login(userCreds)
 			.then(() => {
 				setNotification({
@@ -41,6 +41,11 @@ const LoginForm = ({ setNotification, ...props }) => {
 					message,
 					variant: 'danger'
 				}, 5)
+			})
+			.finally(() => {
+				if (!unmounted.current) {
+					setLogginIn(false)
+				}
 			})
 	}
 
@@ -119,7 +124,7 @@ const LoginForm = ({ setNotification, ...props }) => {
 
 							{/* Message sender email input */}
 							<Form.Row className="d-flex justify-content-center">
-								<Form.Group as={Col} sm="10">
+								<Form.Group as={Col} sm={10} >
 									<Form.Label>
 										Ваша електронна пошта
 									</Form.Label>
@@ -143,8 +148,8 @@ const LoginForm = ({ setNotification, ...props }) => {
 							</Form.Row>
 
 							{/* User password input */}
-							<Form.Row className="d-flex justify-content-center">
-								<Form.Group as={Col} sm="10" >
+							<Form.Row className="d-flex1 justify-content-center">
+								<Form.Group as={Col} sm={10} >
 									<Form.Label>
 										Ваш пароль
 									</Form.Label>
@@ -172,10 +177,10 @@ const LoginForm = ({ setNotification, ...props }) => {
 												}
 											</Button>
 										</InputGroup.Append>
-										<Form.Control.Feedback>
+										<Form.Control.Feedback className="login-pass-feedback">
 											Ok
 										</Form.Control.Feedback>
-										<Form.Control.Feedback type="invalid">
+										<Form.Control.Feedback type="invalid" className="login-pass-feedback">
 											{errors.password}
 										</Form.Control.Feedback>
 									</InputGroup>
@@ -186,7 +191,7 @@ const LoginForm = ({ setNotification, ...props }) => {
 							<Form.Row className="d-flex justify-content-center">
 								<Form.Group
 									as={Col}
-									sm="10"
+									sm={10}
 									className="d-flex
 									justify-content-between
 									align-items-center"
@@ -200,20 +205,20 @@ const LoginForm = ({ setNotification, ...props }) => {
 								</Form.Group>
 								<Form.Group
 									as={Col}
-									sm="10"
+									sm={10}
 									className="d-flex pt-3
 										justify-content-center
 										align-items-center"
 								>
-									<Button
-										type="submit"
+									<BtnWithSpinner
+										btnType="submit"
+										loadingState={logginIn}
+										disabledState={score <= .1 ? true : false}
+										label="Логін"
 										variant="primary"
-										data-cy="contact-msg-btn"
-										className="primary-color-shadow px-5"
-										disabled={score <= .1 ? true : false }
-									>
-										Логін
-									</Button>
+										dataCy="login-btn"
+										classList="primary-color-shadow px-5"
+									/>
 								</Form.Group>
 							</Form.Row>
 						</Form>

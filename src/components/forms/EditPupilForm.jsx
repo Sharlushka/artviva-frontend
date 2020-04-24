@@ -1,38 +1,22 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { setNotification } from '../../reducers/notificationReducer'
-import { updateSpecialty } from '../../reducers/specialtiesReducer'
+import { updatePupil } from '../../reducers/pupilsReducer'
 import { Container, Col, Form } from 'react-bootstrap'
 import ButtonComponent from '../common/Button'
 import { Formik } from 'formik'
+import pupilsService from '../../services/pupils'
 import * as Yup from 'yup'
-import specialtyService from '../../services/branches'
 
-const EditSpecialtyForm = ({ user, setNotification, updateSpecialty, specialty }) => {
-
-	const specialtyFormSchema = Yup.object().shape({ // move this somewhere!
-		title: Yup.string()
-			.min(2, 'Не менш 2 символів.')
-			.max(128, 'Максимум 128 символів.')
-			.required('Введіть повну назву філії.'),
-		cost: Yup.number()
-			.typeError('Повинно бути числом.')
-			.required('Обов\'язкове поле.')
-			.positive('Повинно бути більше нуля.')
-			.integer('Повинно бути цілим числом.'),
-		info: Yup.string()
-			.min(3, 'Не менш 3 символів.')
-			.max(255, 'Максимум 255 символів.')
-			.required('Введіть опис.')
-	})
+const EditPupilForm = ({ user, setNotification, updatePupil, pupil }) => {
 
 	// set auth token
 	useEffect(() => {
-		specialtyService.setToken(user.token)
+		pupilsService.setToken(user.token)
 	}, [user])
 
-	const saveSpecialtyEdits = (values, setErrors) => {
-		updateSpecialty(specialty.id, values)
+	const savePupilEdits = (values, setErrors) => {
+		updatePupil(pupil.id, values)
 			.then(() => {
 				setNotification({
 					message: 'Зміни успішно збережено.',
@@ -41,7 +25,7 @@ const EditSpecialtyForm = ({ user, setNotification, updateSpecialty, specialty }
 			})
 			.catch(error => {
 				const { message, cause } = { ...error.response.data }
-				if (cause === 'title') {
+				if (cause === 'name') {
 					setErrors({ title: message })
 				}
 				setNotification({
@@ -51,21 +35,30 @@ const EditSpecialtyForm = ({ user, setNotification, updateSpecialty, specialty }
 			})
 	}
 
+	const pupilFormSchema = Yup.object().shape({
+		name: Yup.string()
+			.min(2, 'Не менш 2 символів.')
+			.max(128, 'Максимум 128 символів.')
+			.required('Введіть повнe ім\'я.'),
+		info: Yup.string()
+			.min(3, 'Не менш 3 символів.')
+			.max(255, 'Максимум 255 символів.')
+	})
+
 	return (
 		<Container>
 			<h2 className="text-center custom-font py-4">
-				Редагувати спеціальність
+				Редагувати данні вчітеля
 			</h2>
 			<Formik
 				initialValues={{
-					title: specialty.title,
-					cost: specialty.cost,
-					info: specialty.info
+					name: pupil.name,
+					info: pupil.info
 				}}
 				onSubmit={async (values, { setErrors }) => {
-					await saveSpecialtyEdits(values, setErrors)
+					await savePupilEdits(values, setErrors)
 				}}
-				validationSchema={specialtyFormSchema}
+				validationSchema={pupilFormSchema}
 			>
 				{({ handleSubmit,
 					handleChange,
@@ -75,71 +68,43 @@ const EditSpecialtyForm = ({ user, setNotification, updateSpecialty, specialty }
 					errors
 				}) => (
 					<Form
-						data-cy="edit-specialty-form"
+						data-cy="edit-pupil-form"
 						noValidate
 						onSubmit={handleSubmit}
 						className="text-left"
 					>
-						{/* Specialty title input */}
+						{/* Pupil name input */}
 						<Form.Row className="d-flex justify-content-center">
 							<Form.Group
-								controlId={`${specialty.id}-specialty-title-input`}
+								controlId={`${pupil.id}-pupil-name-input`}
 								as={Col}
 							>
 								<Form.Label>
-									Полна назва спеціальності
+									Ім&apos;я
 								</Form.Label>
 								<Form.Control
 									type="text"
-									name="title"
-									data-cy="title-input"
+									name="name"
+									data-cy="pupil-name-input"
 									onChange={handleChange}
 									onBlur={handleBlur}
-									value={values.title}
-									isValid={touched.title && !errors.title}
-									isInvalid={touched.title && !!errors.title}
+									value={values.name}
+									isValid={touched.name && !errors.name}
+									isInvalid={touched.name && !!errors.name}
 								/>
 								<Form.Control.Feedback>
 									Ok
 								</Form.Control.Feedback>
 								<Form.Control.Feedback type="invalid">
-									{errors.title}
+									{errors.name}
 								</Form.Control.Feedback>
 							</Form.Group>
 						</Form.Row>
 
-						{/* Specialty cost input */}
+						{/* Pupil info / descr input */}
 						<Form.Row className="d-flex justify-content-center">
 							<Form.Group
-								controlId={`${specialty.id}-specialty-cost-input`}
-								as={Col}
-							>
-								<Form.Label>
-									Вартість навчання за місяць
-								</Form.Label>
-								<Form.Control
-									type="text"
-									name="cost"
-									data-cy="specialty-cost-input"
-									onChange={handleChange}
-									onBlur={handleBlur}
-									value={values.cost}
-									isValid={touched.cost && !errors.cost}
-									isInvalid={touched.cost && !!errors.cost}
-								/>
-								<Form.Control.Feedback>
-									Ok
-								</Form.Control.Feedback>
-								<Form.Control.Feedback type="invalid">
-									{errors.cost}
-								</Form.Control.Feedback>
-							</Form.Group>
-						</Form.Row>
-
-						{/* Specilaty info / descr input */}
-						<Form.Row className="d-flex justify-content-center">
-							<Form.Group
-								controlId={`${specialty.id}-specialty-info-input`}
+								controlId={`${pupil.id}-pupil-info-input`}
 								as={Col}
 							>
 								<Form.Label>
@@ -149,7 +114,7 @@ const EditSpecialtyForm = ({ user, setNotification, updateSpecialty, specialty }
 									as="textarea"
 									name="info"
 									rows="3"
-									data-cy="specialty-info-input"
+									data-cy="pupil-info-input"
 									onChange={handleChange}
 									onBlur={handleBlur}
 									value={values.info}
@@ -195,10 +160,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
 	setNotification,
-	updateSpecialty
+	updatePupil
 }
 
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(EditSpecialtyForm)
+)(EditPupilForm)

@@ -1,28 +1,28 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { setNotification } from '../../reducers/notificationReducer'
-import { initializeSpecialties } from '../../reducers/specialtiesReducer'
+import { initializePupils } from '../../reducers/pupilsReducer'
 import { ListGroup } from 'react-bootstrap'
-import Specialty from './Specialty'
+import Pupil from './Pupil'
 
-const SpecialtiesList = ({ initializeSpecialties, specialties }) => {
+const PupilsList = ({ pupils, ...props }) => {
 
 	useEffect(() => {
-		initializeSpecialties()
+		props.initializePupils()
 	// eslint-disable-next-line
 	}, [])
 
 	return (
 		<>
-			<h5 className="py-2">Спеціальності</h5>
-			{specialties
+			<h5 className="py-2">Учні</h5>
+			{pupils
 				? <ListGroup>
-					{specialties.map(specialty =>
+					{pupils.map(pupil =>
 						<ListGroup.Item
 							className="px-0 py-1"
-							key={specialty.id}
+							key={pupil.id}
 						>
-							<Specialty specialty={specialty} />
+							<Pupil pupil={pupil} />
 						</ListGroup.Item>
 					)}
 				</ListGroup>
@@ -34,16 +34,16 @@ const SpecialtiesList = ({ initializeSpecialties, specialties }) => {
 
 const mapStateToProps = (state) => {
 	return {
-		specialties: state.specialties
+		pupils: state.pupils
 	}
 }
 
 const mapDispatchToProps = {
 	setNotification,
-	initializeSpecialties
+	initializePupils
 }
 
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(SpecialtiesList)
+)(PupilsList)

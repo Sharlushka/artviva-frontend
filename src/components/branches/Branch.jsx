@@ -7,7 +7,7 @@ import branchService from '../../services/branches'
 import { setNotification } from '../../reducers/notificationReducer'
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons'
 import ButtonComponent from '../common/Button'
-import BranchDeleteModal from './BranchDeleteModal'
+import EntityDeleteModal from '../common/EntityDeleteModal'
 import Toggler from '../common/Toggler'
 import EditBranchForm from '../forms/EditBranchForm'
 
@@ -47,7 +47,7 @@ const Branch = ({ user, branch, deleteBranch }) => {
 			<Button
 				block
 				onClick={() => setOpen(!open)}
-				aria-controls="department-collapse"
+				aria-controls="branch-collapse"
 				aria-expanded={open}
 				variant="link"
 				className="d-flex justify-content-between align-items-center"
@@ -93,8 +93,10 @@ const Branch = ({ user, branch, deleteBranch }) => {
 				</Container>
 			</Collapse>
 			{/* Branch delete modal */}
-			<BranchDeleteModal
-				branch={branch}
+			<EntityDeleteModal
+				subject="філію"
+				subjectid={branch.id}
+				valuetoconfirm={branch.name}
 				show={modalShow}
 				handleDelete={handleDelete}
 				onHide={() => setModalShow(false)}

@@ -12,11 +12,11 @@ const BranchesList = ({ initializeBranches, branches }) => {
 	// eslint-disable-next-line
 	}, [])
 
-	if (branches) {
-		return (
-			<>
-				<h5 className="py-2">Всі філії</h5>
-				<ListGroup>
+	return (
+		<>
+			<h5 className="py-2">Філії</h5>
+			{branches
+				? <ListGroup>
 					{branches.map(branch =>
 						<ListGroup.Item
 							className="px-0 py-1"
@@ -26,13 +26,10 @@ const BranchesList = ({ initializeBranches, branches }) => {
 						</ListGroup.Item>
 					)}
 				</ListGroup>
-			</>
-		)
-	} else {
-		return (
-			<h4>Loading...</h4>
-		)
-	}
+				: <h4>Завантаження...</h4>
+			}
+		</>
+	)
 }
 
 const mapStateToProps = (state) => {

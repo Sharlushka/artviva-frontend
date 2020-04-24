@@ -7,7 +7,7 @@ import teachersService from '../../services/teachers'
 import { setNotification } from '../../reducers/notificationReducer'
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons'
 import ButtonComponent from '../common/Button'
-import TeacherDeleteModal from './TeacherDeleteModal' // should be one HOC component i guess
+import EntityDeleteModal from '../common/EntityDeleteModal'
 import Toggler from '../common/Toggler'
 import EditTeacherForm from '../forms/EditTeacherForm'
 
@@ -47,7 +47,7 @@ const Teacher = ({ user, teacher, deleteTeacher }) => {
 			<Button
 				block
 				onClick={() => setOpen(!open)}
-				aria-controls="specialty-collapse"
+				aria-controls="teacher-collapse"
 				aria-expanded={open}
 				variant="link"
 				className="d-flex justify-content-between align-items-center"
@@ -72,7 +72,7 @@ const Teacher = ({ user, teacher, deleteTeacher }) => {
 						<Col md={8} lg={6} xl={4}>
 							<Toggler
 								buttonLabel="Редагувати данні вчітеля"
-								dataCy="edit-teacher-btn"
+								data-cy="edit-teacher-btn"
 								ref={editTeacherFormRef}
 							>
 								<EditTeacherForm teacher={teacher}/>
@@ -89,8 +89,10 @@ const Teacher = ({ user, teacher, deleteTeacher }) => {
 				</Container>
 			</Collapse>
 			{/* Teacher delete modal */}
-			<TeacherDeleteModal
-				teacher={teacher}
+			<EntityDeleteModal
+				subject="вчітеля"
+				subjectid={teacher.id}
+				valuetoconfirm={teacher.name}
 				show={modalShow}
 				handleDelete={handleDelete}
 				onHide={() => setModalShow(false)}

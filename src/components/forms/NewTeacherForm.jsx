@@ -73,7 +73,7 @@ const NewTeacherForm = ({ user, setNotification, createTeacher }) => {
 						{/* Teacher name input */}
 						<Form.Row className="d-flex justify-content-center">
 							<Form.Group
-								controlId="teacher-title-input"
+								controlId="teacher-name-input"
 								as={Col}
 							>
 								<Form.Label>

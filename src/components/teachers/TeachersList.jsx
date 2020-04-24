@@ -5,18 +5,18 @@ import { initializeTeachers } from '../../reducers/teachersReducer'
 import { ListGroup } from 'react-bootstrap'
 import Teacher from './Teacher'
 
-const TeachersList = ({ initializeTeachers, teachers }) => {
+const TeachersList = ({ teachers, ...props }) => {
 
 	useEffect(() => {
-		initializeTeachers()
+		props.initializeTeachers()
 	// eslint-disable-next-line
 	}, [])
 
-	if (teachers) {
-		return (
-			<>
-				<h5 className="py-2">Вчітелі</h5>
-				<ListGroup>
+	return (
+		<>
+			<h5 className="py-2">Вчітелі</h5>
+			{teachers
+				? <ListGroup>
 					{teachers.map(teacher =>
 						<ListGroup.Item
 							className="px-0 py-1"
@@ -26,13 +26,10 @@ const TeachersList = ({ initializeTeachers, teachers }) => {
 						</ListGroup.Item>
 					)}
 				</ListGroup>
-			</>
-		)
-	} else {
-		return (
-			<h4>Loading...</h4>
-		)
-	}
+				: <h4>Завантаження...</h4>
+			}
+		</>
+	)
 }
 
 const mapStateToProps = (state) => {

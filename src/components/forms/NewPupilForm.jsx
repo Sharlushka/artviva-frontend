@@ -1,34 +1,28 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { setNotification } from '../../reducers/notificationReducer'
-import { updateTeacher } from '../../reducers/teachersReducer'
+import { createPupil } from '../../reducers/pupilsReducer'
 import { Container, Col, Form } from 'react-bootstrap'
 import ButtonComponent from '../common/Button'
 import { Formik } from 'formik'
+import pupilsService from '../../services/pupils'
 import * as Yup from 'yup'
-import teachersService from '../../services/teachers'
 
-const EditTeacherForm = ({ user, setNotification, updateTeacher, teacher }) => {
-
-	const teacherFormSchema = Yup.object().shape({
-		name: Yup.string()
-			.min(2, 'Не менш 2 символів.')
-			.max(128, 'Максимум 128 символів.')
-			.required('Введіть повнe ім\'я.')
-	})
+const NewPupilForm = ({ user, setNotification, createPupil }) => {
 
 	// set auth token
 	useEffect(() => {
-		teachersService.setToken(user.token)
+		pupilsService.setToken(user.token)
 	}, [user])
 
-	const saveTeacherEdits = (values, setErrors) => {
-		updateTeacher(teacher.id, values)
+	const addNewTeacher = (values, setErrors, resetForm ) => {
+		createPupil(values)
 			.then(() => {
 				setNotification({
-					message: 'Зміни успішно збережено.',
+					message: 'Новий учень був успішно додан.',
 					variant: 'success'
 				}, 5)
+				resetForm()
 			})
 			.catch(error => {
 				const { message, cause } = { ...error.response.data }
@@ -42,19 +36,31 @@ const EditTeacherForm = ({ user, setNotification, updateTeacher, teacher }) => {
 			})
 	}
 
+	const pupilFormSchema = Yup.object().shape({
+		name: Yup.string()
+			.min(2, 'Не менш 2 символів.')
+			.max(128, 'Максимум 128 символів.')
+			.required('Введіть повнe ім\'я.'),
+		info: Yup.string()
+			.min(3, 'Не менш 3 символів.')
+			.max(255, 'Максимум 255 символів.')
+	})
+
 	return (
 		<Container>
 			<h2 className="text-center custom-font py-4">
-				Редагувати данні вчітеля
+				Додати учня
 			</h2>
 			<Formik
 				initialValues={{
-					name: teacher.name
+					name: '',
+					info: ''
+
 				}}
-				onSubmit={async (values, { setErrors }) => {
-					await saveTeacherEdits(values, setErrors)
+				onSubmit={async (values, { resetForm, setErrors }) => {
+					await addNewTeacher(values, setErrors, resetForm)
 				}}
-				validationSchema={teacherFormSchema}
+				validationSchema={pupilFormSchema}
 			>
 				{({ handleSubmit,
 					handleChange,
@@ -64,24 +70,24 @@ const EditTeacherForm = ({ user, setNotification, updateTeacher, teacher }) => {
 					errors
 				}) => (
 					<Form
-						data-cy="edit-teacher-form"
+						data-cy="new-pupil-form"
 						noValidate
 						onSubmit={handleSubmit}
 						className="text-left"
 					>
-						{/* Teacher name input */}
+						{/* Pupil name input */}
 						<Form.Row className="d-flex justify-content-center">
 							<Form.Group
-								controlId={`${teacher.id}-teacher-name-input`}
+								controlId="pupil-name-input"
 								as={Col}
 							>
 								<Form.Label>
-									Ім&apos;я
+									Полне ім&apos;я учня
 								</Form.Label>
 								<Form.Control
 									type="text"
 									name="name"
-									data-cy="teacher-name-input"
+									data-cy="name-input"
 									onChange={handleChange}
 									onBlur={handleBlur}
 									value={values.name}
@@ -97,6 +103,35 @@ const EditTeacherForm = ({ user, setNotification, updateTeacher, teacher }) => {
 							</Form.Group>
 						</Form.Row>
 
+						{/* Pupil info / descr input */}
+						<Form.Row className="d-flex justify-content-center">
+							<Form.Group
+								controlId="pupil-info-input"
+								as={Col}
+							>
+								<Form.Label>
+									Додаткова інформація / опис
+								</Form.Label>
+								<Form.Control
+									as="textarea"
+									name="info"
+									rows="3"
+									data-cy="pupil-info-input"
+									onChange={handleChange}
+									onBlur={handleBlur}
+									value={values.info}
+									isValid={touched.info && !errors.info}
+									isInvalid={touched.info && !!errors.info}
+								/>
+								<Form.Control.Feedback>
+									Ok
+								</Form.Control.Feedback>
+								<Form.Control.Feedback type="invalid">
+									{errors.info}
+								</Form.Control.Feedback>
+							</Form.Group>
+						</Form.Row>
+
 						{/* Button */}
 						<Form.Row className="d-flex justify-content-center text-center">
 							<Form.Group
@@ -105,10 +140,10 @@ const EditTeacherForm = ({ user, setNotification, updateTeacher, teacher }) => {
 							>
 								<ButtonComponent
 									block
-									className="px-4"
-									variant="success"
+									className="px-4 primary-color-shadow"
+									variant="primary"
 									type="submit"
-									label="Зберегти"
+									label="Додати"
 								/>
 							</Form.Group>
 						</Form.Row>
@@ -127,10 +162,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
 	setNotification,
-	updateTeacher
+	createPupil
 }
 
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(EditTeacherForm)
+)(NewPupilForm)
