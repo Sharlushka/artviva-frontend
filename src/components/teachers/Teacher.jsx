@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { connect } from 'react-redux'
-import { Container, Row, Col, Collapse, Button } from 'react-bootstrap'
+import { Container, Row, Col, Collapse, Button, ListGroup } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { deleteTeacher } from '../../reducers/teachersReducer'
 import teachersService from '../../services/teachers'
@@ -63,8 +63,17 @@ const Teacher = ({ user, teacher, deleteTeacher }) => {
 			<Collapse in={open}>
 				<Container fluid className="text-left">
 					<Row>
-						<Col>
+						<Col xs={12}>
 							<p>Им&apos;я: {teacher.name}</p>
+						</Col>
+						<Col xs={12}>
+							<ListGroup>Cпеціальність:
+								{teacher.specialties.map(specialty =>
+									<ListGroup.Item key={specialty.id}>
+										{specialty.title}
+									</ListGroup.Item>
+								)}
+							</ListGroup>
 						</Col>
 					</Row>
 

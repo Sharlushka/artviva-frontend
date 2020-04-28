@@ -26,7 +26,7 @@ const ProfileView = ({ user }) => {
 							<h4 className="text-left custom-font py-4">
 								Ваш профіль, {user.name}.
 							</h4>
-							<Tabs defaultActiveKey="pupils" id="profile-tabs">
+							<Tabs defaultActiveKey="teachers" id="profile-tabs">
 
 								{/* Teachers list tab */}
 								<Tab eventKey="teachers" title="Вчителі">
