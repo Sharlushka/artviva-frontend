@@ -14,7 +14,9 @@
 			"@babel/plugin-transform-runtime", {
 				"regenerator": true
 			}
+			
 		],
+		"@babel/syntax-dynamic-import",
 		"@babel/plugin-proposal-class-properties",
 		"@babel/plugin-proposal-export-default-from",
 		["@babel/plugin-transform-react-jsx", {

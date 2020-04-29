@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, Suspense } from 'react'
 import { connect } from 'react-redux'
 import { Container, Row, Col, Collapse, Button, ListGroup } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -7,9 +7,10 @@ import teachersService from '../../services/teachers'
 import { setNotification } from '../../reducers/notificationReducer'
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons'
 import ButtonComponent from '../common/Button'
-import EntityDeleteModal from '../common/EntityDeleteModal'
 import Toggler from '../common/Toggler'
-import EditTeacherForm from '../forms/EditTeacherForm'
+
+const LazyEntityDeleteModal = React.lazy(() => import('../common/EntityDeleteModal'))
+const LazyTeacherForm = React.lazy(() => import('../forms/TeacherForm'))
 
 const Teacher = ({ user, teacher, deleteTeacher }) => {
 	const editTeacherFormRef = useRef(null)
@@ -84,7 +85,9 @@ const Teacher = ({ user, teacher, deleteTeacher }) => {
 								data-cy="edit-teacher-btn"
 								ref={editTeacherFormRef}
 							>
-								<EditTeacherForm teacher={teacher}/>
+								<Suspense fallback={<div>Loading...</div>}>
+									<LazyTeacherForm teacher={teacher} mode="edit" />
+								</Suspense>
 							</Toggler>
 							<ButtonComponent
 								block
@@ -98,14 +101,17 @@ const Teacher = ({ user, teacher, deleteTeacher }) => {
 				</Container>
 			</Collapse>
 			{/* Teacher delete modal */}
-			<EntityDeleteModal
-				subject="вчітеля"
-				subjectid={teacher.id}
-				valuetoconfirm={teacher.name}
-				show={modalShow}
-				handleDelete={handleDelete}
-				onHide={() => setModalShow(false)}
-			/>
+			<Suspense fallback={<div>Loading modal..</div>}>
+				<LazyEntityDeleteModal
+					subject="вчітеля"
+					subjectid={teacher.id}
+					valuetoconfirm={teacher.name}
+					show={modalShow}
+					handleDelete={handleDelete}
+					onHide={() => setModalShow(false)}
+				/>
+			</Suspense>
+
 		</>
 	)
 }

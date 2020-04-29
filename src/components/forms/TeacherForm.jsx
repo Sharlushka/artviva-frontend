@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { setNotification } from '../../reducers/notificationReducer'
-import { createTeacher } from '../../reducers/teachersReducer'
+import { createTeacher, updateTeacher } from '../../reducers/teachersReducer'
 import { Container, Row, Col, Form, Button } from 'react-bootstrap'
 import ButtonComponent from '../common/Button'
 import { Formik, FieldArray, ErrorMessage } from 'formik'
@@ -10,15 +10,37 @@ import teachersService from '../../services/teachers'
 import { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons'
+import PropTypes from 'prop-types'
 
-const NewTeacherForm = ({ user, specialties, setNotification, createTeacher }) => {
+const TeacherForm = ({
+	teacher,
+	user,
+	specialties,
+	setNotification,
+	createTeacher,
+	updateTeacher,
+	mode }) => {
 
+	const [editMode, setEditMode] = useState(false)
 	const [specialtyListData, setSpecialtyListData] = useState([])
+	const [unusedSpecialties, setUnusedSpecialties] = useState([])
 	const [specialtyError, setSpecialtyError] = useState(false)
 
 	useEffect(() => {
 		setSpecialtyListData(specialties.map(specialty => specialty.title))
-	}, [specialties])
+		teachersService.setToken(user.token)
+	}, [user, specialties])
+
+	useEffect(() => {
+		if (mode === 'edit') {
+			setEditMode(true)
+			const fullList = new Set(specialties.map(specialty => specialty.title))
+			const used = new Set(teacher.specialties.map(specialty => specialty.title))
+			const difference = new Set([...fullList].filter((item) => !used.has(item)))
+			setUnusedSpecialties(Array.from(difference))
+		}
+	// eslint-disable-next-line
+	}, [])
 
 	const teacherFormSchema = Yup.object().shape({
 		name: Yup.string()
@@ -28,14 +50,9 @@ const NewTeacherForm = ({ user, specialties, setNotification, createTeacher }) =
 		specialties: Yup.array().of(
 			Yup.string()
 				.oneOf(specialtyListData, 'Ви повинні вибрати не менше одного фаху.')
-				.required('Ви повинні вибрати не менше одного фаху.')
+				.required('Це поле є обов\'язковим.')
 		)
 	})
-
-	// set auth token
-	useEffect(() => {
-		teachersService.setToken(user.token)
-	}, [user])
 
 	const checkSubmitBtnState = ({ specialties }) => {
 		specialties[0] === ''
@@ -43,7 +60,7 @@ const NewTeacherForm = ({ user, specialties, setNotification, createTeacher }) =
 			: setSpecialtyError(false)
 	}
 
-	const addNewTeacher = (values, setErrors, resetForm ) => {
+	const handleTeacher = (values, setErrors, resetForm) => {
 		// check if specialty was added
 		if (values.specialties.length === 0) {
 			setSpecialtyError(true)
@@ -57,8 +74,16 @@ const NewTeacherForm = ({ user, specialties, setNotification, createTeacher }) =
 			specialtiesIds.push(specialties[index].id)
 		})
 		// replace specialties in values with their newly found ids
+		// ---- this really should have to be a new object with new values ----
 		values.specialties = specialtiesIds
 
+		// if current from mode is edit or create..
+		editMode
+			? saveTeacherEdits(values, setErrors)
+			: addNewTeacher(values, setErrors, resetForm)
+	}
+
+	const addNewTeacher = (values, setErrors, resetForm) => {
 		createTeacher(values)
 			.then(() => {
 				setNotification({
@@ -79,19 +104,41 @@ const NewTeacherForm = ({ user, specialties, setNotification, createTeacher }) =
 			})
 	}
 
+	const saveTeacherEdits = (values, setErrors) => {
+		updateTeacher(teacher.id, values)
+			.then(() => {
+				setNotification({
+					message: 'Зміни успішно збережено.',
+					variant: 'success'
+				}, 5)
+			})
+			.catch(error => {
+				const { message, cause } = { ...error.response.data }
+				if (cause === 'name') {
+					setErrors({ title: message })
+				}
+				setNotification({
+					message,
+					variant: 'danger'
+				}, 5)
+			})
+	}
+
 	return (
 		<Container>
 			<h2 className="text-center custom-font py-4">
-				Додати вчітеля
+				{editMode ? 'Редагувати' : 'Додати'} вчітеля
 			</h2>
 			<Formik
 				initialValues={{
-					name: '',
-					specialties: ['']
+					name: editMode ? teacher.name : '',
+					specialties: editMode
+						? teacher.specialties.map(specialty => specialty.title)
+						: ['']
 				}}
-
+				enableReinitialize
 				onSubmit={async (values, { resetForm, setErrors }) => {
-					await addNewTeacher(values, setErrors, resetForm)
+					await handleTeacher(values, setErrors, resetForm)
 				}}
 				validationSchema={teacherFormSchema}
 			>
@@ -100,7 +147,7 @@ const NewTeacherForm = ({ user, specialties, setNotification, createTeacher }) =
 					handleBlur,
 					values,
 					touched,
-					errors
+					errors,
 				}) => (
 					<Form
 						data-cy="new-teacher-form"
@@ -111,7 +158,7 @@ const NewTeacherForm = ({ user, specialties, setNotification, createTeacher }) =
 						{/* Teacher name input */}
 						<Form.Row className="d-flex justify-content-center">
 							<Form.Group
-								controlId="teacher-name-input"
+								controlId={editMode ? `teacher-name-input-${teacher.id}` : 'teacher-name-input'}
 								as={Col}
 								className="mb-4"
 							>
@@ -148,13 +195,25 @@ const NewTeacherForm = ({ user, specialties, setNotification, createTeacher }) =
 														name={`specialties[${index}]`}
 														value={values.specialties[index]}
 														onChange={handleChange}
-														isValid={touched.specialtie && !errors.specialties}
+														isValid={touched.specialties && !errors.specialties}
 														// isInvalid={touched.specialties && !!errors.specialties}
 													>
-														<option>Виберіть...</option>
-														{specialtyListData.map(specialty =>
-															<option value={specialty} key={specialty}>{specialty}</option>
-														)}
+														{editMode
+															? <>
+																{teacher.specialties.map((specialty) =>
+																	<option value={specialty.title} key={specialty.title}>{specialty.title}</option>
+																)}
+																{unusedSpecialties.map(specialty =>
+																	<option value={specialty} key={specialty}>{specialty}</option>
+																)}
+															</>
+															: <>
+																<option>Виберіть...</option>
+																{specialtyListData.map(specialty =>
+																	<option value={specialty} key={specialty}>{specialty}</option>
+																)}
+															</>
+														}
 													</Form.Control>
 												</Col>
 
@@ -173,7 +232,7 @@ const NewTeacherForm = ({ user, specialties, setNotification, createTeacher }) =
 												<Col xs={4} className="my-2 align-items-end border1 border-secondary">
 													<Row className="d-flex justify-content-center">
 														<Col className="pr-1">
-															{/* remove a specialty from the list */}
+															{/* remove specialty from the list */}
 															<Button
 																block
 																variant="outline-danger" size="sm"
@@ -185,7 +244,7 @@ const NewTeacherForm = ({ user, specialties, setNotification, createTeacher }) =
 															</Button>
 														</Col>
 														<Col className="pl-1">
-															{/* add an empty an empty input */}
+															{/* add an empty input */}
 															<Button
 																block
 																variant="outline-success" size="sm"
@@ -206,7 +265,7 @@ const NewTeacherForm = ({ user, specialties, setNotification, createTeacher }) =
 											onClick={() => {
 												arrayHelpers.push('')
 												checkSubmitBtnState(arrayHelpers.form.values) }}>
-											{/* show this when user has removed all specialties from the list */}
+											{/* show this btn when if user has removed all specialties from the list */}
 											Додати фах
 										</Button>
 									)}
@@ -237,6 +296,16 @@ const NewTeacherForm = ({ user, specialties, setNotification, createTeacher }) =
 	)
 }
 
+TeacherForm.propTypes = {
+	teacher: PropTypes.object,
+	user: PropTypes.object.isRequired,
+	specialties: PropTypes.array.isRequired,
+	setNotification: PropTypes.func.isRequired,
+	createTeacher: PropTypes.func.isRequired,
+	updateTeacher: PropTypes.func.isRequired,
+	mode: PropTypes.oneOf(['create', 'edit']).isRequired
+}
+
 const mapStateToProps = (state) => {
 	return {
 		user: state.user,
@@ -246,10 +315,11 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
 	setNotification,
-	createTeacher
+	createTeacher,
+	updateTeacher
 }
 
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(NewTeacherForm)
+)(TeacherForm)

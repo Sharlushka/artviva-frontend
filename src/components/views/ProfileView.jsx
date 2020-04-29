@@ -1,7 +1,6 @@
-import React, { useRef } from 'react'
+import React, { useRef, Suspense } from 'react'
 import { connect } from 'react-redux'
 import { Container, Row, Col, Tabs, Tab } from 'react-bootstrap'
-import NewTeacherForm from '../forms/NewTeacherForm'
 import NewPupilForm from '../forms/NewPupilForm'
 import NewBranchForm from '../forms/NewBranchForm'
 import NewSpecialtyForm from '../forms/NewSpecialtyForm'
@@ -10,6 +9,7 @@ import TeachersList from '../teachers/TeachersList'
 import PupilsList from '../pupils/PupilsList'
 import BranchesList from '../branches/BranchesList'
 import SpecialtiesList from '../specialties/SpecialtiesList'
+const LazyTeacherForm = React.lazy(() => import('../forms/TeacherForm'))
 
 const ProfileView = ({ user }) => {
 	const newTeacherFormRef = useRef(null)
@@ -41,7 +41,9 @@ const ProfileView = ({ user }) => {
 													data-cy="add-new-branch-btn"
 													ref={newTeacherFormRef}
 												>
-													<NewTeacherForm />
+													<Suspense fallback={<div>Loading...</div>}>
+														<LazyTeacherForm mode="create" />
+													</Suspense>
 												</Toggler>
 											</Col>
 										</Row>
