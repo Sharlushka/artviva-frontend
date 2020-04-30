@@ -74,13 +74,12 @@ const TeacherForm = ({
 			specialtiesIds.push(specialties[index].id)
 		})
 		// replace specialties in values with their newly found ids
-		// ---- this really should have to be a new object with new values ----
-		values.specialties = specialtiesIds
+		const valuesToSend = { ...values, specialties: specialtiesIds }
 
 		// if current from mode is edit or create..
 		editMode
-			? saveTeacherEdits(values, setErrors)
-			: addNewTeacher(values, setErrors, resetForm)
+			? saveTeacherEdits(valuesToSend, setErrors)
+			: addNewTeacher(valuesToSend, setErrors, resetForm)
 	}
 
 	const addNewTeacher = (values, setErrors, resetForm) => {
@@ -285,7 +284,6 @@ const TeacherForm = ({
 									variant="primary"
 									type="submit"
 									label="Додати"
-									disabled={specialtyError}
 								/>
 							</Form.Group>
 						</Form.Row>
