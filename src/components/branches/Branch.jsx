@@ -1,18 +1,20 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { connect } from 'react-redux'
-import { Container, Row, Col, Collapse, Button } from 'react-bootstrap'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { deleteBranch } from '../../reducers/branchesReducer'
 import branchService from '../../services/branches'
 import { setNotification } from '../../reducers/notificationReducer'
+
+import { Container, Row, Col, Collapse, Button } from 'react-bootstrap'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons'
 import ButtonComponent from '../common/Button'
 import EntityDeleteModal from '../common/EntityDeleteModal'
 import Toggler from '../common/Toggler'
-import EditBranchForm from '../forms/EditBranchForm'
+import BranchForm from '../forms/BranchForm'
 
 const Branch = ({ user, branch, deleteBranch }) => {
-	const editBranchFormRef = useRef(null)
+
+	const branchFormRef = useRef(null)
 	const [open, setOpen] = useState(false)
 	const [modalShow, setModalShow] = useState(false)
 
@@ -77,9 +79,9 @@ const Branch = ({ user, branch, deleteBranch }) => {
 							<Toggler
 								buttonLabel="Редагувати філію"
 								data-cy="edit-branch-btn"
-								ref={editBranchFormRef}
+								ref={branchFormRef}
 							>
-								<EditBranchForm branch={branch}/>
+								<BranchForm branch={branch} mode="edit" />
 							</Toggler>
 							<ButtonComponent
 								block

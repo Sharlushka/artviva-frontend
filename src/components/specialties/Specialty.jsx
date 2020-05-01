@@ -1,18 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { connect } from 'react-redux'
-import { Container, Row, Col, Collapse, Button } from 'react-bootstrap'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { setNotification } from '../../reducers/notificationReducer'
 import { deleteSpecialty } from '../../reducers/specialtiesReducer'
 import specialtyService from '../../services/specialties'
-import { setNotification } from '../../reducers/notificationReducer'
+
+import { Container, Row, Col, Collapse, Button } from 'react-bootstrap'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons'
 import ButtonComponent from '../common/Button'
 import EntityDeleteModal from '../common/EntityDeleteModal'
 import Toggler from '../common/Toggler'
-import EditSpecialtyForm from '../forms/EditSpecialtyForm'
+import SpecialtyForm from '../forms/SpecialtyForm'
 
 const Specialty = ({ user, specialty, deleteSpecialty }) => {
-	const editSpecialtyFormRef = useRef(null)
+	const specialtyFormRef = useRef(null)
 	const [open, setOpen] = useState(false)
 	const [modalShow, setModalShow] = useState(false)
 
@@ -75,9 +76,9 @@ const Specialty = ({ user, specialty, deleteSpecialty }) => {
 							<Toggler
 								buttonLabel="Редагувати спеціальність"
 								data-cy="edit-specialty-btn"
-								ref={editSpecialtyFormRef}
+								ref={specialtyFormRef}
 							>
-								<EditSpecialtyForm specialty={specialty}/>
+								<SpecialtyForm specialty={specialty} mode="edit" />
 							</Toggler>
 							<ButtonComponent
 								block

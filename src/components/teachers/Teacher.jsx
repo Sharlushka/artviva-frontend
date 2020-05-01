@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef, Suspense } from 'react'
 import { connect } from 'react-redux'
-import { Container, Row, Col, Collapse, Button, ListGroup } from 'react-bootstrap'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { setNotification } from '../../reducers/notificationReducer'
 import { deleteTeacher } from '../../reducers/teachersReducer'
 import teachersService from '../../services/teachers'
-import { setNotification } from '../../reducers/notificationReducer'
+
+import { Container, Row, Col, Collapse, Button, ListGroup } from 'react-bootstrap'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons'
 import ButtonComponent from '../common/Button'
 import Toggler from '../common/Toggler'
@@ -85,7 +86,7 @@ const Teacher = ({ user, teacher, deleteTeacher }) => {
 								data-cy="edit-teacher-btn"
 								ref={editTeacherFormRef}
 							>
-								<Suspense fallback={<div>Loading...</div>}>
+								<Suspense fallback={<div>Loading modal..</div>}>
 									<LazyTeacherForm teacher={teacher} mode="edit" />
 								</Suspense>
 							</Toggler>

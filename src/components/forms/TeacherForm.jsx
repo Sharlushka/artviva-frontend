@@ -1,16 +1,17 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { setNotification } from '../../reducers/notificationReducer'
 import { createTeacher, updateTeacher } from '../../reducers/teachersReducer'
-import { Container, Row, Col, Form, Button } from 'react-bootstrap'
-import ButtonComponent from '../common/Button'
+import teachersService from '../../services/teachers'
+
 import { Formik, FieldArray, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
-import teachersService from '../../services/teachers'
-import { useState } from 'react'
+import PropTypes from 'prop-types'
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons'
-import PropTypes from 'prop-types'
+import { Container, Row, Col, Form, Button } from 'react-bootstrap'
+import ButtonComponent from '../common/Button'
 
 const TeacherForm = ({
 	teacher,
@@ -23,7 +24,7 @@ const TeacherForm = ({
 
 	const [editMode, setEditMode] = useState(false)
 	const [specialtyListData, setSpecialtyListData] = useState([])
-	const [unusedSpecialties, setUnusedSpecialties] = useState([])
+	const [unusedSpecialties, setUnusedSpecialties] = useState(null)
 	const [specialtyError, setSpecialtyError] = useState(false)
 
 	useEffect(() => {
@@ -41,18 +42,6 @@ const TeacherForm = ({
 		}
 	// eslint-disable-next-line
 	}, [])
-
-	const teacherFormSchema = Yup.object().shape({
-		name: Yup.string()
-			.min(2, 'Не менш 2 символів.')
-			.max(128, 'Максимум 128 символів.')
-			.required('Введіть повнe ім\'я.'),
-		specialties: Yup.array().of(
-			Yup.string()
-				.oneOf(specialtyListData, 'Ви повинні вибрати не менше одного фаху.')
-				.required('Це поле є обов\'язковим.')
-		)
-	})
 
 	const checkSubmitBtnState = ({ specialties }) => {
 		specialties[0] === ''
@@ -78,11 +67,11 @@ const TeacherForm = ({
 
 		// if current from mode is edit or create..
 		editMode
-			? saveTeacherEdits(valuesToSend, setErrors)
-			: addNewTeacher(valuesToSend, setErrors, resetForm)
+			? existingTeacher(valuesToSend)
+			: newTeacher(valuesToSend, setErrors, resetForm)
 	}
 
-	const addNewTeacher = (values, setErrors, resetForm) => {
+	const newTeacher = (values, setErrors, resetForm) => {
 		createTeacher(values)
 			.then(() => {
 				setNotification({
@@ -94,7 +83,7 @@ const TeacherForm = ({
 			.catch(error => {
 				const { message, cause } = { ...error.response.data }
 				if (cause === 'name') {
-					setErrors({ title: message })
+					setErrors({ name: message })
 				}
 				setNotification({
 					message,
@@ -103,7 +92,7 @@ const TeacherForm = ({
 			})
 	}
 
-	const saveTeacherEdits = (values, setErrors) => {
+	const existingTeacher = (values) => {
 		updateTeacher(teacher.id, values)
 			.then(() => {
 				setNotification({
@@ -112,10 +101,7 @@ const TeacherForm = ({
 				}, 5)
 			})
 			.catch(error => {
-				const { message, cause } = { ...error.response.data }
-				if (cause === 'name') {
-					setErrors({ title: message })
-				}
+				const { message } = { ...error.response.data }
 				setNotification({
 					message,
 					variant: 'danger'
@@ -123,18 +109,33 @@ const TeacherForm = ({
 			})
 	}
 
+	// form data and schema
+	const initialFormValues = () =>
+		editMode
+			? { ...teacher,
+				specialties: teacher.specialties
+					.map(specialty => specialty.title) }
+			: { name: '', specialties: [''] }
+
+	const teacherFormSchema = Yup.object().shape({
+		name: Yup.string()
+			.min(2, 'Не менш 2 символів.')
+			.max(128, 'Максимум 128 символів.')
+			.required('Введіть повнe ім\'я.'),
+		specialties: Yup.array().of(
+			Yup.string()
+				.oneOf(specialtyListData, 'Ви повинні вибрати не менше одного фаху.')
+				.required('Це поле є обов\'язковим.')
+		)
+	})
+
 	return (
 		<Container>
 			<h2 className="text-center custom-font py-4">
 				{editMode ? 'Редагувати' : 'Додати'} вчітеля
 			</h2>
 			<Formik
-				initialValues={{
-					name: editMode ? teacher.name : '',
-					specialties: editMode
-						? teacher.specialties.map(specialty => specialty.title)
-						: ['']
-				}}
+				initialValues={initialFormValues()}
 				enableReinitialize
 				onSubmit={async (values, { resetForm, setErrors }) => {
 					await handleTeacher(values, setErrors, resetForm)
@@ -149,7 +150,7 @@ const TeacherForm = ({
 					errors,
 				}) => (
 					<Form
-						data-cy="new-teacher-form"
+						data-cy="teacher-form"
 						noValidate
 						onSubmit={handleSubmit}
 						className="text-left"
@@ -199,11 +200,23 @@ const TeacherForm = ({
 													>
 														{editMode
 															? <>
+																<option>Виберіть...</option>
 																{teacher.specialties.map((specialty) =>
-																	<option value={specialty.title} key={specialty.title}>{specialty.title}</option>
+																	<option
+																		className="text-primary"
+																		value={specialty.title}
+																		key={specialty.title}
+																	>
+																		{specialty.title}
+																	</option>
 																)}
 																{unusedSpecialties.map(specialty =>
-																	<option value={specialty} key={specialty}>{specialty}</option>
+																	<option
+																		value={specialty}
+																		key={specialty}
+																	>
+																		{specialty}
+																	</option>
 																)}
 															</>
 															: <>

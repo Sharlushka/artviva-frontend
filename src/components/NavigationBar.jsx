@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react'
-import { Navbar, Nav, Image } from 'react-bootstrap'
-import UserInfoPopover from '../components/common/UserInfoPopover'
-import NavBarLink from '../components/common/NavBarLink'
-import NavTogglerIcon from '../components/common/NavTogglerIcon'
+import { connect } from 'react-redux'
+import { Navbar, Nav, NavDropdown, Image } from 'react-bootstrap'
+// import UserInfoPopover from './common/UserInfoPopover'
+import NavBarLink from './common/NavBarLink'
+import NavTogglerIcon from './common/NavTogglerIcon'
+import Logout from './common/Logout'
 
-const NavigationBar = () => {
+const NavigationBar = ({ user }) => {
 
 	// navbar visibility and hiding on scroll
 	const [visibility, setVisibility] = useState(true)
@@ -44,7 +46,7 @@ const NavigationBar = () => {
 	}
 
 	// list of links
-	const linkClassList = 'pt-2 px-2 py-sm-0'
+	const linkClassList = 'pr-2 py-2 py-sm-0 px-md-2 d-flex align-items-center'
 	const navLinks = [
 		{
 			to: '/teachers',
@@ -103,6 +105,25 @@ const NavigationBar = () => {
 				</Navbar.Toggle>
 				<Navbar.Collapse id="responsive-navbar-nav">
 					<Nav className="ml-auto">
+						<NavDropdown title="Школа" id="school-mgmt-links">
+							{user
+								? <>
+									<NavDropdown.Item href="/school/overview">Огляд</NavDropdown.Item>
+									<NavDropdown.Item href="/school/classes">Класи</NavDropdown.Item>
+									<NavDropdown.Item href="/school/teachers">Вчителі</NavDropdown.Item>
+									<NavDropdown.Item href="/school/pupils">Учні</NavDropdown.Item>
+									<NavDropdown.Item href="/school/specialties">Спеціальності</NavDropdown.Item>
+									<NavDropdown.Item href="/school/branches">Філії</NavDropdown.Item>
+									<NavDropdown.Item href="/school/payments">Платежі</NavDropdown.Item>
+									<NavDropdown.Divider />
+									<NavDropdown.Item href="/school/payments"><Logout /></NavDropdown.Item>
+								</>
+								: <>
+									<NavDropdown.Item href="/login">Логін</NavDropdown.Item>
+									<NavDropdown.Item href="/register">Реєстрація</NavDropdown.Item>
+								</>
+							}
+						</NavDropdown>
 						{navLinks.map(link =>
 							<NavBarLink
 								key={link.to}
@@ -113,7 +134,7 @@ const NavigationBar = () => {
 								onClick={toggleExpanded}
 							/>
 						)}
-						<UserInfoPopover />
+						{/*<UserInfoPopover />*/}
 					</Nav>
 				</Navbar.Collapse>
 			</Navbar>
@@ -121,4 +142,12 @@ const NavigationBar = () => {
 	)
 }
 
-export default NavigationBar
+const mapStateToProps = (state) => {
+	return {
+		user: state.user
+	}
+}
+
+export default connect(
+	mapStateToProps
+)(NavigationBar)

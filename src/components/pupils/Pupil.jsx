@@ -1,15 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { connect } from 'react-redux'
-import { Container, Row, Col, Collapse, Button } from 'react-bootstrap'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { deletePupil } from '../../reducers/pupilsReducer'
 import pupilsService from '../../services/pupils'
 import { setNotification } from '../../reducers/notificationReducer'
+
+import { Container, Row, Col, Collapse, Button } from 'react-bootstrap'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons'
 import ButtonComponent from '../common/Button'
 import EntityDeleteModal from '../common/EntityDeleteModal'
 import Toggler from '../common/Toggler'
-import EditPupilForm from '../forms/EditPupilForm'
+import PupilForm from '../forms/PupilForm'
 
 const Pupil = ({ user, pupil, deletePupil }) => {
 	const editPupilFormRef = useRef(null)
@@ -75,7 +76,7 @@ const Pupil = ({ user, pupil, deletePupil }) => {
 								dataCy="edit-teacher-btn"
 								ref={editPupilFormRef}
 							>
-								<EditPupilForm pupil={pupil}/>
+								<PupilForm pupil={pupil} mode='edit' />
 							</Toggler>
 							<ButtonComponent
 								block

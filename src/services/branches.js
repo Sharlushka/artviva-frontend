@@ -18,8 +18,12 @@ const setToken = newToken => {
  * @returns {Object} - Response data
  */
 const getAll = async () => {
-	const response = await axios.get(baseUrl)
-	return response.data
+	try {
+		const response = await axios.get(baseUrl)
+		return response.data
+	} catch (error) {
+		return Promise.reject(error.response)
+	}
 }
 
 /**

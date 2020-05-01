@@ -32,7 +32,7 @@ const SpecialtyForm = ({
 	// edit or save
 	const handleSpecialty = (values, setErrors, resetForm) => {
 		editMode
-			? existingSpecialty(values, setErrors)
+			? existingSpecialty(values)
 			: newSpecialty(values, setErrors, resetForm)
 	}
 

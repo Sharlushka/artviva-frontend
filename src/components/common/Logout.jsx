@@ -29,7 +29,8 @@ const Logout = ({ setNotification }) => {
 				onClick={handleLogout}
 				type="button"
 				data-cy="logoutBtn"
-				variant="outline-primary"
+				variant="link"
+				className="p-0"
 			>
 				Вийти
 			</Button>

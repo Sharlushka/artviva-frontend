@@ -1,21 +1,42 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { setNotification } from '../../reducers/notificationReducer'
-import { createPupil } from '../../reducers/pupilsReducer'
+import { createPupil, updatePupil } from '../../reducers/pupilsReducer'
+import pupilsService from '../../services/pupils'
+
+import { Formik } from 'formik'
+import * as Yup from 'yup'
+import PropTypes from 'prop-types'
+
 import { Container, Col, Form } from 'react-bootstrap'
 import ButtonComponent from '../common/Button'
-import { Formik } from 'formik'
-import pupilsService from '../../services/pupils'
-import * as Yup from 'yup'
 
-const NewPupilForm = ({ user, setNotification, createPupil }) => {
+const PupilForm = ({
+	pupil,
+	user,
+	setNotification,
+	createPupil,
+	updatePupil,
+	mode }) => {
 
-	// set auth token
+	const [editMode, setEditMode] = useState(false)
+
+	// set auth token and mode
 	useEffect(() => {
 		pupilsService.setToken(user.token)
-	}, [user])
+		if (mode === 'edit') {
+			setEditMode(true)
+		}
+	}, [user, mode])
 
-	const addNewTeacher = (values, setErrors, resetForm ) => {
+	// handle edit or create
+	const handlePupil = (values, setErrors, resetForm) => {
+		editMode
+			? existingPupil(values, setErrors)
+			: newPupil(values, setErrors, resetForm)
+	}
+
+	const newPupil = (values, setErrors, resetForm ) => {
 		createPupil(values)
 			.then(() => {
 				setNotification({
@@ -36,6 +57,30 @@ const NewPupilForm = ({ user, setNotification, createPupil }) => {
 			})
 	}
 
+	const existingPupil = (values, setErrors) => {
+		updatePupil(pupil.id, values)
+			.then(() => {
+				setNotification({
+					message: 'Зміни успішно збережено.',
+					variant: 'success'
+				}, 5)
+			})
+			.catch(error => {
+				const { message, cause } = { ...error.response.data }
+				if (cause === 'name') {
+					setErrors({ title: message })
+				}
+				setNotification({
+					message,
+					variant: 'danger'
+				}, 5)
+			})
+	}
+
+	// form data and schema
+	const initialFormValues = () =>
+		editMode ? { ...pupil } : { name: '', info: '' }
+
 	const pupilFormSchema = Yup.object().shape({
 		name: Yup.string()
 			.min(2, 'Не менш 2 символів.')
@@ -48,17 +93,14 @@ const NewPupilForm = ({ user, setNotification, createPupil }) => {
 
 	return (
 		<Container>
-			<h2 className="text-center custom-font py-4">
-				Додати учня
-			</h2>
+			<h4 className="text-center custom-font py-4">
+				{editMode ? 'Редагувати' : 'Додати'} учня
+			</h4>
 			<Formik
-				initialValues={{
-					name: '',
-					info: ''
-
-				}}
+				initialValues={initialFormValues()}
+				enableReinitialize
 				onSubmit={async (values, { resetForm, setErrors }) => {
-					await addNewTeacher(values, setErrors, resetForm)
+					await handlePupil(values, setErrors, resetForm)
 				}}
 				validationSchema={pupilFormSchema}
 			>
@@ -70,7 +112,7 @@ const NewPupilForm = ({ user, setNotification, createPupil }) => {
 					errors
 				}) => (
 					<Form
-						data-cy="new-pupil-form"
+						data-cy="pupil-form"
 						noValidate
 						onSubmit={handleSubmit}
 						className="text-left"
@@ -78,7 +120,9 @@ const NewPupilForm = ({ user, setNotification, createPupil }) => {
 						{/* Pupil name input */}
 						<Form.Row className="d-flex justify-content-center">
 							<Form.Group
-								controlId="pupil-name-input"
+								controlId={editMode
+									? `pupil-name-input-${pupil.id}`
+									: 'pupil-name-input'}
 								as={Col}
 							>
 								<Form.Label>
@@ -106,7 +150,9 @@ const NewPupilForm = ({ user, setNotification, createPupil }) => {
 						{/* Pupil info / descr input */}
 						<Form.Row className="d-flex justify-content-center">
 							<Form.Group
-								controlId="pupil-info-input"
+								controlId={editMode
+									? `pupil-info-input-${pupil.id}`
+									: 'pupil-info-input'}
 								as={Col}
 							>
 								<Form.Label>
@@ -154,6 +200,15 @@ const NewPupilForm = ({ user, setNotification, createPupil }) => {
 	)
 }
 
+PupilForm.propTypes = {
+	pupil: PropTypes.object,
+	user: PropTypes.object.isRequired,
+	setNotification: PropTypes.func.isRequired,
+	createPupil: PropTypes.func.isRequired,
+	updatePupil: PropTypes.func.isRequired,
+	mode: PropTypes.oneOf(['create', 'edit']).isRequired
+}
+
 const mapStateToProps = (state) => {
 	return {
 		user: state.user
@@ -162,10 +217,11 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
 	setNotification,
-	createPupil
+	createPupil,
+	updatePupil
 }
 
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(NewPupilForm)
+)(PupilForm)
