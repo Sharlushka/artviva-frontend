@@ -9,6 +9,8 @@ import branchesReducer from './reducers/branchesReducer'
 import specialtiesReducer from './reducers/specialtiesReducer'
 import teachersReducer from './reducers/teachersReducer'
 import pupilsReducer from './reducers/pupilsReducer'
+import schoolStatsReducer from './reducers/schoolStatsReducer'
+import schoolClassesReducer from './reducers/schoolClassesReducer'
 
 const reducer = combineReducers({
 	user: loginReducer,
@@ -16,7 +18,9 @@ const reducer = combineReducers({
 	branches: branchesReducer,
 	specialties: specialtiesReducer,
 	teachers: teachersReducer,
-	pupils: pupilsReducer
+	pupils: pupilsReducer,
+	schoolStats: schoolStatsReducer,
+	schoolClasses: schoolClassesReducer
 })
 
 const store = createStore(
