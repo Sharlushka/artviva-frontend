@@ -279,6 +279,7 @@ const SchoolClassForm = ({
 									name="teacher"
 									data-cy="teacher-input"
 									list="teachers-list"
+									autoComplete="off"
 									onChange={handleChange}
 									onKeyUp={event => getTeachers(event.target.value)}
 									onBlur={handleBlur}
@@ -315,6 +316,7 @@ const SchoolClassForm = ({
 									name="specialty"
 									data-cy="specialty-input"
 									list="specialties-list"
+									autoComplete="off"
 									onChange={handleChange}
 									onKeyUp={event => getSpecialties(event.target.value)}
 									onBlur={handleBlur}
@@ -348,6 +350,7 @@ const SchoolClassForm = ({
 													<Form.Control
 														type="text"
 														list="pupils-list"
+														autoComplete="off"
 														className="mb-2"
 														name={`pupils[${index}]`}
 														value={values.pupils[index]}

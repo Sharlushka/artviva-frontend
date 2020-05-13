@@ -1,6 +1,17 @@
 import axios from 'axios'
 const baseUrl = `${process.env.REACT_APP_API_URL}/api/payment`
 
+let token = null
+
+/**
+ * Set user auth token
+ * @param {string} newToken - Current user auth token
+ */
+
+const setToken = newToken => {
+	token = `bearer ${newToken}`
+}
+
 /**
 * Get data for the payment form
 * @param {Object} data - Data for the form
@@ -19,4 +30,19 @@ const form = async data => {
 	return response.data
 }
 
-export default { form }
+/**
+* Get list of all payments
+*
+* @returns {Object} - Response data
+*/
+
+const getAll = async () => {
+	const config = {
+		headers: { Authorization: token }
+	}
+
+	const response = await axios.post(`${baseUrl}/list`, null, config)
+	return response.data
+}
+
+export default { form, getAll, setToken }

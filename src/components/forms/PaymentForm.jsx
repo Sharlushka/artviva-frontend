@@ -1,21 +1,53 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { Col, Form, Button } from 'react-bootstrap'
 import paymentService from '../../services/payment'
 import { setNotification } from '../../reducers/notificationReducer'
+import { schoolYearMonths } from '../../utils/datesAndTime'
+import searchService from '../../services/search'
+import specialtyService from '../../services/specialties'
+
 import { Formik, FieldArray, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import { v4 as uuidv4 } from 'uuid'
+
+import { Col, Form, Button } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHryvnia } from '@fortawesome/free-solid-svg-icons'
-import { schoolYearMonths } from '../../utils/datesAndTime'
+
 
 const PaymentForm = () => {
+
+	const [teachersList, setTeachersList] = useState([])
+	const [specialtiesNames, setSpecialtiesNames] = useState([])
+	const [specilltiesData, setSpecialtiesData] = useState([])
+	const months = schoolYearMonths('uk-ua')
+
+	useEffect(() => {
+		specialtyService.getAll()
+			.then(data => {
+				setSpecialtiesData(data)
+				setSpecialtiesNames(data.map(specialty => specialty.title))
+			})
+			.catch(error => console.error(error))
+	}, [])
+
+	const getTeachers = (value) => {
+		if (value.length >= 2) {
+			const query = { value }
+			searchService.teachers(query)
+				.then((data) => {
+					setTeachersList(data)
+				})
+				.catch(error => {
+					console.error(error)
+				})
+		}
+	}
 
 	let [orderData, setOrderData] = useState({
 		teacher: null,
 		specialty: null,
 		months: [],
-		baseCost: 200,
+		cost: null,
 		total: null
 	})
 	const [total, setTotal] = useState(null)
@@ -24,12 +56,14 @@ const PaymentForm = () => {
 	const processOrderData = ({ target }) => {
 		let months
 		let position
+		let priceData
 		switch (target.name) {
 		case 'teacher':
 			setOrderData({ ...orderData, teacher: target.value })
 			break
 		case 'specialty':
-			setOrderData({ ...orderData, specialty: target.value })
+			priceData = specilltiesData.find(specialty => specialty.title === target.value)
+			setOrderData({ ...orderData, specialty: target.value, cost: priceData.cost })
 			break
 		case 'months':
 			months = orderData.months
@@ -40,7 +74,6 @@ const PaymentForm = () => {
 				months.push(target.value)
 			}
 			setOrderData({ ...orderData, months })
-			console.log('Result', orderData.months)
 			break
 		default:
 			return
@@ -49,11 +82,11 @@ const PaymentForm = () => {
 
 	// when order data changes, calculate total
 	useEffect(() => {
-		const { teacher, specialty, months, baseCost } = orderData
-		const preliminaryPaymentData = () => teacher && specialty && months ? true : false
+		const { specialty, months, cost } = orderData
+		const preliminaryPaymentData = () => specialty && months ? true : false
 
 		if (preliminaryPaymentData()) {
-			setTotal(baseCost * months.length)
+			setTotal(cost * months.length)
 		}
 	}, [orderData])
 
@@ -67,7 +100,7 @@ const PaymentForm = () => {
 			action: 'pay',
 			amount: total,
 			currency: 'UAH',
-			description: `Оплата за${months.map(month => ` ${month}`)} міс. Учень: ${pupil}, викладач: ${teacher}, предмет: ${specialty}.`,
+			description: `Оплата:${months.map(month => ` ${month}`)}. Викладач: ${teacher}. Учень: ${pupil}. Предмет: ${specialty}.`,
 			order_id: uuidv4(),
 			version: '3',
 			language: 'uk',
@@ -88,11 +121,6 @@ const PaymentForm = () => {
 			})
 	}
 
-	// Form data from db?
-	const teachersList = ['Wolfgang Amadeus Mozart', 'Elvis Aaron Presley', 'Kurt Donald Cobain', 'Louis Daniel Armstrong']
-	const specialtyList = ['Saxophone', 'Piano', 'Guitar', 'Vocals']
-	const months = schoolYearMonths('uk-ua')
-
 	// Form schema
 	const paymentFormSchema = Yup.object().shape({
 		teacher: Yup.string()
@@ -103,7 +131,7 @@ const PaymentForm = () => {
 			.max(45, 'Максимум 45 символів')
 			.required('Введіть прізвище учня'),
 		specialty: Yup.string()
-			.oneOf(specialtyList, 'Виберіть предмет викладача')
+			.oneOf(specialtiesNames, 'Виберіть предмет викладача')
 			.required('Виберіть предмет викладача'),
 		months: Yup.array()
 			// .oneOf(months, 'Ви повинні вибрати не менше одного місяця.')
@@ -121,6 +149,11 @@ const PaymentForm = () => {
 			}}
 			onSubmit={async (values, { setErrors }) => {
 				await handlePayment(values, setErrors)
+			}}
+			onReset={() => {
+				console.log('Reseting')
+				setOrderData({ ...orderData, cost: null })
+				setTotal(null)
 			}}
 			validationSchema={paymentFormSchema}
 		>
@@ -144,26 +177,31 @@ const PaymentForm = () => {
 					className="text-left"
 				>
 
-					{/* Teacher name input */}
+					{/* Teacher's name input */}
 					<Form.Row>
 						<Form.Group
 							controlId="teacher-name-input"
 							as={Col}
 						>
 							<Form.Label>Викладач</Form.Label>
-							<Form.Control as="select"
+							<Form.Control
+								type="text"
 								name="teacher"
+								list="teachers-list"
+								autoComplete="off"
 								data-cy="teacher-name-input"
 								onChange={handleChange}
+								onKeyUp={event => getTeachers(event.target.value)}
+								onBlur={handleBlur}
 								value={values.teacher}
 								isValid={touched.teacher && !errors.teacher}
 								isInvalid={touched.teacher && !!errors.teacher}
-							>
-								<option>Виберіть...</option>
-								{teachersList.map(teacher =>
-									<option value={teacher} key={teacher}>{teacher}</option>
+							/>
+							<datalist id="teachers-list">
+								{teachersList.map((name) =>
+									<option key={name} value={name} />
 								)}
-							</Form.Control>
+							</datalist>
 							<Form.Control.Feedback>
 								Ok
 							</Form.Control.Feedback>
@@ -173,7 +211,7 @@ const PaymentForm = () => {
 						</Form.Group>
 					</Form.Row>
 
-					{/* Pupil name input */}
+					{/* Pupil's name input */}
 					<Form.Row className="d-flex justify-content-center">
 						<Form.Group
 							controlId="paymentForm.pupilNameInput"
@@ -209,16 +247,18 @@ const PaymentForm = () => {
 							<Form.Label>
 								Предмет
 							</Form.Label>
-							<Form.Control as="select"
+							<Form.Control
+								as="select"
 								name="specialty"
 								data-cy="specialty-input"
 								onChange={handleChange}
+								onBlur={handleBlur}
 								value={values.specialty}
 								isValid={touched.specialty && !errors.specialty}
 								isInvalid={touched.specialty && !!errors.specialty}
 							>
 								<option>Виберіть...</option>
-								{specialtyList.map(specialty =>
+								{specialtiesNames.map(specialty =>
 									<option value={specialty} key={specialty}>{specialty}</option>
 								)}
 							</Form.Control>
