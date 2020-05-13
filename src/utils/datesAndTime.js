@@ -1,3 +1,7 @@
+export const toHumanReadable = (locale, seconds) => {
+	return new Date(seconds).toLocaleString(locale, { dateStyle: 'long', timeStyle: 'medium' })
+}
+
 export const minDate = months => {
 	let minDate = new Date()
 	minDate.setMonth(minDate.getMonth() - months)
@@ -61,7 +65,7 @@ export const schoolYearMonths = locale => {
 	}
 
 	// finally
-	const currentDate = new Date()
+	const currentDate = new Date(20, 1)
 	let endingMonth
 
 	if (currentDate.getMonth() === 8 || isSummer(currentDate)) { // september or summer

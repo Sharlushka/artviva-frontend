@@ -15,7 +15,13 @@ import BlogView from './components/views/BlogView'
 import ContactsView from './components/views/ContactsView'
 import TeachersView from './components/views/TeachersView'
 import RecoverView from './components/views/RecoverView'
-import ProfileView from './components/views/ProfileView'
+import SchoolOverview from './components/views/SchoolOverview'
+import SchoolClassesList from './components/schoolClasses/SchoolClassesList'
+import TeachersList from './components/teachers/TeachersList'
+import PupilsList from './components/pupils/PupilsList'
+import SpecialtiesList from './components/specialties/SpecialtiesList'
+import BranchesList from './components/branches/BranchesList'
+import Payments from './components/payments/Payments'
 import PaymentView from './components/views/PaymentView'
 import ActivateAccountView from './components/views/ActivateAccountView'
 import PassResetView from './components/views/PassResetView'
@@ -57,7 +63,13 @@ const App = (props) => {
 					<Route path="/register" component={RegisterView} />
 					<Route path="/blog" component={BlogView} />
 					<Route path="/contacts" component={ContactsView} />
-					<Route path="/profile" component={ProfileView} />
+					<Route path="/school/overview" component={SchoolOverview} />
+					<Route path="/school/classes" component={SchoolClassesList} />
+					<Route path="/school/teachers" component={TeachersList} />
+					<Route path="/school/pupils" component={PupilsList} />
+					<Route path="/school/specialties" component={SpecialtiesList} />
+					<Route path="/school/branches" component={BranchesList} />
+					<Route path="/school/payments" component={Payments} />
 					<Route path="/pay/:status" component={PaymentView} />
 					<Route path="/activate/:email/:uuid" exact component={ActivateAccountView} />
 					<Route path="/reset/:email/:uuid" exact component={PassResetView} />

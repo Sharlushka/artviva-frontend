@@ -1,22 +1,21 @@
-import React, { useEffect, useState, useRef, Suspense } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { connect } from 'react-redux'
 import { setNotification } from '../../reducers/notificationReducer'
-import { initializeBranches } from '../../reducers/branchesReducer'
+import { initializePupils } from '../../reducers/pupilsReducer'
 
 import { Container, ListGroup } from 'react-bootstrap'
+import Pupil from './Pupil'
 import LoadingIndicator from '../common/LoadingIndicator'
+import PupilForm from '../forms/PupilForm'
 import Toggler from '../common/Toggler'
-import Branch from './Branch'
 
-const LazyBranchForm = React.lazy(() => import('../forms/BranchForm'))
+const PupilsList = ({ pupils, initializePupils, setNotification }) => {
 
-const BranchesList = ({ initializeBranches, branches }) => {
-
-	const branchFormRef = useRef(null)
+	const PupilFormRef = useRef(null)
 	const [isLoading, setIsLoading] = useState(true)
 
 	useEffect(() => {
-		initializeBranches()
+		initializePupils()
 			.catch(error => {
 				setNotification({
 					message: `Щось пішло не так, спробуйте пізніше:
@@ -29,8 +28,8 @@ const BranchesList = ({ initializeBranches, branches }) => {
 	}, [])
 
 	return (
-		<Container className="mt-5 text-center">
-			<h4 className="pt-4 custom-font">Філії</h4>
+		<Container className='mt-5 text-center'>
+			<h4 className="pt-4 custom-font">Учні</h4>
 			{isLoading
 				? <LoadingIndicator
 					animation="border"
@@ -38,23 +37,21 @@ const BranchesList = ({ initializeBranches, branches }) => {
 				/>
 				: <>
 					<ListGroup>
-						{branches.map(branch =>
+						{pupils.map(pupil =>
 							<ListGroup.Item
 								className="px-0 py-1"
-								key={branch.id}
+								key={pupil.id}
 							>
-								<Branch branch={branch} />
+								<Pupil pupil={pupil} />
 							</ListGroup.Item>
 						)}
 					</ListGroup>
 					<Toggler
-						buttonLabel="Додати нову філію"
-						data-cy="add-new-branch-btn"
-						ref={branchFormRef}
+						buttonLabel="Додати нового учня"
+						data-cy="add-new-pupil-btn"
+						ref={PupilFormRef}
 					>
-						<Suspense fallback={<div>Loading...</div>}>
-							<LazyBranchForm mode='create' />
-						</Suspense>
+						<PupilForm mode='create' />
 					</Toggler>
 				</>
 			}
@@ -64,16 +61,16 @@ const BranchesList = ({ initializeBranches, branches }) => {
 
 const mapStateToProps = (state) => {
 	return {
-		branches: state.branches
+		pupils: state.pupils
 	}
 }
 
 const mapDispatchToProps = {
 	setNotification,
-	initializeBranches
+	initializePupils
 }
 
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(BranchesList)
+)(PupilsList)

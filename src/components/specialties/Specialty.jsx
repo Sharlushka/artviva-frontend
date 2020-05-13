@@ -1,18 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { connect } from 'react-redux'
-import { Container, Row, Col, Collapse, Button } from 'react-bootstrap'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { setNotification } from '../../reducers/notificationReducer'
 import { deleteSpecialty } from '../../reducers/specialtiesReducer'
 import specialtyService from '../../services/specialties'
-import { setNotification } from '../../reducers/notificationReducer'
+
+import { Container, Row, Col, Collapse, Button } from 'react-bootstrap'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons'
 import ButtonComponent from '../common/Button'
-import SpecialtyDeleteModal from './SpecialtyDeleteModal'
+import EntityDeleteModal from '../common/EntityDeleteModal'
 import Toggler from '../common/Toggler'
-import EditSpecialtyForm from '../forms/EditSpecialtyForm'
+import SpecialtyForm from '../forms/SpecialtyForm'
 
 const Specialty = ({ user, specialty, deleteSpecialty }) => {
-	const editSpecialtyFormRef = useRef(null)
+	const specialtyFormRef = useRef(null)
 	const [open, setOpen] = useState(false)
 	const [modalShow, setModalShow] = useState(false)
 
@@ -74,10 +75,10 @@ const Specialty = ({ user, specialty, deleteSpecialty }) => {
 						<Col md={8} lg={6} xl={4}>
 							<Toggler
 								buttonLabel="Редагувати спеціальність"
-								dataCy="editBranchBtn"
-								ref={editSpecialtyFormRef}
+								data-cy="edit-specialty-btn"
+								ref={specialtyFormRef}
 							>
-								<EditSpecialtyForm specialty={specialty}/>
+								<SpecialtyForm specialty={specialty} mode="edit" />
 							</Toggler>
 							<ButtonComponent
 								block
@@ -90,9 +91,11 @@ const Specialty = ({ user, specialty, deleteSpecialty }) => {
 					</Row>
 				</Container>
 			</Collapse>
-			{/* Branch delete modal */}
-			<SpecialtyDeleteModal
-				specialty={specialty}
+			{/* Specialty delete modal */}
+			<EntityDeleteModal
+				subject="спеціальність"
+				subjectid={specialty.id}
+				valuetoconfirm={specialty.title}
 				show={modalShow}
 				handleDelete={handleDelete}
 				onHide={() => setModalShow(false)}

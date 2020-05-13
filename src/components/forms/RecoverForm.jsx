@@ -3,10 +3,8 @@ import { connect } from 'react-redux'
 import { setNotification } from '../../reducers/notificationReducer'
 import passwordService from '../../services/password'
 import { Col, Form, Button } from 'react-bootstrap'
-
 import { Formik } from 'formik'
 import * as Yup from 'yup'
-
 
 const RecoverForm = ({ setNotification }) => {
 

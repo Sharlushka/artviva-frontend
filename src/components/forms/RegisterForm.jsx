@@ -14,7 +14,7 @@ const RegisterForm = ({ setNotification, setRegistrationSuccessful, registration
 	// Minimum eight characters, at least one uppercase letter, one lowercase letter and one number
 	const mediumStrPass = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/
 
-	const loginFormSchema = Yup.object().shape({
+	const registerFormSchema = Yup.object().shape({
 		email: Yup.string()
 			.email('Адреса електронної пошти недійсна.')
 			.required('Введіть свою електронну пошту.'),
@@ -113,7 +113,7 @@ const RegisterForm = ({ setNotification, setRegistrationSuccessful, registration
 					await handleRegister(values, setErrors)
 					if (registrationSuccessful) resetForm()
 				}}
-				validationSchema={loginFormSchema}
+				validationSchema={registerFormSchema}
 			>
 				{({ handleSubmit,
 					handleChange,

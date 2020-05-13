@@ -1,20 +1,20 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, Suspense } from 'react'
 import { connect } from 'react-redux'
-import { deleteBranch } from '../../reducers/branchesReducer'
-import branchService from '../../services/branches'
 import { setNotification } from '../../reducers/notificationReducer'
+import { deleteSchoolClass } from '../../reducers/schoolClassesReducer'
+import schoolClassesService from '../../services/schoolClasses'
 
 import { Container, Row, Col, Collapse, Button } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons'
 import ButtonComponent from '../common/Button'
-import EntityDeleteModal from '../common/EntityDeleteModal'
 import Toggler from '../common/Toggler'
-import BranchForm from '../forms/BranchForm'
 
-const Branch = ({ user, branch, deleteBranch }) => {
+const LazyEntityDeleteModal = React.lazy(() => import('../common/EntityDeleteModal'))
+const LazySchoolClassForm = React.lazy(() => import('../forms/SchoolClassForm'))
 
-	const branchFormRef = useRef(null)
+const SchoolClass = ({ user, schoolClass, deleteSchoolClass }) => {
+	const editSchoolClassFormRef = useRef(null)
 	const [open, setOpen] = useState(false)
 	const [modalShow, setModalShow] = useState(false)
 
@@ -24,14 +24,14 @@ const Branch = ({ user, branch, deleteBranch }) => {
 
 	// set auth token
 	useEffect(() => {
-		branchService.setToken(user.token)
+		schoolClassesService.setToken(user.token)
 	}, [user])
 
 	const handleDelete = id => {
-		deleteBranch(id)
+		deleteSchoolClass(id)
 			.then(() => {
 				setNotification({
-					message: 'Філія успішно видалена.',
+					message: 'Клас успішно видален.',
 					variant: 'success'
 				}, 5)
 			})
@@ -49,13 +49,13 @@ const Branch = ({ user, branch, deleteBranch }) => {
 			<Button
 				block
 				onClick={() => setOpen(!open)}
-				aria-controls="branch-collapse"
+				aria-controls="school-class-collapse"
 				aria-expanded={open}
 				variant="link"
 				className="d-flex justify-content-between align-items-center"
 			>
 				<span>
-					{branch.town}
+					{schoolClass.title}
 				</span>
 				{ open
 					? <FontAwesomeIcon icon={faAngleUp} />
@@ -65,23 +65,25 @@ const Branch = ({ user, branch, deleteBranch }) => {
 			<Collapse in={open}>
 				<Container fluid className="text-left">
 					<Row>
-						<Col>
-							<p>Назва: {branch.name}</p>
-							<p>Місто: {branch.town}</p>
-							<p>Тел: {branch.phone}</p>
-							<p>Адреса: {branch.address}</p>
-							<p>Інфо: {branch.info}</p>
+						<Col xs={12}>
+							<p>Назва класу: <strong>{schoolClass.title}</strong></p>
+							<p>Фах: <strong>{schoolClass.specialty.title}</strong></p>
+							<p>Опіс: <strong>{schoolClass.info}</strong></p>
+							<p>Вчітель: <strong>{schoolClass.teacher.name}</strong></p>
+							<p>Учні: <strong>{schoolClass.pupils.map(pupil => `${pupil.name} `)}</strong></p>
 						</Col>
 					</Row>
 
 					<Row className="d-flex justify-content-center">
 						<Col md={8} lg={6} xl={4}>
 							<Toggler
-								buttonLabel="Редагувати філію"
-								data-cy="edit-branch-btn"
-								ref={branchFormRef}
+								buttonLabel="Редагувати клас"
+								data-cy="edit-teacher-btn"
+								ref={editSchoolClassFormRef}
 							>
-								<BranchForm branch={branch} mode="edit" />
+								<Suspense fallback={<div>Loading modal..</div>}>
+									<LazySchoolClassForm schoolClass={schoolClass} mode="edit" />
+								</Suspense>
 							</Toggler>
 							<ButtonComponent
 								block
@@ -94,15 +96,17 @@ const Branch = ({ user, branch, deleteBranch }) => {
 					</Row>
 				</Container>
 			</Collapse>
-			{/* Branch delete modal */}
-			<EntityDeleteModal
-				subject="філію"
-				subjectid={branch.id}
-				valuetoconfirm={branch.name}
-				show={modalShow}
-				handleDelete={handleDelete}
-				onHide={() => setModalShow(false)}
-			/>
+			{/* School class delete modal */}
+			<Suspense fallback={<div>Loading modal..</div>}>
+				<LazyEntityDeleteModal
+					subject="клас"
+					subjectid={schoolClass.id}
+					valuetoconfirm={schoolClass.title}
+					show={modalShow}
+					handleDelete={handleDelete}
+					onHide={() => setModalShow(false)}
+				/>
+			</Suspense>
 		</>
 	)
 }
@@ -115,10 +119,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
 	setNotification,
-	deleteBranch
+	deleteSchoolClass
 }
 
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(Branch)
+)(SchoolClass)

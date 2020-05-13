@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { Modal, Form, Button } from 'react-bootstrap'
 import { useEffect } from 'react'
+import PropTypes from 'prop-types'
 
-const TeacherDeleteModal = ({ teacher, handleDelete, ...props }) => {
-
+const EntityDeleteModal = ({ handleDelete, valuetoconfirm, subject, subjectid, ...props }) => {
 	const [valueChange, setValueChange] = useState('')
 	const [deleteBtnState, setDeleteBtnState] = useState(true)
 
@@ -12,34 +12,33 @@ const TeacherDeleteModal = ({ teacher, handleDelete, ...props }) => {
 	)
 
 	useEffect(() => {
-		if (valueChange === teacher.name) {
+		if (valueChange === valuetoconfirm) {
 			setDeleteBtnState(false)
 		} else setDeleteBtnState(true)
-	},[valueChange, teacher.name])
+	},[valueChange, valuetoconfirm])
 
 	return (
 		<Modal
 			{...props}
 			size="lg"
-			aria-labelledby="teacher-deletion-modal"
+			aria-labelledby="entity-delete-modal"
 			centered
 		>
 			<Modal.Header closeButton>
-				<Modal.Title id="teacher-deletion-modal">
-					Видалити вчітеля
+				<Modal.Title id="entity-delete-modal">
+					Видалити {subject}?
 				</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
-				<h4>{teacher.name}</h4>
+				<h4 className="text-muted">{valuetoconfirm}</h4>
 				<p>
-					Щоб видалити вчітеля, ви повинні ввести його ім&apos;я в поле нижче.
+					Введіть <em><strong>{valuetoconfirm}</strong></em> нижче, щоб підтвердити видалення.
 				</p>
 				<Form.Group>
 					<Form.Control
 						size="sm"
 						type="text"
 						autoComplete="off"
-						placeholder="Ім'я вчітеля"
 						onChange={handleChange}
 					/>
 				</Form.Group>
@@ -51,7 +50,7 @@ const TeacherDeleteModal = ({ teacher, handleDelete, ...props }) => {
 					Скасуваті
 				</Button>
 				<Button
-					onClick={() => handleDelete(teacher.id)}
+					onClick={() => handleDelete(subjectid)}
 					disabled={deleteBtnState}
 					type="button"
 					variant="danger"
@@ -63,4 +62,11 @@ const TeacherDeleteModal = ({ teacher, handleDelete, ...props }) => {
 	)
 }
 
-export default TeacherDeleteModal
+EntityDeleteModal.propTypes = {
+	handleDelete: PropTypes.func.isRequired,
+	valuetoconfirm: PropTypes.string.isRequired,
+	subject: PropTypes.string.isRequired,
+	subjectid: PropTypes.string.isRequired
+}
+
+export default EntityDeleteModal

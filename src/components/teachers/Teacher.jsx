@@ -1,15 +1,17 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, Suspense } from 'react'
 import { connect } from 'react-redux'
-import { Container, Row, Col, Collapse, Button } from 'react-bootstrap'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { setNotification } from '../../reducers/notificationReducer'
 import { deleteTeacher } from '../../reducers/teachersReducer'
 import teachersService from '../../services/teachers'
-import { setNotification } from '../../reducers/notificationReducer'
+
+import { Container, Row, Col, Collapse, Button, ListGroup } from 'react-bootstrap'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons'
 import ButtonComponent from '../common/Button'
-import TeacherDeleteModal from './TeacherDeleteModal' // should be one HOC component i guess
 import Toggler from '../common/Toggler'
-import EditTeacherForm from '../forms/EditTeacherForm'
+
+const LazyEntityDeleteModal = React.lazy(() => import('../common/EntityDeleteModal'))
+const LazyTeacherForm = React.lazy(() => import('../forms/TeacherForm'))
 
 const Teacher = ({ user, teacher, deleteTeacher }) => {
 	const editTeacherFormRef = useRef(null)
@@ -47,7 +49,7 @@ const Teacher = ({ user, teacher, deleteTeacher }) => {
 			<Button
 				block
 				onClick={() => setOpen(!open)}
-				aria-controls="specialty-collapse"
+				aria-controls="teacher-collapse"
 				aria-expanded={open}
 				variant="link"
 				className="d-flex justify-content-between align-items-center"
@@ -63,8 +65,17 @@ const Teacher = ({ user, teacher, deleteTeacher }) => {
 			<Collapse in={open}>
 				<Container fluid className="text-left">
 					<Row>
-						<Col>
+						<Col xs={12}>
 							<p>Им&apos;я: {teacher.name}</p>
+						</Col>
+						<Col xs={12}>
+							<ListGroup>Cпеціальність:
+								{teacher.specialties.map(specialty =>
+									<ListGroup.Item key={specialty.id}>
+										{specialty.title}
+									</ListGroup.Item>
+								)}
+							</ListGroup>
 						</Col>
 					</Row>
 
@@ -72,10 +83,12 @@ const Teacher = ({ user, teacher, deleteTeacher }) => {
 						<Col md={8} lg={6} xl={4}>
 							<Toggler
 								buttonLabel="Редагувати данні вчітеля"
-								dataCy="edit-teacher-btn"
+								data-cy="edit-teacher-btn"
 								ref={editTeacherFormRef}
 							>
-								<EditTeacherForm teacher={teacher}/>
+								<Suspense fallback={<div>Loading modal..</div>}>
+									<LazyTeacherForm teacher={teacher} mode="edit" />
+								</Suspense>
 							</Toggler>
 							<ButtonComponent
 								block
@@ -89,12 +102,17 @@ const Teacher = ({ user, teacher, deleteTeacher }) => {
 				</Container>
 			</Collapse>
 			{/* Teacher delete modal */}
-			<TeacherDeleteModal
-				teacher={teacher}
-				show={modalShow}
-				handleDelete={handleDelete}
-				onHide={() => setModalShow(false)}
-			/>
+			<Suspense fallback={<div>Loading modal..</div>}>
+				<LazyEntityDeleteModal
+					subject="вчітеля"
+					subjectid={teacher.id}
+					valuetoconfirm={teacher.name}
+					show={modalShow}
+					handleDelete={handleDelete}
+					onHide={() => setModalShow(false)}
+				/>
+			</Suspense>
+
 		</>
 	)
 }

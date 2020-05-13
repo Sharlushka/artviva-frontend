@@ -1,11 +1,11 @@
 import axios from 'axios'
-const baseUrl = `${process.env.REACT_APP_API_URL}/api/branches`
+const baseUrl = `${process.env.REACT_APP_API_URL}/api/schoolclasses`
 
 let token = null
 
 /**
  * Set user auth token
- * @param {string} newToken Current user auth token
+ * @param {string} newToken - Current user auth token
  */
 
 const setToken = newToken => {
@@ -13,7 +13,7 @@ const setToken = newToken => {
 }
 
 /**
- * Get list of all branches
+ * Get list of all classes
  *
  * @returns {Object} - Response data
  */
@@ -27,13 +27,13 @@ const getAll = async () => {
 }
 
 /**
- * Create new branch
- * @param {Object} payload - New branch data
- * @param {string} payload.name - Unique branch name
- * @param {string} payload.town - City/town
- * @param {string} payload.address - Full address
- * @param {string} payload.phone - phone number
- * @param {string} payload.info - Additional info
+ * Create new school class
+ * @param {Object} payload - New school class data
+ * @param {string} payload.title - Unique class title
+ * @param {string} payload.info - Some optional class descr
+ * @param {string} payload.teacher - Class teacher
+ * @param {string} payload.specialty - Class specialty
+ * @param {string} payload.pupils - Array of class pupils
  *
  * @returns {Object} - Response data
  */
@@ -46,13 +46,13 @@ const create = async payload => {
 }
 
 /**
- * Delete single branch
- * @param {string} id - Branch ID
+ * Delete single school class
+ * @param {string} id - School class ID
  *
  * @returns {Object} - Response data
  */
 
-const deleteById = async id => { // just delete
+const deleteById = async id => {
 	const config = {
 		headers: { Authorization: token }
 	}
@@ -61,14 +61,14 @@ const deleteById = async id => { // just delete
 }
 
 /**
- * Update branch
- * @param {string} id - Id of the branch
- * @param {Object} payload - Updated branch data
- * @param {string} payload.name - Unique branch name
- * @param {string} payload.town - City/town
- * @param {string} payload.address - Full address
- * @param {string} payload.phone - phone number
- * @param {string} payload.info - Additional info
+ * Update school class data
+ * @param {string} id - School class ID
+ * @param {Object} payload - Updated school class data
+ * @param {string} payload.title - Unique school class name
+ * @param {string} payload.info - Some optional class descr
+ * @param {string} payload.teacher - Class teacher
+ * @param {string} payload.specialty - Class specialty
+ * @param {string} payload.pupils - Array of class pupils
  *
  * @returns {Object} - Response data
  */

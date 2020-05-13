@@ -1,5 +1,5 @@
 import axios from 'axios'
-const baseUrl = `${process.env.REACT_APP_API_URL}/api/branches`
+const baseUrl = `${process.env.REACT_APP_API_URL}/api/pupils`
 
 let token = null
 
@@ -13,7 +13,7 @@ const setToken = newToken => {
 }
 
 /**
- * Get list of all branches
+ * Get list of all pupils
  *
  * @returns {Object} - Response data
  */
@@ -27,13 +27,10 @@ const getAll = async () => {
 }
 
 /**
- * Create new branch
- * @param {Object} payload - New branch data
- * @param {string} payload.name - Unique branch name
- * @param {string} payload.town - City/town
- * @param {string} payload.address - Full address
- * @param {string} payload.phone - phone number
- * @param {string} payload.info - Additional info
+ * Create new pupil
+ * @param {Object} payload - New specialty data
+ * @param {string} payload.name - Unique pupil name
+ * @param {string} payload.info - Some optional pupil info
  *
  * @returns {Object} - Response data
  */
@@ -46,13 +43,13 @@ const create = async payload => {
 }
 
 /**
- * Delete single branch
- * @param {string} id - Branch ID
+ * Delete single pupil
+ * @param {string} id - Pupil ID
  *
  * @returns {Object} - Response data
  */
 
-const deleteById = async id => { // just delete
+const deleteById = async id => {
 	const config = {
 		headers: { Authorization: token }
 	}
@@ -61,14 +58,10 @@ const deleteById = async id => { // just delete
 }
 
 /**
- * Update branch
- * @param {string} id - Id of the branch
- * @param {Object} payload - Updated branch data
- * @param {string} payload.name - Unique branch name
- * @param {string} payload.town - City/town
- * @param {string} payload.address - Full address
- * @param {string} payload.phone - phone number
- * @param {string} payload.info - Additional info
+ * Update pupil's data
+ * @param {string} id - Pupil's id
+ * @param {Object} payload - Updated pupil's data
+ * @param {string} payload.name - Unique pupil name
  *
  * @returns {Object} - Response data
  */

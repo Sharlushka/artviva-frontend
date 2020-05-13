@@ -1,16 +1,92 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { setNotification } from '../../reducers/notificationReducer'
-import { updateBranch } from '../../reducers/branchesReducer'
-import { Container, Col, Form } from 'react-bootstrap'
-import ButtonComponent from '../common/Button'
+import { createBranch, updateBranch } from '../../reducers/branchesReducer'
+import { formatPhoneNumber } from '../../utils/formatPhoneNumber'
+import branchesService from '../../services/branches'
+
 import { Formik } from 'formik'
 import * as Yup from 'yup'
-import { formatPhoneNumber } from '../../utils/formatPhoneNumber'
-import branchService from '../../services/branches'
+import PropTypes from 'prop-types'
 
-const EditBranchForm = ({ user, setNotification, updateBranch, branch }) => {
+import { Container, Col, Form } from 'react-bootstrap'
+import ButtonComponent from '../common/Button'
+
+const BranchForm = ({
+	branch,
+	user,
+	setNotification,
+	createBranch,
+	updateBranch,
+	mode }) => {
+
+	const [editMode, setEditMode] = useState(false)
+
+	// set auth token and mode
+	useEffect(() => {
+		branchesService.setToken(user.token)
+		if (mode === 'edit') {
+			setEditMode(true)
+		}
+	}, [user, mode])
+
+	const handleBranch = (values, setErrors, resetForm) => [
+		editMode
+			? existingBranch(values)
+			: newBranch(values, setErrors, resetForm)
+	]
+
+	const newBranch = (values, setErrors, resetForm) => {
+		createBranch(values)
+			.then(() => {
+				setNotification({
+					message: 'Нова філія була успішно додана.',
+					variant: 'success'
+				}, 5)
+				resetForm()
+			})
+			.catch(error => {
+				const { message, cause } = { ...error.response.data }
+				if (cause === 'name') {
+					setErrors({ name: message })
+				}
+				setNotification({
+					message,
+					variant: 'danger'
+				}, 5)
+			})
+	}
+
+	const existingBranch = (values) => {
+		updateBranch(branch.id, values)
+			.then(() => {
+				setNotification({
+					message: 'Зміни успішно збережено.',
+					variant: 'success'
+				}, 5)
+			})
+			.catch(error => {
+				const { message } = { ...error.response.data }
+				setNotification({
+					message,
+					variant: 'danger'
+				}, 5)
+			})
+	}
+
 	const phoneNumber = /^\+?([0-9]{0,2}) ?\(?([0-9]{0,3})\)? ?[-. ]?([0-9]{0,3})[-. ]?([0-9]{0,2})-?([0-9]{0,2})$/
+
+	// form data
+	const emptyFields = {
+		name: '',
+		town: '',
+		address: '',
+		phone: '',
+		info: ''
+	}
+
+	const initialFormValues = () =>
+		editMode ? { ...branch } : emptyFields
 
 	const branchFormSchema = Yup.object().shape({
 		name: Yup.string()
@@ -36,46 +112,16 @@ const EditBranchForm = ({ user, setNotification, updateBranch, branch }) => {
 			.required('Введіть опис.')
 	})
 
-	// set auth token
-	useEffect(() => {
-		branchService.setToken(user.token)
-	}, [user])
-
-	const saveBranchEdits = (values, setErrors) => {
-		updateBranch(branch.id, values)
-			.then(() => {
-				setNotification({
-					message: 'Зміни успішно збережено.',
-					variant: 'success'
-				}, 5)
-			})
-			.catch(error => {
-				const { message, cause } = { ...error.response.data }
-				if (cause === 'name') {
-					setErrors({ name: message })
-				}
-				setNotification({
-					message,
-					variant: 'danger'
-				}, 5)
-			})
-	}
-
 	return (
-		<Container fluid>
+		<Container>
 			<h2 className="text-center custom-font py-4">
-				Редагувати філію
+				{editMode ? 'Редагувати' : 'Додати'} філію
 			</h2>
 			<Formik
-				initialValues={{
-					name: branch.name,
-					town: branch.town,
-					address: branch.address,
-					phone: branch.phone,
-					info: branch.info
-				}}
-				onSubmit={async (values, { setErrors }) => {
-					await saveBranchEdits(values, setErrors)
+				initialValues={initialFormValues()}
+				enableReinitialize
+				onSubmit={async (values, { resetForm, setErrors }) => {
+					await handleBranch(values, setErrors, resetForm)
 				}}
 				validationSchema={branchFormSchema}
 			>
@@ -88,7 +134,7 @@ const EditBranchForm = ({ user, setNotification, updateBranch, branch }) => {
 					setFieldValue
 				}) => (
 					<Form
-						data-cy="edit-branch-form"
+						data-cy="branch-form"
 						noValidate
 						onSubmit={handleSubmit}
 						className="text-left"
@@ -96,7 +142,9 @@ const EditBranchForm = ({ user, setNotification, updateBranch, branch }) => {
 						{/* Branch full name input */}
 						<Form.Row className="d-flex justify-content-center">
 							<Form.Group
-								controlId={`${branch.id}-branch-name-input`}
+								controlId={editMode
+									? `branch-name-input-${branch.id}`
+									: 'branch-name-input'}
 								as={Col}
 							>
 								<Form.Label>
@@ -124,7 +172,9 @@ const EditBranchForm = ({ user, setNotification, updateBranch, branch }) => {
 						{/* Branch town input */}
 						<Form.Row className="d-flex justify-content-center">
 							<Form.Group
-								controlId={`${branch.id}-branch-town-input`}
+								controlId={editMode
+									? `branch-town-input-${branch.id}`
+									: 'branch-town-input'}
 								as={Col}
 							>
 								<Form.Label>
@@ -152,7 +202,9 @@ const EditBranchForm = ({ user, setNotification, updateBranch, branch }) => {
 						{/* Branch address input */}
 						<Form.Row className="d-flex justify-content-center">
 							<Form.Group
-								controlId={`${branch.id}-branch-address-input`}
+								controlId={editMode
+									? `branch-address-input-${branch.id}`
+									: 'branch-address-input'}
 								as={Col}
 							>
 								<Form.Label>
@@ -181,7 +233,9 @@ const EditBranchForm = ({ user, setNotification, updateBranch, branch }) => {
 						{/* Branch phone number input */}
 						<Form.Row className="d-flex justify-content-center">
 							<Form.Group
-								controlId={`${branch.id}-branch-phone-input`}
+								controlId={editMode
+									? `branch-phone-input-${branch.id}`
+									: 'branch-phone-input'}
 								as={Col}
 							>
 								<Form.Label>
@@ -208,9 +262,11 @@ const EditBranchForm = ({ user, setNotification, updateBranch, branch }) => {
 						</Form.Row>
 
 						{/* Branch info / descr input */}
-						<Form.Row className="d-flex justify-content-center pb-4">
+						<Form.Row className="d-flex justify-content-center">
 							<Form.Group
-								controlId={`${branch.id}-branch-info-input`}
+								controlId={editMode
+									? `branch-info-input-${branch.id}`
+									: 'branch-info-input'}
 								as={Col}
 							>
 								<Form.Label>
@@ -240,13 +296,14 @@ const EditBranchForm = ({ user, setNotification, updateBranch, branch }) => {
 						<Form.Row className="d-flex justify-content-center text-center">
 							<Form.Group
 								as={Col}
+								className="pt-4"
 							>
 								<ButtonComponent
 									block
-									className="px-4"
-									variant="success"
+									className="px-4 primary-color-shadow"
+									variant="primary"
 									type="submit"
-									label="Зберегти"
+									label="Додати"
 								/>
 							</Form.Group>
 						</Form.Row>
@@ -257,6 +314,15 @@ const EditBranchForm = ({ user, setNotification, updateBranch, branch }) => {
 	)
 }
 
+BranchForm.propTypes = {
+	branch: PropTypes.object,
+	user: PropTypes.object.isRequired,
+	setNotification: PropTypes.func.isRequired,
+	createBranch: PropTypes.func.isRequired,
+	updateBranch: PropTypes.func.isRequired,
+	mode: PropTypes.oneOf(['create', 'edit']).isRequired
+}
+
 const mapStateToProps = (state) => {
 	return {
 		user: state.user
@@ -265,10 +331,11 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
 	setNotification,
+	createBranch,
 	updateBranch
 }
 
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(EditBranchForm)
+)(BranchForm)

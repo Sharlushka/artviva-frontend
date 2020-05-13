@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { connect } from 'react-redux'
-import { deleteBranch } from '../../reducers/branchesReducer'
-import branchService from '../../services/branches'
+import { deletePupil } from '../../reducers/pupilsReducer'
+import pupilsService from '../../services/pupils'
 import { setNotification } from '../../reducers/notificationReducer'
 
 import { Container, Row, Col, Collapse, Button } from 'react-bootstrap'
@@ -10,11 +10,10 @@ import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons'
 import ButtonComponent from '../common/Button'
 import EntityDeleteModal from '../common/EntityDeleteModal'
 import Toggler from '../common/Toggler'
-import BranchForm from '../forms/BranchForm'
+import PupilForm from '../forms/PupilForm'
 
-const Branch = ({ user, branch, deleteBranch }) => {
-
-	const branchFormRef = useRef(null)
+const Pupil = ({ user, pupil, deletePupil }) => {
+	const editPupilFormRef = useRef(null)
 	const [open, setOpen] = useState(false)
 	const [modalShow, setModalShow] = useState(false)
 
@@ -24,14 +23,14 @@ const Branch = ({ user, branch, deleteBranch }) => {
 
 	// set auth token
 	useEffect(() => {
-		branchService.setToken(user.token)
+		pupilsService.setToken(user.token)
 	}, [user])
 
 	const handleDelete = id => {
-		deleteBranch(id)
+		deletePupil(id)
 			.then(() => {
 				setNotification({
-					message: 'Філія успішно видалена.',
+					message: 'Учень успішно видален.',
 					variant: 'success'
 				}, 5)
 			})
@@ -49,13 +48,13 @@ const Branch = ({ user, branch, deleteBranch }) => {
 			<Button
 				block
 				onClick={() => setOpen(!open)}
-				aria-controls="branch-collapse"
+				aria-controls="pupil-collapse"
 				aria-expanded={open}
 				variant="link"
 				className="d-flex justify-content-between align-items-center"
 			>
 				<span>
-					{branch.town}
+					{pupil.name}
 				</span>
 				{ open
 					? <FontAwesomeIcon icon={faAngleUp} />
@@ -66,22 +65,18 @@ const Branch = ({ user, branch, deleteBranch }) => {
 				<Container fluid className="text-left">
 					<Row>
 						<Col>
-							<p>Назва: {branch.name}</p>
-							<p>Місто: {branch.town}</p>
-							<p>Тел: {branch.phone}</p>
-							<p>Адреса: {branch.address}</p>
-							<p>Інфо: {branch.info}</p>
+							<p>Им&apos;я: {pupil.name}</p>
 						</Col>
 					</Row>
 
 					<Row className="d-flex justify-content-center">
 						<Col md={8} lg={6} xl={4}>
 							<Toggler
-								buttonLabel="Редагувати філію"
-								data-cy="edit-branch-btn"
-								ref={branchFormRef}
+								buttonLabel="Редагувати данні учня"
+								dataCy="edit-teacher-btn"
+								ref={editPupilFormRef}
 							>
-								<BranchForm branch={branch} mode="edit" />
+								<PupilForm pupil={pupil} mode='edit' />
 							</Toggler>
 							<ButtonComponent
 								block
@@ -94,11 +89,11 @@ const Branch = ({ user, branch, deleteBranch }) => {
 					</Row>
 				</Container>
 			</Collapse>
-			{/* Branch delete modal */}
+			{/* Pupil delete modal */}
 			<EntityDeleteModal
-				subject="філію"
-				subjectid={branch.id}
-				valuetoconfirm={branch.name}
+				subject="учня"
+				subjectid={pupil.id}
+				valuetoconfirm={pupil.name}
 				show={modalShow}
 				handleDelete={handleDelete}
 				onHide={() => setModalShow(false)}
@@ -115,10 +110,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
 	setNotification,
-	deleteBranch
+	deletePupil
 }
 
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(Branch)
+)(Pupil)

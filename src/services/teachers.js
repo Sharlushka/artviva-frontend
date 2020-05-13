@@ -1,5 +1,5 @@
 import axios from 'axios'
-const baseUrl = '/api/teachers'
+const baseUrl = `${process.env.REACT_APP_API_URL}/api/teachers`
 
 let token = null
 
@@ -18,8 +18,12 @@ const setToken = newToken => {
  * @returns {Object} - Response data
  */
 const getAll = async () => {
-	const response = await axios.get(baseUrl)
-	return response.data
+	try {
+		const response = await axios.get(baseUrl)
+		return response.data
+	} catch (error) {
+		return Promise.reject(error.response)
+	}
 }
 
 /**
@@ -55,8 +59,8 @@ const deleteById = async id => {
 /**
  * Update teacher's data
  * @param {string} id - Teacher's id
- * @param {Object} payload - Updated teacher data
- * @param {string} payload.name - Unique teacher title
+ * @param {Object} payload - Updated teacher's data
+ * @param {string} payload.name - Unique teacher's name
  *
  * @returns {Object} - Response data
  */

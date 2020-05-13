@@ -1,5 +1,5 @@
 import axios from 'axios'
-const baseUrl = '/api/specialties'
+const baseUrl = `${process.env.REACT_APP_API_URL}/api/specialties`
 
 let token = null
 
@@ -18,8 +18,12 @@ const setToken = newToken => {
  * @returns {Object} - Response data
  */
 const getAll = async () => {
-	const response = await axios.get(baseUrl)
-	return response.data
+	try {
+		const response = await axios.get(baseUrl)
+		return response.data
+	} catch (error) {
+		return Promise.reject(error.response)
+	}
 }
 
 /**

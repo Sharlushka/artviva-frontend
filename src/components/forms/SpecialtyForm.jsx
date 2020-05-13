@@ -1,37 +1,42 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { setNotification } from '../../reducers/notificationReducer'
-import { createSpecialty } from '../../reducers/specialtiesReducer'
-import { Container, Col, Form } from 'react-bootstrap'
-import ButtonComponent from '../common/Button'
-import { Formik } from 'formik'
-import * as Yup from 'yup'
+import { createSpecialty, updateSpecialty } from '../../reducers/specialtiesReducer'
 import specialtyService from '../../services/specialties'
 
-const NewSpecialtyForm = ({ user, setNotification, createSpecialty }) => {
+import { Formik } from 'formik'
+import * as Yup from 'yup'
+import PropTypes from 'prop-types'
 
-	const specialtyFormSchema = Yup.object().shape({
-		title: Yup.string()
-			.min(2, 'Не менш 2 символів.')
-			.max(128, 'Максимум 128 символів.')
-			.required('Введіть повну назву філії.'),
-		cost: Yup.number()
-			.typeError('Повинно бути числом.')
-			.required('Обов\'язкове поле.')
-			.positive('Повинно бути більше нуля.')
-			.integer('Повинно бути цілим числом.'),
-		info: Yup.string()
-			.min(3, 'Не менш 3 символів.')
-			.max(255, 'Максимум 255 символів.')
-			.required('Введіть опис.')
-	})
+import { Container, Col, Form } from 'react-bootstrap'
+import ButtonComponent from '../common/Button'
 
-	// set auth token
+const SpecialtyForm = ({
+	specialty,
+	user,
+	setNotification,
+	createSpecialty,
+	updateSpecialty,
+	mode }) => {
+
+	const [editMode, setEditMode] = useState(false)
+
+	// set auth token and mode
 	useEffect(() => {
 		specialtyService.setToken(user.token)
-	}, [user])
+		if (mode === 'edit') {
+			setEditMode(true)
+		}
+	}, [user, mode])
 
-	const addNewBranch = (values, setErrors, resetForm ) => {
+	// edit or save
+	const handleSpecialty = (values, setErrors, resetForm) => {
+		editMode
+			? existingSpecialty(values)
+			: newSpecialty(values, setErrors, resetForm)
+	}
+
+	const newSpecialty = (values, setErrors, resetForm) => {
 		createSpecialty(values)
 			.then(() => {
 				setNotification({
@@ -52,19 +57,53 @@ const NewSpecialtyForm = ({ user, setNotification, createSpecialty }) => {
 			})
 	}
 
+	const existingSpecialty = (values) => {
+		updateSpecialty(specialty.id, values)
+			.then(() => {
+				setNotification({
+					message: 'Зміни успішно збережено.',
+					variant: 'success'
+				}, 5)
+			})
+			.catch(error => {
+				const { message } = { ...error.response.data }
+				setNotification({
+					message,
+					variant: 'danger'
+				}, 5)
+			})
+	}
+
+	// form data
+	const initialFormValues = () =>
+		editMode ? { ...specialty } : { title: '', cost: '', info: '' }
+
+	const specialtyFormSchema = Yup.object().shape({
+		title: Yup.string()
+			.min(2, 'Не менш 2 символів.')
+			.max(128, 'Максимум 128 символів.')
+			.required('Введіть повну назву філії.'),
+		cost: Yup.number()
+			.typeError('Повинно бути числом.')
+			.required('Обов\'язкове поле.')
+			.positive('Повинно бути більше нуля.')
+			.integer('Повинно бути цілим числом.'),
+		info: Yup.string()
+			.min(3, 'Не менш 3 символів.')
+			.max(255, 'Максимум 255 символів.')
+			.required('Введіть опис.')
+	})
+
 	return (
 		<Container>
 			<h2 className="text-center custom-font py-4">
-				Додати спеціальність
+				{editMode ? 'Редагувати' : 'Додати'} спеціальність
 			</h2>
 			<Formik
-				initialValues={{
-					title: '',
-					cost: '',
-					info: ''
-				}}
+				initialValues={initialFormValues()}
+				enableReinitialize
 				onSubmit={async (values, { resetForm, setErrors }) => {
-					await addNewBranch(values, setErrors, resetForm)
+					await handleSpecialty(values, setErrors, resetForm)
 				}}
 				validationSchema={specialtyFormSchema}
 			>
@@ -76,7 +115,7 @@ const NewSpecialtyForm = ({ user, setNotification, createSpecialty }) => {
 					errors
 				}) => (
 					<Form
-						data-cy="new-specialty-form"
+						data-cy="specialty-form"
 						noValidate
 						onSubmit={handleSubmit}
 						className="text-left"
@@ -84,7 +123,9 @@ const NewSpecialtyForm = ({ user, setNotification, createSpecialty }) => {
 						{/* Specialty title input */}
 						<Form.Row className="d-flex justify-content-center">
 							<Form.Group
-								controlId="specialty-title-input"
+								controlId={editMode
+									? `specialty-title-input-${specialty.id}`
+									: 'specialty-title-input'}
 								as={Col}
 							>
 								<Form.Label>
@@ -112,7 +153,9 @@ const NewSpecialtyForm = ({ user, setNotification, createSpecialty }) => {
 						{/* Specialty cost input */}
 						<Form.Row className="d-flex justify-content-center">
 							<Form.Group
-								controlId="specialty-cost-input"
+								controlId={editMode
+									? `specialty-cost-input-${specialty.id}`
+									: 'specialty-cost-input'}
 								as={Col}
 							>
 								<Form.Label>
@@ -140,7 +183,9 @@ const NewSpecialtyForm = ({ user, setNotification, createSpecialty }) => {
 						{/* Specilaty info / descr input */}
 						<Form.Row className="d-flex justify-content-center">
 							<Form.Group
-								controlId="specialty-info-input"
+								controlId={editMode
+									? `specialty-info-input-${specialty.id}`
+									: 'specialty-info-input'}
 								as={Col}
 							>
 								<Form.Label>
@@ -188,6 +233,15 @@ const NewSpecialtyForm = ({ user, setNotification, createSpecialty }) => {
 	)
 }
 
+SpecialtyForm.propTypes = {
+	specialty: PropTypes.object,
+	user: PropTypes.object.isRequired,
+	setNotification: PropTypes.func.isRequired,
+	createSpecialty: PropTypes.func.isRequired,
+	updateSpecialty: PropTypes.func.isRequired,
+	mode: PropTypes.oneOf(['create', 'edit']).isRequired
+}
+
 const mapStateToProps = (state) => {
 	return {
 		user: state.user
@@ -196,10 +250,11 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
 	setNotification,
-	createSpecialty
+	createSpecialty,
+	updateSpecialty
 }
 
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(NewSpecialtyForm)
+)(SpecialtyForm)

@@ -1,38 +1,66 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState, useRef, Suspense } from 'react'
 import { connect } from 'react-redux'
 import { setNotification } from '../../reducers/notificationReducer'
 import { initializeSpecialties } from '../../reducers/specialtiesReducer'
-import { ListGroup } from 'react-bootstrap'
+
+import { Container, ListGroup } from 'react-bootstrap'
+import LoadingIndicator from '../common/LoadingIndicator'
+import Toggler from '../common/Toggler'
 import Specialty from './Specialty'
+
+const LazySpecialtyForm = React.lazy(() => import('../forms/SpecialtyForm'))
 
 const SpecialtiesList = ({ initializeSpecialties, specialties }) => {
 
+	const specialtyFormRef = useRef(null)
+	const [isLoading, setIsLoading] = useState(true)
+
 	useEffect(() => {
+		// check if they are already set?
 		initializeSpecialties()
+			.catch(error => {
+				setNotification({
+					message: `Щось пішло не так, спробуйте пізніше:
+						${error.status} ${error.statusText}`,
+					variant: 'danger'
+				}, 5)
+			})
+			.finally(() => setIsLoading(false))
 	// eslint-disable-next-line
 	}, [])
 
-	if (specialties) {
-		return (
-			<>
-				<h5 className="py-2">Спеціальності</h5>
-				<ListGroup>
-					{specialties.map(specialty =>
-						<ListGroup.Item
-							className="px-0 py-1"
-							key={specialty.id}
-						>
-							<Specialty specialty={specialty} />
-						</ListGroup.Item>
-					)}
-				</ListGroup>
-			</>
-		)
-	} else {
-		return (
-			<h4>Loading...</h4>
-		)
-	}
+	return (
+		<Container className="mt-5 text-center">
+			<h4 className="pt-4 custom-font">Спеціальності</h4>
+			{isLoading
+				? <LoadingIndicator
+					animation="border"
+					variant="primary"
+				/>
+				: <>
+					<ListGroup>
+						{specialties.map(specialty =>
+							<ListGroup.Item
+								className="px-0 py-1"
+								key={specialty.id}
+							>
+								<Specialty specialty={specialty} />
+							</ListGroup.Item>
+						)}
+					</ListGroup>
+					<Toggler
+						buttonLabel="Додати новій фах"
+						data-cy="add-specialty-btn"
+						ref={specialtyFormRef}
+					>
+						<Suspense fallback={<div>Loading...</div>}>
+							<LazySpecialtyForm mode="create" />
+						</Suspense>
+					</Toggler>
+				</>
+			}
+		</Container>
+	)
 }
 
 const mapStateToProps = (state) => {

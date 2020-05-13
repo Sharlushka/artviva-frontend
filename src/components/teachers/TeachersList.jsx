@@ -1,49 +1,88 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState, useRef, Suspense } from 'react'
 import { connect } from 'react-redux'
 import { setNotification } from '../../reducers/notificationReducer'
 import { initializeTeachers } from '../../reducers/teachersReducer'
-import { ListGroup } from 'react-bootstrap'
-import Teacher from './Teacher'
+import { initializeSpecialties } from '../../reducers/specialtiesReducer'
 
-const TeachersList = ({ initializeTeachers, teachers }) => {
+import { Container, ListGroup } from 'react-bootstrap'
+import Teacher from './Teacher'
+import LoadingIndicator from '../common/LoadingIndicator'
+import Toggler from '../common/Toggler'
+
+const LazyTeacherForm = React.lazy(() => import('../forms/TeacherForm'))
+
+const TeachersList = ({ teachers, setNotification, initializeTeachers, initializeSpecialties }) => {
+
+	const teacherFormRef = useRef(null)
+	const [isLoading, setIsLoading] = useState(true)
 
 	useEffect(() => {
+		// wtf is this?!
+		initializeSpecialties()
+			.catch(error => {
+				setNotification({
+					message: `Щось пішло не так, спробуйте пізніше:
+						${error.status} ${error.statusText}`,
+					variant: 'danger'
+				}, 5)
+			})
 		initializeTeachers()
+			.catch(error => {
+				setNotification({
+					message: `Щось пішло не так, спробуйте пізніше:
+						${error.status} ${error.statusText}`,
+					variant: 'danger'
+				}, 5)
+			})
+			.finally(() => setIsLoading(false))
 	// eslint-disable-next-line
 	}, [])
 
-	if (teachers) {
-		return (
-			<>
-				<h5 className="py-2">Вчітелі</h5>
-				<ListGroup>
-					{teachers.map(teacher =>
-						<ListGroup.Item
-							className="px-0 py-1"
-							key={teacher.id}
-						>
-							<Teacher teacher={teacher} />
-						</ListGroup.Item>
-					)}
-				</ListGroup>
-			</>
-		)
-	} else {
-		return (
-			<h4>Loading...</h4>
-		)
-	}
+	return (
+		<Container className="mt-5 text-center">
+			<h4 className="pt-4 custom-font">Вчітелі</h4>
+			{isLoading
+				? <LoadingIndicator
+					animation="border"
+					variant="primary"
+				/>
+				: <>
+					<ListGroup>
+						{teachers.map(teacher =>
+							<ListGroup.Item
+								className="px-0 py-1"
+								key={teacher.id}
+							>
+								<Teacher teacher={teacher} />
+							</ListGroup.Item>
+						)}
+					</ListGroup>
+					<Toggler
+						buttonLabel="Додати нового вчітеля"
+						data-cy="add-new-branch-btn"
+						ref={teacherFormRef}
+					>
+						<Suspense fallback={<div>Loading...</div>}>
+							<LazyTeacherForm mode="create" />
+						</Suspense>
+					</Toggler>
+				</>
+			}
+		</Container>
+	)
 }
 
 const mapStateToProps = (state) => {
 	return {
-		teachers: state.teachers
+		teachers: state.teachers,
+		specialties: state.specialties
 	}
 }
 
 const mapDispatchToProps = {
 	setNotification,
-	initializeTeachers
+	initializeTeachers,
+	initializeSpecialties
 }
 
 export default connect(

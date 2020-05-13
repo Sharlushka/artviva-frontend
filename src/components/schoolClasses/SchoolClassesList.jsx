@@ -1,22 +1,27 @@
-import React, { useEffect, useState, useRef, Suspense } from 'react'
+import React, { useState, useEffect, useRef, Suspense } from 'react'
 import { connect } from 'react-redux'
 import { setNotification } from '../../reducers/notificationReducer'
-import { initializeBranches } from '../../reducers/branchesReducer'
+import { initializeSchoolClasses } from '../../reducers/schoolClassesReducer'
 
 import { Container, ListGroup } from 'react-bootstrap'
+import SchoolClass from './SchoolClass'
 import LoadingIndicator from '../common/LoadingIndicator'
 import Toggler from '../common/Toggler'
-import Branch from './Branch'
 
-const LazyBranchForm = React.lazy(() => import('../forms/BranchForm'))
+const LazySchoolClassForm = React.lazy(() => import('../forms/SchoolClassForm'))
 
-const BranchesList = ({ initializeBranches, branches }) => {
+const SchoolClassesList = ({
+	user,
+	schoolClasses,
+	setNotification,
+	initializeSchoolClasses
+}) => {
 
-	const branchFormRef = useRef(null)
+	const schoolClassFormRef = useRef(null)
 	const [isLoading, setIsLoading] = useState(true)
 
 	useEffect(() => {
-		initializeBranches()
+		initializeSchoolClasses()
 			.catch(error => {
 				setNotification({
 					message: `Щось пішло не так, спробуйте пізніше:
@@ -25,12 +30,11 @@ const BranchesList = ({ initializeBranches, branches }) => {
 				}, 5)
 			})
 			.finally(() => setIsLoading(false))
-	// eslint-disable-next-line
 	}, [])
 
 	return (
 		<Container className="mt-5 text-center">
-			<h4 className="pt-4 custom-font">Філії</h4>
+			<h4 className="pt-4 custom-font">Класи</h4>
 			{isLoading
 				? <LoadingIndicator
 					animation="border"
@@ -38,22 +42,26 @@ const BranchesList = ({ initializeBranches, branches }) => {
 				/>
 				: <>
 					<ListGroup>
-						{branches.map(branch =>
+						{schoolClasses.map(schoolClass =>
 							<ListGroup.Item
 								className="px-0 py-1"
-								key={branch.id}
+								key={schoolClass.id}
 							>
-								<Branch branch={branch} />
+								<SchoolClass schoolClass={schoolClass} />
 							</ListGroup.Item>
 						)}
 					</ListGroup>
 					<Toggler
-						buttonLabel="Додати нову філію"
+						buttonLabel="Додати новий клас"
 						data-cy="add-new-branch-btn"
-						ref={branchFormRef}
+						ref={schoolClassFormRef}
 					>
-						<Suspense fallback={<div>Loading...</div>}>
-							<LazyBranchForm mode='create' />
+						<Suspense fallback={
+							<LoadingIndicator
+								animation="border"
+								variant="primary"
+							/>}>
+							<LazySchoolClassForm mode="create" />
 						</Suspense>
 					</Toggler>
 				</>
@@ -64,16 +72,17 @@ const BranchesList = ({ initializeBranches, branches }) => {
 
 const mapStateToProps = (state) => {
 	return {
-		branches: state.branches
+		user: state.user,
+		schoolClasses: state.schoolClasses
 	}
 }
 
 const mapDispatchToProps = {
 	setNotification,
-	initializeBranches
+	initializeSchoolClasses
 }
 
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(BranchesList)
+)(SchoolClassesList)
