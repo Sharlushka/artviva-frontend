@@ -36,6 +36,7 @@ const PaymentForm = () => {
 			searchService.teachers(query)
 				.then((data) => {
 					setTeachersList(data)
+					console.log('Techers list', teachersList)
 				})
 				.catch(error => {
 					console.error(error)
@@ -100,6 +101,7 @@ const PaymentForm = () => {
 			action: 'pay',
 			amount: total,
 			currency: 'UAH',
+			// eslint-disable-next-line
 			description: `Оплата:${months.map(month => ` ${month}`)}. Викладач: ${teacher}. Учень: ${pupil}. Предмет: ${specialty}.`,
 			order_id: uuidv4(),
 			version: '3',

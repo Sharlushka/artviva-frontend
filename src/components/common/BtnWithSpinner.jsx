@@ -36,7 +36,7 @@ const BtnWithSpinner = ({
 
 BtnWithSpinner.propTypes = {
 	loadingState: PropTypes.bool.isRequired,
-	disabledState: PropTypes.bool.isRequired,
+	disabledState: PropTypes.bool,
 	label: PropTypes.string.isRequired,
 	variant: PropTypes.string.isRequired,
 	dataCy: PropTypes.string.isRequired,

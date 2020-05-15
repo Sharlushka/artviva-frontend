@@ -9,7 +9,7 @@ import * as Yup from 'yup'
 import PropTypes from 'prop-types'
 
 import { Container, Col, Form } from 'react-bootstrap'
-import ButtonComponent from '../common/Button'
+import BtnWithSpinner from '../common/BtnWithSpinner'
 
 const PupilForm = ({
 	pupil,
@@ -20,6 +20,7 @@ const PupilForm = ({
 	mode }) => {
 
 	const [editMode, setEditMode] = useState(false)
+	const [processingForm, setProcessingForm] = useState(false)
 
 	// set auth token and mode
 	useEffect(() => {
@@ -31,6 +32,7 @@ const PupilForm = ({
 
 	// handle edit or create
 	const handlePupil = (values, setErrors, resetForm) => {
+		setProcessingForm(true)
 		editMode
 			? existingPupil(values, setErrors)
 			: newPupil(values, setErrors, resetForm)
@@ -55,6 +57,7 @@ const PupilForm = ({
 					variant: 'danger'
 				}, 5)
 			})
+			.finally(() => setProcessingForm(false))
 	}
 
 	const existingPupil = (values, setErrors) => {
@@ -75,6 +78,7 @@ const PupilForm = ({
 					variant: 'danger'
 				}, 5)
 			})
+			.finally(() => setProcessingForm(false))
 	}
 
 	// form data and schema
@@ -126,7 +130,8 @@ const PupilForm = ({
 								as={Col}
 							>
 								<Form.Label>
-									Полне ім&apos;я учня
+									Повне ім&apos;я учня
+									<span className="form-required-mark"> *</span>
 								</Form.Label>
 								<Form.Control
 									type="text"
@@ -184,12 +189,13 @@ const PupilForm = ({
 								as={Col}
 								className="pt-4"
 							>
-								<ButtonComponent
-									block
-									className="px-4 primary-color-shadow"
+								<BtnWithSpinner
+									loadingState={processingForm}
+									classList="px-4 primary-color-shadow"
 									variant="primary"
-									type="submit"
+									btnType="submit"
 									label="Додати"
+									dataCy="add-pupil-btn"
 								/>
 							</Form.Group>
 						</Form.Row>

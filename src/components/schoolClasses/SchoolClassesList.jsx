@@ -1,17 +1,17 @@
-import React, { useState, useEffect, useRef, Suspense } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { connect } from 'react-redux'
 import { setNotification } from '../../reducers/notificationReducer'
 import { initializeSchoolClasses } from '../../reducers/schoolClassesReducer'
 
+import { Link } from 'react-router-dom'
 import { Container, ListGroup } from 'react-bootstrap'
 import SchoolClass from './SchoolClass'
 import LoadingIndicator from '../common/LoadingIndicator'
 import Toggler from '../common/Toggler'
 
-const LazySchoolClassForm = React.lazy(() => import('../forms/SchoolClassForm'))
+import SchoolClassForm from '../forms/SchoolClassForm'
 
 const SchoolClassesList = ({
-	user,
 	schoolClasses,
 	setNotification,
 	initializeSchoolClasses
@@ -30,11 +30,12 @@ const SchoolClassesList = ({
 				}, 5)
 			})
 			.finally(() => setIsLoading(false))
+	// eslint-disable-next-line
 	}, [])
 
 	return (
 		<Container className="mt-5 text-center">
-			<h4 className="pt-4 custom-font">Класи</h4>
+			<h4 className="pt-4">Класи</h4>
 			{isLoading
 				? <LoadingIndicator
 					animation="border"
@@ -51,18 +52,18 @@ const SchoolClassesList = ({
 							</ListGroup.Item>
 						)}
 					</ListGroup>
+					<p className="pt-3 text-muted">
+						Щоб створити клас, ви повинні бути впевнені,
+						що ви створили <Link to="/school/teachers">вчителя</Link>,&nbsp;
+						<Link to="/school/specialties">спеціальність</Link> та&nbsp;
+						<Link to="/school/pupils">учнів</Link> для вашого нового класу.
+					</p>
 					<Toggler
 						buttonLabel="Додати новий клас"
 						data-cy="add-new-branch-btn"
 						ref={schoolClassFormRef}
 					>
-						<Suspense fallback={
-							<LoadingIndicator
-								animation="border"
-								variant="primary"
-							/>}>
-							<LazySchoolClassForm mode="create" />
-						</Suspense>
+						<SchoolClassForm mode="create" />
 					</Toggler>
 				</>
 			}
@@ -72,7 +73,6 @@ const SchoolClassesList = ({
 
 const mapStateToProps = (state) => {
 	return {
-		user: state.user,
 		schoolClasses: state.schoolClasses
 	}
 }

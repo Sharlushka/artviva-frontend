@@ -17,6 +17,7 @@ import TeachersView from './components/views/TeachersView'
 import RecoverView from './components/views/RecoverView'
 import SchoolOverview from './components/views/SchoolOverview'
 import SchoolClassesList from './components/schoolClasses/SchoolClassesList'
+import SchoolClassDetails from './components/schoolClasses/SchoolClassDetails'
 import TeachersList from './components/teachers/TeachersList'
 import PupilsList from './components/pupils/PupilsList'
 import SpecialtiesList from './components/specialties/SpecialtiesList'
@@ -53,28 +54,29 @@ const App = (props) => {
 		<Router>
 			<NavigationBar />
 			<Notification />
+			<ParallaxProvider>
+				<Route path="/" exact component={MainPage} />
+			</ParallaxProvider>
+			<Route path="/about" component={AboutView} />
+			<Route path="/teachers/:department?" component={TeachersView} />
+			<Route path="/login" component={LoginView} />
+			<Route path="/recover" component={RecoverView} />
+			<Route path="/register" component={RegisterView} />
+			<Route path="/blog" component={BlogView} />
+			<Route path="/contacts" component={ContactsView} />
+			<Route path="/school/overview" component={SchoolOverview} />
 			<Switch>
-				<ParallaxProvider>
-					<Route path="/" exact component={MainPage} />
-					<Route path="/about" component={AboutView} />
-					<Route path="/teachers/:department?" component={TeachersView} />
-					<Route path="/login" component={LoginView} />
-					<Route path="/recover" component={RecoverView} />
-					<Route path="/register" component={RegisterView} />
-					<Route path="/blog" component={BlogView} />
-					<Route path="/contacts" component={ContactsView} />
-					<Route path="/school/overview" component={SchoolOverview} />
-					<Route path="/school/classes" component={SchoolClassesList} />
-					<Route path="/school/teachers" component={TeachersList} />
-					<Route path="/school/pupils" component={PupilsList} />
-					<Route path="/school/specialties" component={SpecialtiesList} />
-					<Route path="/school/branches" component={BranchesList} />
-					<Route path="/school/payments" component={Payments} />
-					<Route path="/pay/:status" component={PaymentView} />
-					<Route path="/activate/:email/:uuid" exact component={ActivateAccountView} />
-					<Route path="/reset/:email/:uuid" exact component={PassResetView} />
-				</ParallaxProvider>
+				<Route path="/school/classes/:id" exact component={SchoolClassDetails} />
+				<Route path="/school/classes" component={SchoolClassesList} />
 			</Switch>
+			<Route path="/school/teachers" component={TeachersList} />
+			<Route path="/school/pupils" component={PupilsList} />
+			<Route path="/school/specialties" component={SpecialtiesList} />
+			<Route path="/school/branches" component={BranchesList} />
+			<Route path="/school/payments" component={Payments} />
+			<Route path="/pay/:status" component={PaymentView} />
+			<Route path="/activate/:email/:uuid" exact component={ActivateAccountView} />
+			<Route path="/reset/:email/:uuid" exact component={PassResetView} />
 			<Footer />
 			<ScrollToTop />
 		</Router>

@@ -3,8 +3,9 @@ import { connect } from 'react-redux'
 import { setNotification } from '../../reducers/notificationReducer'
 import { deleteTeacher } from '../../reducers/teachersReducer'
 import teachersService from '../../services/teachers'
+import { toHumanReadable } from '../../utils/datesAndTime'
 
-import { Container, Row, Col, Collapse, Button, ListGroup } from 'react-bootstrap'
+import { Container, Row, Col, Collapse, Button } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons'
 import ButtonComponent from '../common/Button'
@@ -66,16 +67,32 @@ const Teacher = ({ user, teacher, deleteTeacher }) => {
 				<Container fluid className="text-left">
 					<Row>
 						<Col xs={12}>
-							<p>Им&apos;я: {teacher.name}</p>
+							<p>
+								<em className="text-muted">Им&apos;я: </em>
+								{teacher.name}
+							</p>
 						</Col>
 						<Col xs={12}>
-							<ListGroup>Cпеціальність:
+							<em className="text-muted">Cпеціальність:</em>
+							<ol>
 								{teacher.specialties.map(specialty =>
-									<ListGroup.Item key={specialty.id}>
+									<li key={specialty.id}>
 										{specialty.title}
-									</ListGroup.Item>
+									</li>
 								)}
-							</ListGroup>
+							</ol>
+						</Col>
+						<Col>
+							<em className="text-muted">Оплати:</em>
+							<ol>
+								{teacher.payments.map(payment =>
+									<li key={payment.id}>
+										<em className="text-muted">{toHumanReadable('uk-ua', payment.create_date)}</em>
+										<br />
+										{payment.description}
+									</li>
+								)}
+							</ol>
 						</Col>
 					</Row>
 

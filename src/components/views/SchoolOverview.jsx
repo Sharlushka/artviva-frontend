@@ -26,11 +26,11 @@ const SchoolOverview = ({ schoolStats, initializeSchoolStats, setNotification })
 
 	return (
 		<Container className='mt-5'>
-			<h2 className="pt-4 custom-font">Загальна інформація про школу</h2>
+			<h3 className="pt-4">Загальна інформація про школу</h3>
 			<Row className="d-flex justify-content-center">
 				<Col md={8}>
 					<p className="text-muted">
-						Списки вчителів, учнів та філій, виплати та інша інформація..
+						Списки вчителів, учнів та філій, оплата та інша інформація..
 					</p>
 					{isLoading
 						? <LoadingIndicator

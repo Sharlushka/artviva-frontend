@@ -4,6 +4,7 @@ import { setNotification } from '../../reducers/notificationReducer'
 import { initializeTeachers } from '../../reducers/teachersReducer'
 import { initializeSpecialties } from '../../reducers/specialtiesReducer'
 
+import { Link } from 'react-router-dom'
 import { Container, ListGroup } from 'react-bootstrap'
 import Teacher from './Teacher'
 import LoadingIndicator from '../common/LoadingIndicator'
@@ -57,6 +58,11 @@ const TeachersList = ({ teachers, setNotification, initializeTeachers, initializ
 							</ListGroup.Item>
 						)}
 					</ListGroup>
+					<p className="pt-3 text-muted">
+						Щоб додати нового викладача, спочатку потрібно створити його
+						<Link to="/school/specialties"> спеціальність</Link>,
+						якщо ви цього ще не зробили.
+					</p>
 					<Toggler
 						buttonLabel="Додати нового вчітеля"
 						data-cy="add-new-branch-btn"

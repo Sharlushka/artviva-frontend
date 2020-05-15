@@ -46,6 +46,11 @@ const PupilsList = ({ pupils, initializePupils, setNotification }) => {
 							</ListGroup.Item>
 						)}
 					</ListGroup>
+					<p className="pt-3 text-muted">
+						Щоб створити учня, вам потрібна така інформація:
+						<strong> Ім&apos;я та прізвище</strong>.
+						Додаткова інформація не є обов&apos;язковою.
+					</p>
 					<Toggler
 						buttonLabel="Додати нового учня"
 						data-cy="add-new-pupil-btn"

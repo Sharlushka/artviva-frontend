@@ -7,11 +7,13 @@ import schoolClassesService from '../../services/schoolClasses'
 import { Container, Row, Col, Collapse, Button } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons'
-import ButtonComponent from '../common/Button'
-import Toggler from '../common/Toggler'
+import BtnWithIcon from '../common/BtnWithIcon'
+import TogglerWithIcon from '../common/TogglerWithIcon'
+// import EntityEditModal from '../common/EntityEditModal'
+import SchoolClassForm from '../forms/SchoolClassForm'
 
 const LazyEntityDeleteModal = React.lazy(() => import('../common/EntityDeleteModal'))
-const LazySchoolClassForm = React.lazy(() => import('../forms/SchoolClassForm'))
+// const LazySchoolClassForm = React.lazy(() => import('../forms/SchoolClassForm'))
 
 const SchoolClass = ({ user, schoolClass, deleteSchoolClass }) => {
 	const editSchoolClassFormRef = useRef(null)
@@ -70,32 +72,42 @@ const SchoolClass = ({ user, schoolClass, deleteSchoolClass }) => {
 							<p>Фах: <strong>{schoolClass.specialty.title}</strong></p>
 							<p>Опіс: <strong>{schoolClass.info}</strong></p>
 							<p>Вчітель: <strong>{schoolClass.teacher.name}</strong></p>
-							<p>Учні: <strong>{schoolClass.pupils.map(pupil => `${pupil.name} `)}</strong></p>
+							Учні:
+							<ol>
+								{schoolClass.pupils.map(pupil => (
+									<li key={pupil.id}>
+										{pupil.name}: <em className="text-primary">{pupil.info}</em>
+									</li>
+								))}
+							</ol>
 						</Col>
 					</Row>
 
-					<Row className="d-flex justify-content-center">
-						<Col md={8} lg={6} xl={4}>
-							<Toggler
-								buttonLabel="Редагувати клас"
-								data-cy="edit-teacher-btn"
-								ref={editSchoolClassFormRef}
-							>
-								<Suspense fallback={<div>Loading modal..</div>}>
-									<LazySchoolClassForm schoolClass={schoolClass} mode="edit" />
-								</Suspense>
-							</Toggler>
-							<ButtonComponent
-								block
+					<Row className="d-flex justify-content-end">
+						{/*<Col md={8} lg={6} xl={4}>*/}
+						<TogglerWithIcon
+							buttonLabel="Редагувати клас"
+							data-cy="edit-class-btn"
+							ref={editSchoolClassFormRef}
+						>
+							<SchoolClassForm
+								schoolClass={schoolClass}
+								mode="edit" />
+							<BtnWithIcon
 								label="Видалити"
-								variant="danger"
+								icon="trash"
+								className="ml-3"
+								variant="outline-danger"
 								type="button"
 								handleClick={() => openDeleteModal()}
 							/>
-						</Col>
+						</TogglerWithIcon>
+
+						{/*</Col>*/}
 					</Row>
 				</Container>
 			</Collapse>
+
 			{/* School class delete modal */}
 			<Suspense fallback={<div>Loading modal..</div>}>
 				<LazyEntityDeleteModal

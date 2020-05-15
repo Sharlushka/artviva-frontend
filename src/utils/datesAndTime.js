@@ -1,5 +1,5 @@
 export const toHumanReadable = (locale, seconds) => {
-	return new Date(seconds).toLocaleString(locale, { dateStyle: 'long', timeStyle: 'medium' })
+	return new Date(seconds).toLocaleString(locale, { dateStyle: 'long', timeStyle: 'short' })
 }
 
 export const minDate = months => {

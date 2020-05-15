@@ -48,6 +48,11 @@ const SpecialtiesList = ({ initializeSpecialties, specialties }) => {
 							</ListGroup.Item>
 						)}
 					</ListGroup>
+					<p className="pt-3 text-muted">
+						Щоб створити спеціальність, вам потрібна така інформація:
+						<strong> назва спеціальності, вартість</strong>.
+						Додаткова інформація не є обов&apos;язковою.
+					</p>
 					<Toggler
 						buttonLabel="Додати новій фах"
 						data-cy="add-specialty-btn"

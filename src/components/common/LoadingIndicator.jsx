@@ -4,14 +4,17 @@ import PropTypes from 'prop-types'
 
 const LoadingIndicator = ({ animation, variant, size }) => {
 	return (
-		<Spinner
-			animation={animation}
-			variant={variant || ''}
-			role="status"
-			size={size || 'lg'}
-		>
-			<span className="sr-only">Завантаження...</span>
-		</Spinner>
+		<div className="position-center">
+			<Spinner
+				animation={animation}
+				variant={variant || ''}
+				role="status"
+				size={size || 'lg'}
+				className="loading-spinner"
+			>
+				<span className="sr-only">Завантаження...</span>
+			</Spinner>
+		</div>
 	)
 }
 

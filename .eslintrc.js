@@ -56,6 +56,7 @@ module.exports = {
     "cypress/no-assigning-return-values": "error",
     "cypress/no-unnecessary-waiting": "error",
     "cypress/assertion-before-screenshot": "warn",
+    "max-len": ["error", { "code": 120 }],
     "indent": [
         "error",
         "tab"

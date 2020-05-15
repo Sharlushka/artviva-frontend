@@ -4,6 +4,7 @@ import { deletePupil } from '../../reducers/pupilsReducer'
 import pupilsService from '../../services/pupils'
 import { setNotification } from '../../reducers/notificationReducer'
 
+import { Link } from 'react-router-dom'
 import { Container, Row, Col, Collapse, Button } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons'
@@ -65,7 +66,24 @@ const Pupil = ({ user, pupil, deletePupil }) => {
 				<Container fluid className="text-left">
 					<Row>
 						<Col>
-							<p>Им&apos;я: {pupil.name}</p>
+							<p>
+								<em className="text-muted">Им&apos;я:</em> {pupil.name}
+							</p>
+							<p>
+								<em className="text-muted">Додаткова інформація:</em> {pupil.info}
+							</p>
+							<div>
+								<em className="text-muted">Класи:</em>
+								<ol>
+									{pupil.schoolClasses.map(schoolClass =>
+										<li key={schoolClass.id}>
+											<Link to={`classes/${schoolClass.id}`}>
+												{schoolClass.title}
+											</Link>
+										</li>
+									)}
+								</ol>
+							</div>
 						</Col>
 					</Row>
 
