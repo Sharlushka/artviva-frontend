@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { setNotification } from '../../reducers/notificationReducer'
 import { createSchoolClass, updateSchoolClass } from '../../reducers/schoolClassesReducer'
 import searchService from '../../services/search'
-import schoolClassesService from '../../services/schoolClasses'
+import { debounce } from '../../utils/debounce'
 
 import { Formik, FieldArray, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
@@ -20,6 +20,7 @@ const SchoolClassForm = ({
 	setNotification,
 	createSchoolClass,
 	updateSchoolClass,
+	closeModal,
 	mode }) => {
 
 	const [editMode, setEditMode] = useState(false)
@@ -35,7 +36,6 @@ const SchoolClassForm = ({
 
 	useEffect(() => {
 		searchService.setToken(user.token)
-		schoolClassesService.setToken(user.token)
 	}, [user])
 
 	// lists for form input autocomplete suggestions
@@ -43,44 +43,67 @@ const SchoolClassForm = ({
 	const [pupilsList, setPupilsList] = useState([])
 	const [specialtiesList, setSpecialtiesList] = useState([])
 
-	// should really consider debouncing and throttling this!
-	const getTeachers = (value) => {
-		if (value.length >= 2) {
-			const query = { value }
-			searchService.teachers(query)
-				.then((data) => {
-					setTeachersList(data)
-				})
-				.catch(error => {
-					console.error(error)
-				})
+	// search something in db as user types
+	const search = data => {
+		// pupils data.value is unique id in the
+		// values array, as it is a multiline input
+		// hence this rename
+		const pupilsPattern = /pupils(\[)(\d{0,2})(])/i
+		if (pupilsPattern.exec(data.name)) {
+			data = { ...data, name: 'pupil' }
 		}
+
+		// then
+		if (data.value <= 2 ) {
+			return console.warn('Потрібно більше даних для пошуку.')
+		}
+
+		const queryPattern = /^[A-ZА-ЯҐЄІЇ]{2,64}$/i
+		if (queryPattern.exec(data.value)) {
+			const query = {
+				value: data.value
+			}
+			switch (data.name) {
+			case 'teacher':
+				return searchTeachers(query)
+			case 'pupil':
+				return searchPupils(query)
+			case 'specialty':
+				return searchSpecialties(query)
+			default:
+				return false
+			}
+		} else console.warn('Перевірте формат data.value.')
 	}
 
-	const getPupils = value => {
-		if (value.length >= 2) {
-			const query = { value }
-			searchService.pupils(query)
-				.then((data) => {
-					setPupilsList(data)
-				})
-				.catch(error => {
-					console.error(error)
-				})
-		}
+	const searchTeachers = query => {
+		searchService.teachers(query)
+			.then((data) => {
+				setTeachersList(data)
+			})
+			.catch(error => {
+				console.error(error)
+			})
 	}
 
-	const getSpecialties = value => {
-		if (value.length >= 2) {
-			const query = { value }
-			searchService.specialties(query)
-				.then((data) => {
-					setSpecialtiesList(data)
-				})
-				.catch(error => {
-					console.error(error)
-				})
-		}
+	const searchPupils = query => {
+		searchService.pupils(query)
+			.then((data) => {
+				setPupilsList(data)
+			})
+			.catch(error => {
+				console.error(error)
+			})
+	}
+
+	const searchSpecialties = query => {
+		searchService.specialties(query)
+			.then((data) => {
+				setSpecialtiesList(data)
+			})
+			.catch(error => {
+				console.error(error)
+			})
 	}
 
 	const checkSubmitBtnState = ({ pupils }) => {
@@ -133,6 +156,7 @@ const SchoolClassForm = ({
 					message: 'Зміни успішно збережено.',
 					variant: 'success'
 				}, 5)
+				if (closeModal) closeModal()
 			})
 			.catch(error => {
 				const { message } = { ...error.response.data }
@@ -181,9 +205,13 @@ const SchoolClassForm = ({
 
 	return (
 		<Container>
-			<h2 className="text-center pt-4">
-				{editMode ? 'Редагувати' : 'Додати'} клас
-			</h2>
+			{editMode
+				? null
+				: <h2 className="text-center pt-4">
+					Додати клас
+				</h2>
+			}
+
 			<Formik
 				initialValues={initialFormValues()}
 				enableReinitialize
@@ -286,7 +314,7 @@ const SchoolClassForm = ({
 									list={editMode ? `teachers-list-${schoolClass.id}` : 'teachers-list'}
 									autoComplete="off"
 									onChange={handleChange}
-									onKeyUp={event => getTeachers(event.target.value)}
+									onKeyUp={event => debounce(search(event.target), 1000)}
 									onBlur={handleBlur}
 									value={values.teacher}
 									isValid={touched.teacher && !errors.teacher}
@@ -326,7 +354,7 @@ const SchoolClassForm = ({
 										: 'specialties-list'}
 									autoComplete="off"
 									onChange={handleChange}
-									onKeyUp={event => getSpecialties(event.target.value)}
+									onKeyUp={event => debounce(search(event.target), 1000)}
 									onBlur={handleBlur}
 									value={values.specialty}
 									isValid={touched.specialty && !errors.specialty}
@@ -368,7 +396,7 @@ const SchoolClassForm = ({
 														value={values.pupils[index]}
 														onChange={handleChange}
 														onBlur={handleBlur}
-														onKeyUp={event => getPupils(event.target.value)}
+														onKeyUp={event => debounce(search(event.target), 1000)}
 														isValid={touched.pupils && !errors.pupils}
 														// isInvalid={touched.specialties && !!errors.specialties}
 													/>
@@ -448,22 +476,13 @@ const SchoolClassForm = ({
 								as={Col}
 								className="pt-4"
 							>
-								{/*<ButtonComponent
-									block
-									className="px-4 primary-color-shadow"
-									variant="primary"
-									type="submit"
-									label="Додати"
-								/>*/}
 								<BtnWithSpinner
-									block
-									className="px-4 primary-color-shadow"
-									variant="primary"
-									btnType="submit"
-									label="Додати"
+									className="px-4"
+									variant={editMode ? 'success' : 'primary'}
+									type="submit"
+									label={editMode ? 'Зберегти' : 'Додати новій клас'}
 									dataCy="add-class-btn"
 									loadingState={processingForm}
-									disabledState={false}
 								/>
 							</Form.Group>
 						</Form.Row>
@@ -480,7 +499,8 @@ SchoolClassForm.propTypes = {
 	setNotification: PropTypes.func.isRequired,
 	createSchoolClass: PropTypes.func.isRequired,
 	updateSchoolClass: PropTypes.func.isRequired,
-	mode: PropTypes.oneOf(['create', 'edit']).isRequired
+	mode: PropTypes.oneOf(['create', 'edit']).isRequired,
+	closeModal: PropTypes.func
 }
 
 const mapStateToProps = (state) => {

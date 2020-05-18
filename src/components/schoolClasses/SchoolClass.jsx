@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, Suspense } from 'react'
+import React, { useState, useEffect, Suspense } from 'react'
 import { connect } from 'react-redux'
 import { setNotification } from '../../reducers/notificationReducer'
 import { deleteSchoolClass } from '../../reducers/schoolClassesReducer'
@@ -8,21 +8,16 @@ import { Container, Row, Col, Collapse, Button } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons'
 import BtnWithIcon from '../common/BtnWithIcon'
-import TogglerWithIcon from '../common/TogglerWithIcon'
-// import EntityEditModal from '../common/EntityEditModal'
 import SchoolClassForm from '../forms/SchoolClassForm'
+import LoadingIndicator from '../common/LoadingIndicator'
 
 const LazyEntityDeleteModal = React.lazy(() => import('../common/EntityDeleteModal'))
-// const LazySchoolClassForm = React.lazy(() => import('../forms/SchoolClassForm'))
+const LazyEntityEditModal = React.lazy(() => import('../common/EntityEditModal'))
 
 const SchoolClass = ({ user, schoolClass, deleteSchoolClass }) => {
-	const editSchoolClassFormRef = useRef(null)
 	const [open, setOpen] = useState(false)
-	const [modalShow, setModalShow] = useState(false)
-
-	const openDeleteModal = () => {
-		setModalShow(true)
-	}
+	const [deleteModalShow, setDeleteModalShow] = useState(false)
+	const [editModalShow, setEditModalShow] = useState(false)
 
 	// set auth token
 	useEffect(() => {
@@ -67,7 +62,7 @@ const SchoolClass = ({ user, schoolClass, deleteSchoolClass }) => {
 			<Collapse in={open}>
 				<Container fluid className="text-left">
 					<Row>
-						<Col xs={12}>
+						<Col>
 							<p>Назва класу: <strong>{schoolClass.title}</strong></p>
 							<p>Фах: <strong>{schoolClass.specialty.title}</strong></p>
 							<p>Опіс: <strong>{schoolClass.info}</strong></p>
@@ -83,41 +78,53 @@ const SchoolClass = ({ user, schoolClass, deleteSchoolClass }) => {
 						</Col>
 					</Row>
 
-					<Row className="d-flex justify-content-end">
-						{/*<Col md={8} lg={6} xl={4}>*/}
-						<TogglerWithIcon
-							buttonLabel="Редагувати клас"
-							data-cy="edit-class-btn"
-							ref={editSchoolClassFormRef}
-						>
-							<SchoolClassForm
-								schoolClass={schoolClass}
-								mode="edit" />
+					<Row>
+						<Col className="my-2 d-flex justify-content-end">
+							<BtnWithIcon
+								label="Редагувати"
+								icon="edit"
+								variant="outline-success"
+								type="button"
+								handleClick={() => setEditModalShow(true)}
+							/>
 							<BtnWithIcon
 								label="Видалити"
 								icon="trash"
-								className="ml-3"
 								variant="outline-danger"
 								type="button"
-								handleClick={() => openDeleteModal()}
+								handleClick={() => setDeleteModalShow(true)}
 							/>
-						</TogglerWithIcon>
-
-						{/*</Col>*/}
+						</Col>
 					</Row>
 				</Container>
 			</Collapse>
 
-			{/* School class delete modal */}
-			<Suspense fallback={<div>Loading modal..</div>}>
+			{/* School class edit and delete modals*/}
+			<Suspense fallback={
+				<LoadingIndicator
+					animation="border"
+					variant="primary"
+					size="md"
+				/>}>
 				<LazyEntityDeleteModal
 					subject="клас"
 					subjectid={schoolClass.id}
 					valuetoconfirm={schoolClass.title}
-					show={modalShow}
+					show={deleteModalShow}
 					handleDelete={handleDelete}
-					onHide={() => setModalShow(false)}
+					onHide={() => setDeleteModalShow(false)}
 				/>
+				<LazyEntityEditModal
+					subject="клас"
+					subjectid={schoolClass.id}
+					show={editModalShow}
+					onHide={() => setEditModalShow(false)}
+				>
+					<SchoolClassForm
+						closeModal={() => setEditModalShow(false)}
+						schoolClass={schoolClass}
+						mode="edit" />
+				</LazyEntityEditModal>
 			</Suspense>
 		</>
 	)

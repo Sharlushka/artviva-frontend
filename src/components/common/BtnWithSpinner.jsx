@@ -6,7 +6,7 @@ const BtnWithSpinner = ({
 	loadingState,
 	disabledState,
 	label,
-	btnType,
+	type,
 	variant,
 	dataCy,
 	classList }) => {
@@ -14,7 +14,7 @@ const BtnWithSpinner = ({
 	return (
 		<Button
 			block
-			type={btnType}
+			type={type}
 			variant={variant}
 			data-cy={dataCy}
 			className={classList}
@@ -35,12 +35,13 @@ const BtnWithSpinner = ({
 }
 
 BtnWithSpinner.propTypes = {
+	type: PropTypes.string,
 	loadingState: PropTypes.bool.isRequired,
 	disabledState: PropTypes.bool,
 	label: PropTypes.string.isRequired,
 	variant: PropTypes.string.isRequired,
 	dataCy: PropTypes.string.isRequired,
-	classList: PropTypes.string
+	classList: PropTypes.string // Realy??
 }
 
 export default BtnWithSpinner

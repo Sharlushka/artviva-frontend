@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
-import { Modal, Form, Button } from 'react-bootstrap'
-import { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
+
+import { Modal, Form, Button } from 'react-bootstrap'
+
 
 const EntityDeleteModal = ({ handleDelete, valuetoconfirm, subject, subjectid, ...props }) => {
 	const [valueChange, setValueChange] = useState('')

@@ -1,13 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { setNotification } from '../../reducers/notificationReducer'
 import { initializeSchoolClasses } from '../../reducers/schoolClassesReducer'
 
 import { Link } from 'react-router-dom'
-import { Container, ListGroup } from 'react-bootstrap'
+import { Container, ListGroup, Button, Collapse } from 'react-bootstrap'
 import SchoolClass from './SchoolClass'
 import LoadingIndicator from '../common/LoadingIndicator'
-import Toggler from '../common/Toggler'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons'
 
 import SchoolClassForm from '../forms/SchoolClassForm'
 
@@ -17,8 +18,8 @@ const SchoolClassesList = ({
 	initializeSchoolClasses
 }) => {
 
-	const schoolClassFormRef = useRef(null)
 	const [isLoading, setIsLoading] = useState(true)
+	const [open, setOpen] = useState(false)
 
 	useEffect(() => {
 		initializeSchoolClasses()
@@ -58,13 +59,27 @@ const SchoolClassesList = ({
 						<Link to="/school/specialties">спеціальність</Link> та&nbsp;
 						<Link to="/school/pupils">учнів</Link> для вашого нового класу.
 					</p>
-					<Toggler
-						buttonLabel="Додати новий клас"
-						data-cy="add-new-branch-btn"
-						ref={schoolClassFormRef}
+					<Button
+						block
+						onClick={() => setOpen(!open)}
+						aria-controls="school-class-edit-form-collapse"
+						aria-expanded={open}
+						variant="outline-primary"
+						className="d-flex justify-content-between align-items-center"
 					>
-						<SchoolClassForm mode="create" />
-					</Toggler>
+						<span>
+							Додати новий клас
+						</span>
+						{ open
+							? <FontAwesomeIcon icon={faAngleUp} />
+							: <FontAwesomeIcon icon={faAngleDown} />
+						}
+					</Button>
+					<Collapse in={open}>
+						<Container>
+							<SchoolClassForm mode="create" />
+						</Container>
+					</Collapse>
 				</>
 			}
 		</Container>
