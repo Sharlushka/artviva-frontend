@@ -9,7 +9,7 @@ const BtnWithIcon = ({ className, variant, type, handleClick, label, block, disa
 
 	const chooseIcon = () => {
 		if (icon === 'trash') return <FontAwesomeIcon icon={faTrash} />
-		if (icon === 'edit') return <FontAwesomeIcon icon={faEdit} /> // this!
+		if (icon === 'edit') return <FontAwesomeIcon icon={faEdit} />
 	}
 
 	return (

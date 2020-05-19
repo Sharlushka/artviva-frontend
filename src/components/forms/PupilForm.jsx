@@ -17,7 +17,8 @@ const PupilForm = ({
 	setNotification,
 	createPupil,
 	updatePupil,
-	mode }) => {
+	mode,
+	closeModal }) => {
 
 	const [editMode, setEditMode] = useState(false)
 	const [processingForm, setProcessingForm] = useState(false)
@@ -61,12 +62,13 @@ const PupilForm = ({
 	}
 
 	const existingPupil = (values, setErrors) => {
-		updatePupil(pupil.id, values)
+		updatePupil(pupil.id, { name: values.name, info: values.info })
 			.then(() => {
 				setNotification({
 					message: 'Зміни успішно збережено.',
 					variant: 'success'
 				}, 5)
+				closeModal()
 			})
 			.catch(error => {
 				const { message, cause } = { ...error.response.data }
@@ -97,9 +99,6 @@ const PupilForm = ({
 
 	return (
 		<Container>
-			<h4 className="text-center custom-font py-4">
-				{editMode ? 'Редагувати' : 'Додати'} учня
-			</h4>
 			<Formik
 				initialValues={initialFormValues()}
 				enableReinitialize
@@ -191,10 +190,10 @@ const PupilForm = ({
 							>
 								<BtnWithSpinner
 									loadingState={processingForm}
-									classList="px-4 primary-color-shadow"
-									variant="primary"
-									btnType="submit"
-									label="Додати"
+									classList="px-4"
+									variant={editMode ? 'success' : 'primary'}
+									type="submit"
+									label={editMode ? 'Зберегти' : 'Додати'}
 									dataCy="add-pupil-btn"
 								/>
 							</Form.Group>
@@ -212,7 +211,8 @@ PupilForm.propTypes = {
 	setNotification: PropTypes.func.isRequired,
 	createPupil: PropTypes.func.isRequired,
 	updatePupil: PropTypes.func.isRequired,
-	mode: PropTypes.oneOf(['create', 'edit']).isRequired
+	mode: PropTypes.oneOf(['create', 'edit']).isRequired,
+	closeModal: PropTypes.func
 }
 
 const mapStateToProps = (state) => {

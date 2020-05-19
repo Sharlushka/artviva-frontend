@@ -1,16 +1,15 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, Suspense } from 'react'
 import { connect } from 'react-redux'
 import { setNotification } from '../../reducers/notificationReducer'
 import { initializeSchoolClasses } from '../../reducers/schoolClassesReducer'
 
 import { Link } from 'react-router-dom'
-import { Container, ListGroup, Button, Collapse } from 'react-bootstrap'
+import { Container, ListGroup } from 'react-bootstrap'
 import SchoolClass from './SchoolClass'
 import LoadingIndicator from '../common/LoadingIndicator'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons'
+import CollapseForm from '../common/CollapseForm'
 
-import SchoolClassForm from '../forms/SchoolClassForm'
+const LazySchoolClassForm = React.lazy(() => import('../forms/SchoolClassForm'))
 
 const SchoolClassesList = ({
 	schoolClasses,
@@ -19,7 +18,6 @@ const SchoolClassesList = ({
 }) => {
 
 	const [isLoading, setIsLoading] = useState(true)
-	const [open, setOpen] = useState(false)
 
 	useEffect(() => {
 		initializeSchoolClasses()
@@ -35,14 +33,16 @@ const SchoolClassesList = ({
 	}, [])
 
 	return (
-		<Container className="mt-5 text-center">
-			<h4 className="pt-4">Класи</h4>
+		<Container>
 			{isLoading
 				? <LoadingIndicator
 					animation="border"
 					variant="primary"
 				/>
 				: <>
+					<p className="pt-3">
+						Список усіх класів школи.
+					</p>
 					<ListGroup>
 						{schoolClasses.map(schoolClass =>
 							<ListGroup.Item
@@ -59,27 +59,20 @@ const SchoolClassesList = ({
 						<Link to="/school/specialties">спеціальність</Link> та&nbsp;
 						<Link to="/school/pupils">учнів</Link> для вашого нового класу.
 					</p>
-					<Button
-						block
-						onClick={() => setOpen(!open)}
-						aria-controls="school-class-edit-form-collapse"
-						aria-expanded={open}
-						variant="outline-primary"
-						className="d-flex justify-content-between align-items-center"
+
+					<CollapseForm
+						title="Додати новий клас"
+						ariaControls="school-class-add-form-collapse"
 					>
-						<span>
-							Додати новий клас
-						</span>
-						{ open
-							? <FontAwesomeIcon icon={faAngleUp} />
-							: <FontAwesomeIcon icon={faAngleDown} />
-						}
-					</Button>
-					<Collapse in={open}>
-						<Container>
-							<SchoolClassForm mode="create" />
-						</Container>
-					</Collapse>
+						<Suspense
+							fallback={
+								<LoadingIndicator
+									animation="border"
+									variant="primary"
+								/>}>
+							<LazySchoolClassForm mode="create" />
+						</Suspense>
+					</CollapseForm>
 				</>
 			}
 		</Container>

@@ -17,7 +17,8 @@ const SpecialtyForm = ({
 	setNotification,
 	createSpecialty,
 	updateSpecialty,
-	mode }) => {
+	mode,
+	closeModal }) => {
 
 	const [editMode, setEditMode] = useState(false)
 
@@ -64,6 +65,7 @@ const SpecialtyForm = ({
 					message: 'Зміни успішно збережено.',
 					variant: 'success'
 				}, 5)
+				closeModal()
 			})
 			.catch(error => {
 				const { message } = { ...error.response.data }
@@ -96,9 +98,6 @@ const SpecialtyForm = ({
 
 	return (
 		<Container>
-			<h2 className="text-center custom-font py-4">
-				{editMode ? 'Редагувати' : 'Додати'} спеціальність
-			</h2>
 			<Formik
 				initialValues={initialFormValues()}
 				enableReinitialize

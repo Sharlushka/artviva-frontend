@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, Suspense } from 'react'
 import { connect } from 'react-redux'
 import { setNotification } from '../../reducers/notificationReducer'
 import { initializePupils } from '../../reducers/pupilsReducer'
@@ -6,12 +6,12 @@ import { initializePupils } from '../../reducers/pupilsReducer'
 import { Container, ListGroup } from 'react-bootstrap'
 import Pupil from './Pupil'
 import LoadingIndicator from '../common/LoadingIndicator'
-import PupilForm from '../forms/PupilForm'
-import Toggler from '../common/Toggler'
+import CollapseForm from '../common/CollapseForm'
+
+const LazyPupilForm = React.lazy(() => import('../forms/PupilForm'))
 
 const PupilsList = ({ pupils, initializePupils, setNotification }) => {
 
-	const PupilFormRef = useRef(null)
 	const [isLoading, setIsLoading] = useState(true)
 
 	useEffect(() => {
@@ -28,14 +28,16 @@ const PupilsList = ({ pupils, initializePupils, setNotification }) => {
 	}, [])
 
 	return (
-		<Container className='mt-5 text-center'>
-			<h4 className="pt-4 custom-font">Учні</h4>
+		<Container>
 			{isLoading
 				? <LoadingIndicator
 					animation="border"
 					variant="primary"
 				/>
 				: <>
+					<p className="pt-3">
+						Список усіх учнів школи.
+					</p>
 					<ListGroup>
 						{pupils.map(pupil =>
 							<ListGroup.Item
@@ -51,13 +53,20 @@ const PupilsList = ({ pupils, initializePupils, setNotification }) => {
 						<strong> Ім&apos;я та прізвище</strong>.
 						Додаткова інформація не є обов&apos;язковою.
 					</p>
-					<Toggler
-						buttonLabel="Додати нового учня"
-						data-cy="add-new-pupil-btn"
-						ref={PupilFormRef}
+
+					<CollapseForm
+						title="Додати нового учня"
+						ariaControls="pupil-add-form-collapse"
 					>
-						<PupilForm mode='create' />
-					</Toggler>
+						<Suspense
+							fallback={
+								<LoadingIndicator
+									animation="border"
+									variant="primary"
+								/>}>
+							<LazyPupilForm mode="create" />
+						</Suspense>
+					</CollapseForm>
 				</>
 			}
 		</Container>

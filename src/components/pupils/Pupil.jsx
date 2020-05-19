@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, Suspense } from 'react'
 import { connect } from 'react-redux'
 import { deletePupil } from '../../reducers/pupilsReducer'
 import pupilsService from '../../services/pupils'
@@ -8,19 +8,19 @@ import { Link } from 'react-router-dom'
 import { Container, Row, Col, Collapse, Button } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons'
-import ButtonComponent from '../common/Button'
-import EntityDeleteModal from '../common/EntityDeleteModal'
-import Toggler from '../common/Toggler'
+// import BtnWithIcon from '../common/BtnWithIcon'
+import LoadingIndicator from '../common/LoadingIndicator'
 import PupilForm from '../forms/PupilForm'
+import EntityControlButtons from '../common/EntityControlButtons'
+
+const LazyEntityDeleteModal = React.lazy(() => import('../common/EntityDeleteModal'))
+const LazyEntityEditModal = React.lazy(() => import('../common/EntityEditModal'))
 
 const Pupil = ({ user, pupil, deletePupil }) => {
-	const editPupilFormRef = useRef(null)
-	const [open, setOpen] = useState(false)
-	const [modalShow, setModalShow] = useState(false)
 
-	const openDeleteModal = () => {
-		setModalShow(true)
-	}
+	const [open, setOpen] = useState(false)
+	const [deleteModalShow, setDeleteModalShow] = useState(false)
+	const [editModalShow, setEditModalShow] = useState(false)
 
 	// set auth token
 	useEffect(() => {
@@ -87,35 +87,62 @@ const Pupil = ({ user, pupil, deletePupil }) => {
 						</Col>
 					</Row>
 
-					<Row className="d-flex justify-content-center">
-						<Col md={8} lg={6} xl={4}>
-							<Toggler
-								buttonLabel="Редагувати данні учня"
-								dataCy="edit-teacher-btn"
-								ref={editPupilFormRef}
-							>
-								<PupilForm pupil={pupil} mode='edit' />
-							</Toggler>
-							<ButtonComponent
-								block
-								label="Видалити"
-								variant="danger"
+					<Row>
+						<EntityControlButtons
+							openEditModal={() => setEditModalShow(true)}
+							openDeleteModal={() => setDeleteModalShow(true)}
+						/>
+					</Row>
+
+					{/*<Row>
+						<Col className="my-2 d-flex justify-content-end">
+							<BtnWithIcon
+								label="Редагувати"
+								icon="edit"
+								variant="outline-success"
 								type="button"
-								handleClick={() => openDeleteModal()}
+								handleClick={() => setEditModalShow(true)}
+							/>
+							<BtnWithIcon
+								label="Видалити"
+								icon="trash"
+								variant="outline-danger"
+								type="button"
+								handleClick={() => setDeleteModalShow(true)}
 							/>
 						</Col>
-					</Row>
+					</Row>*/}
+
 				</Container>
 			</Collapse>
-			{/* Pupil delete modal */}
-			<EntityDeleteModal
-				subject="учня"
-				subjectid={pupil.id}
-				valuetoconfirm={pupil.name}
-				show={modalShow}
-				handleDelete={handleDelete}
-				onHide={() => setModalShow(false)}
-			/>
+
+			{/* Pupil edit and delete modal */}
+			<Suspense fallback={
+				<LoadingIndicator
+					animation="border"
+					variant="primary"
+					size="md"
+				/>}>
+				<LazyEntityEditModal
+					subject="учня"
+					subjectid={pupil.id}
+					show={editModalShow}
+					onHide={() => setEditModalShow(false)}
+				>
+					<PupilForm
+						closeModal={() => setEditModalShow(false)}
+						pupil={pupil}
+						mode="edit" />
+				</LazyEntityEditModal>
+				<LazyEntityDeleteModal
+					subject="учня"
+					subjectid={pupil.id}
+					valuetoconfirm={pupil.name}
+					show={deleteModalShow}
+					handleDelete={handleDelete}
+					onHide={() => setDeleteModalShow(false)}
+				/>
+			</Suspense>
 		</>
 	)
 }

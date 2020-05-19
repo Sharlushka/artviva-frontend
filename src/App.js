@@ -27,6 +27,7 @@ import PaymentView from './components/views/PaymentView'
 import ActivateAccountView from './components/views/ActivateAccountView'
 import PassResetView from './components/views/PassResetView'
 import ScrollToTop from './components/common/ScrollToTop'
+import SchoolSectionsNav from './components/navigation/SchoolSectionsNav'
 
 import { setUserFromLocalStorage } from './reducers/loginReducer'
 import './css/index.css'
@@ -64,6 +65,7 @@ const App = (props) => {
 			<Route path="/register" component={RegisterView} />
 			<Route path="/blog" component={BlogView} />
 			<Route path="/contacts" component={ContactsView} />
+			<Route path="/school" component={SchoolSectionsNav} />
 			<Route path="/school/overview" component={SchoolOverview} />
 			<Switch>
 				<Route path="/school/classes/:id" exact component={SchoolClassDetails} />

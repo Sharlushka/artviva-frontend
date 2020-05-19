@@ -7,8 +7,7 @@ import PaymentsList from '../payments/PaymentsList'
 const Payments = ({ user }) => {
 
 	return (
-		<Container className="mt-5 text-center">
-			<h4 className="pt-4 custom-font">Платежі</h4>
+		<Container>
 			<PaymentsList />
 		</Container>
 	)

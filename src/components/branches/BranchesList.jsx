@@ -5,7 +5,8 @@ import { initializeBranches } from '../../reducers/branchesReducer'
 
 import { Container, ListGroup } from 'react-bootstrap'
 import LoadingIndicator from '../common/LoadingIndicator'
-import Toggler from '../common/Toggler'
+import CollapseForm from '../common/CollapseForm'
+// import Toggler from '../common/Toggler'
 import Branch from './Branch'
 
 const LazyBranchForm = React.lazy(() => import('../forms/BranchForm'))
@@ -29,14 +30,16 @@ const BranchesList = ({ initializeBranches, branches }) => {
 	}, [])
 
 	return (
-		<Container className="mt-5 text-center">
-			<h4 className="pt-4 custom-font">Філії</h4>
+		<Container>
 			{isLoading
 				? <LoadingIndicator
 					animation="border"
 					variant="primary"
 				/>
 				: <>
+					<p className="pt-3">
+						Список усіх філії школи.
+					</p>
 					<ListGroup>
 						{branches.map(branch =>
 							<ListGroup.Item
@@ -47,15 +50,25 @@ const BranchesList = ({ initializeBranches, branches }) => {
 							</ListGroup.Item>
 						)}
 					</ListGroup>
-					<Toggler
-						buttonLabel="Додати нову філію"
-						data-cy="add-new-branch-btn"
-						ref={branchFormRef}
+
+					<p className="pt-3 text-muted">
+						Щоб додати відділення, вам потрібна така інформація:
+						назва, місто, адреса, номер телефону.
+					</p>
+
+					<CollapseForm
+						title="Додати нову філію"
+						ariaControls="branch-add-form-collapse"
 					>
-						<Suspense fallback={<div>Loading...</div>}>
+						<Suspense
+							fallback={
+								<LoadingIndicator
+									animation="border"
+									variant="primary"
+								/>}>
 							<LazyBranchForm mode='create' />
 						</Suspense>
-					</Toggler>
+					</CollapseForm>
 				</>
 			}
 		</Container>

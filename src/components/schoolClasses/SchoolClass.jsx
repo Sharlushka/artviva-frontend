@@ -7,9 +7,9 @@ import schoolClassesService from '../../services/schoolClasses'
 import { Container, Row, Col, Collapse, Button } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons'
-import BtnWithIcon from '../common/BtnWithIcon'
 import SchoolClassForm from '../forms/SchoolClassForm'
 import LoadingIndicator from '../common/LoadingIndicator'
+import EntityControlButtons from '../common/EntityControlButtons'
 
 const LazyEntityDeleteModal = React.lazy(() => import('../common/EntityDeleteModal'))
 const LazyEntityEditModal = React.lazy(() => import('../common/EntityEditModal'))
@@ -79,23 +79,12 @@ const SchoolClass = ({ user, schoolClass, deleteSchoolClass }) => {
 					</Row>
 
 					<Row>
-						<Col className="my-2 d-flex justify-content-end">
-							<BtnWithIcon
-								label="Редагувати"
-								icon="edit"
-								variant="outline-success"
-								type="button"
-								handleClick={() => setEditModalShow(true)}
-							/>
-							<BtnWithIcon
-								label="Видалити"
-								icon="trash"
-								variant="outline-danger"
-								type="button"
-								handleClick={() => setDeleteModalShow(true)}
-							/>
-						</Col>
+						<EntityControlButtons
+							openEditModal={() => setEditModalShow(true)}
+							openDeleteModal={() => setDeleteModalShow(true)}
+						/>
 					</Row>
+
 				</Container>
 			</Collapse>
 

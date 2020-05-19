@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { setNotification } from '../../reducers/notificationReducer'
 import { createSchoolClass, updateSchoolClass } from '../../reducers/schoolClassesReducer'
 import searchService from '../../services/search'
+import schoolClassesService from '../../services/schoolClasses'
 import { debounce } from '../../utils/debounce'
 
 import { Formik, FieldArray, ErrorMessage } from 'formik'
@@ -36,6 +37,7 @@ const SchoolClassForm = ({
 
 	useEffect(() => {
 		searchService.setToken(user.token)
+		schoolClassesService.setToken(user.token)
 	}, [user])
 
 	// lists for form input autocomplete suggestions
@@ -149,7 +151,6 @@ const SchoolClassForm = ({
 	}
 
 	const existingSchoolClass = (values) => {
-		console.log('Updating', values)
 		updateSchoolClass(schoolClass.id, values)
 			.then(() => {
 				setNotification({
@@ -205,13 +206,6 @@ const SchoolClassForm = ({
 
 	return (
 		<Container>
-			{editMode
-				? null
-				: <h2 className="text-center pt-4">
-					Додати клас
-				</h2>
-			}
-
 			<Formik
 				initialValues={initialFormValues()}
 				enableReinitialize

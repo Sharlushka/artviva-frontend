@@ -11,7 +11,7 @@ import PropTypes from 'prop-types'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons'
 import { Container, Row, Col, Form, Button } from 'react-bootstrap'
-import ButtonComponent from '../common/Button'
+import BtnWithSpinner from '../common/BtnWithSpinner'
 
 const TeacherForm = ({
 	teacher,
@@ -20,9 +20,11 @@ const TeacherForm = ({
 	setNotification,
 	createTeacher,
 	updateTeacher,
-	mode }) => {
+	mode,
+	closeModal }) => {
 
 	const [editMode, setEditMode] = useState(false)
+	const [processingForm, setProcessingForm] = useState(false)
 	const [specialtyListData, setSpecialtyListData] = useState([])
 	const [unusedSpecialties, setUnusedSpecialties] = useState(null)
 	const [specialtyError, setSpecialtyError] = useState(false)
@@ -50,6 +52,7 @@ const TeacherForm = ({
 	}
 
 	const handleTeacher = (values, setErrors, resetForm) => {
+		setProcessingForm(true)
 		// check if specialty was added
 		if (values.specialties.length === 0) {
 			setSpecialtyError(true)
@@ -99,6 +102,7 @@ const TeacherForm = ({
 					message: 'Зміни успішно збережено.',
 					variant: 'success'
 				}, 5)
+				closeModal()
 			})
 			.catch(error => {
 				const { message } = { ...error.response.data }
@@ -131,9 +135,6 @@ const TeacherForm = ({
 
 	return (
 		<Container>
-			<h2 className="text-center custom-font py-4">
-				{editMode ? 'Редагувати' : 'Додати'} вчітеля
-			</h2>
 			<Formik
 				initialValues={initialFormValues()}
 				enableReinitialize
@@ -187,7 +188,10 @@ const TeacherForm = ({
 								<>
 									{values.specialties && values.specialties.length > 0 ? (
 										values.specialties.map((specialty, index) => (
-											<Form.Row key={index} className="d-flex justify-content-end border1 border-primary">
+											<Form.Row
+												key={index}
+												className="d-flex justify-content-end border1 border-primary"
+											>
 												<Col xs={12}>
 													<Form.Control
 														as="select"
@@ -222,7 +226,12 @@ const TeacherForm = ({
 															: <>
 																<option>Виберіть...</option>
 																{specialtyListData.map(specialty =>
-																	<option value={specialty} key={specialty}>{specialty}</option>
+																	<option
+																		value={specialty}
+																		key={specialty}
+																	>
+																		{specialty}
+																	</option>
 																)}
 															</>
 														}
@@ -291,12 +300,13 @@ const TeacherForm = ({
 								as={Col}
 								className="pt-4"
 							>
-								<ButtonComponent
-									block
-									className="px-4 primary-color-shadow"
-									variant="primary"
+								<BtnWithSpinner
+									loadingState={processingForm}
+									classList="px-4"
+									variant={editMode ? 'success' : 'primary'}
 									type="submit"
-									label="Додати"
+									label={editMode ? 'Зберегти' : 'Додати'}
+									dataCy="add-teacher-btn"
 								/>
 							</Form.Group>
 						</Form.Row>

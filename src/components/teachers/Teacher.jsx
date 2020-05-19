@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, Suspense } from 'react'
+import React, { useState, useEffect, Suspense } from 'react'
 import { connect } from 'react-redux'
 import { setNotification } from '../../reducers/notificationReducer'
 import { deleteTeacher } from '../../reducers/teachersReducer'
@@ -8,20 +8,17 @@ import { toHumanReadable } from '../../utils/datesAndTime'
 import { Container, Row, Col, Collapse, Button } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons'
-import ButtonComponent from '../common/Button'
-import Toggler from '../common/Toggler'
+import TeacherForm from '../forms/TeacherForm'
+import LoadingIndicator from '../common/LoadingIndicator'
+import EntityControlButtons from '../common/EntityControlButtons'
 
 const LazyEntityDeleteModal = React.lazy(() => import('../common/EntityDeleteModal'))
-const LazyTeacherForm = React.lazy(() => import('../forms/TeacherForm'))
+const LazyEntityEditModal = React.lazy(() => import('../common/EntityEditModal'))
 
 const Teacher = ({ user, teacher, deleteTeacher }) => {
-	const editTeacherFormRef = useRef(null)
 	const [open, setOpen] = useState(false)
-	const [modalShow, setModalShow] = useState(false)
-
-	const openDeleteModal = () => {
-		setModalShow(true)
-	}
+	const [deleteModalShow, setDeleteModalShow] = useState(false)
+	const [editModalShow, setEditModalShow] = useState(false)
 
 	// set auth token
 	useEffect(() => {
@@ -96,40 +93,42 @@ const Teacher = ({ user, teacher, deleteTeacher }) => {
 						</Col>
 					</Row>
 
-					<Row className="d-flex justify-content-center">
-						<Col md={8} lg={6} xl={4}>
-							<Toggler
-								buttonLabel="Редагувати данні вчітеля"
-								data-cy="edit-teacher-btn"
-								ref={editTeacherFormRef}
-							>
-								<Suspense fallback={<div>Loading modal..</div>}>
-									<LazyTeacherForm teacher={teacher} mode="edit" />
-								</Suspense>
-							</Toggler>
-							<ButtonComponent
-								block
-								label="Видалити"
-								variant="danger"
-								type="button"
-								handleClick={() => openDeleteModal()}
-							/>
-						</Col>
+					<Row>
+						<EntityControlButtons
+							openEditModal={() => setEditModalShow(true)}
+							openDeleteModal={() => setDeleteModalShow(true)}
+						/>
 					</Row>
 				</Container>
 			</Collapse>
-			{/* Teacher delete modal */}
-			<Suspense fallback={<div>Loading modal..</div>}>
+
+			{/* Teacher edit and delete modal */}
+			<Suspense fallback={
+				<LoadingIndicator
+					animation="border"
+					variant="primary"
+					size="md"
+				/>}>
+				<LazyEntityEditModal
+					subject="вчітеля"
+					subjectid={teacher.id}
+					show={editModalShow}
+					onHide={() => setEditModalShow(false)}
+				>
+					<TeacherForm
+						closeModal={() => setEditModalShow(false)}
+						teacher={teacher}
+						mode="edit" />
+				</LazyEntityEditModal>
 				<LazyEntityDeleteModal
 					subject="вчітеля"
 					subjectid={teacher.id}
 					valuetoconfirm={teacher.name}
-					show={modalShow}
+					show={deleteModalShow}
 					handleDelete={handleDelete}
-					onHide={() => setModalShow(false)}
+					onHide={() => setDeleteModalShow(false)}
 				/>
 			</Suspense>
-
 		</>
 	)
 }
