@@ -1,12 +1,13 @@
 import React, { useState, useEffect, Suspense } from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { setNotification } from '../../reducers/notificationReducer'
 import { deleteSchoolClass } from '../../reducers/schoolClassesReducer'
 import schoolClassesService from '../../services/schoolClasses'
 
 import { Container, Row, Col, Collapse, Button } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons'
+import { faAngleDown, faAngleUp, faInfoCircle } from '@fortawesome/free-solid-svg-icons'
 import SchoolClassForm from '../forms/SchoolClassForm'
 import LoadingIndicator from '../common/LoadingIndicator'
 import EntityControlButtons from '../common/EntityControlButtons'
@@ -63,10 +64,19 @@ const SchoolClass = ({ user, schoolClass, deleteSchoolClass }) => {
 				<Container fluid className="text-left">
 					<Row>
 						<Col>
-							<p>Назва класу: <strong>{schoolClass.title}</strong></p>
+							{/*<p>Назва класу: <strong>{schoolClass.title}</strong></p>*/}
+							<p>Вчітель: <strong>{schoolClass.teacher.name}</strong>
+								<small>
+									<Link
+										to={`/school/teachers/${schoolClass.teacher.id}`}
+										className="px-2"
+									>
+										<FontAwesomeIcon icon={faInfoCircle} />
+									</Link>
+								</small>
+							</p>
 							<p>Фах: <strong>{schoolClass.specialty.title}</strong></p>
 							<p>Опіс: <strong>{schoolClass.info}</strong></p>
-							<p>Вчітель: <strong>{schoolClass.teacher.name}</strong></p>
 							Учні:
 							<ol>
 								{schoolClass.pupils.map(pupil => (

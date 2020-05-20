@@ -10,7 +10,6 @@ import * as Yup from 'yup'
 import PropTypes from 'prop-types'
 
 import { Container, Col, Form } from 'react-bootstrap'
-// import ButtonComponent from '../common/Button'
 import BtnWithSpinner from '../common/BtnWithSpinner'
 
 const BranchForm = ({
@@ -304,7 +303,7 @@ const BranchForm = ({
 							>
 								<BtnWithSpinner
 									loadingState={processingForm}
-									classList="px-4"
+									className="px-4"
 									variant={editMode ? 'success' : 'primary'}
 									type="submit"
 									label={editMode ? 'Зберегти' : 'Додати'}

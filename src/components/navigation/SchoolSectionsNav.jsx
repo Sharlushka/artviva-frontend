@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Container, Row, Col } from 'react-bootstrap'
+import { Container, Row } from 'react-bootstrap'
 import SectionLink from './SectionLink'
 
 const SchoolDataNav = () => {
@@ -37,26 +37,16 @@ const SchoolDataNav = () => {
 	]
 
 	return (
-		<Container className="border1 border-success">
-			<Row className="d-flex justify-content-around1 border1 border-primary">
-				{/*<Col className="border1 border-success1">*/}
+		<Container className="mb-3">
+			<Row>
 				{schoolSectionsLinks.map(link =>
 					<SectionLink
 						key={link.label}
-						className="border1 border-success py-2 px-3 section-link"
+						className="py-2 px-3 section-link"
 						to={link.to}
 						label={link.label}
 					/>
 				)}
-				{/*<Link to="/school/overview">Взагалі</Link>
-					<Link to="/school/teachers">Вчітелі</Link>
-					<Link to="/school/classes">Класи</Link>
-					<Link to="/school/pupils">Учні</Link>
-					<Link to="/school/specialties">Спеціальності</Link>
-					<Link to="/school/branches">Філії</Link>
-					<Link to="/school/payments">Дані по оплаті</Link>*/}
-
-				{/*</Col>*/}
 			</Row>
 		</Container>
 	)

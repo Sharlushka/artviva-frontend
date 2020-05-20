@@ -5,11 +5,30 @@ import PropTypes from 'prop-types'
 const BtnWithSpinner = ({
 	loadingState,
 	disabledState,
+	waitingState,
 	label,
 	type,
 	variant,
 	dataCy,
-	classList }) => {
+	className }) => {
+
+	const chooseSpinner = () => {
+		const loadingSpinner = () => <Spinner
+			as="span"
+			animation="border"
+			size="sm"
+			role="status"
+			aria-hidden="true"
+		/>
+		const waitingSpinner = () => <Spinner
+			as="span"
+			animation="grow"
+			size="sm"
+			role="status"
+			aria-hidden="true"
+		/>
+		return waitingState ? waitingSpinner() : loadingState ? loadingSpinner() : null
+	}
 
 	return (
 		<Button
@@ -17,19 +36,10 @@ const BtnWithSpinner = ({
 			type={type}
 			variant={variant}
 			data-cy={dataCy}
-			className={classList}
+			className={className}
 			disabled={disabledState}
 		>
-			{loadingState
-				? <Spinner
-					as="span"
-					animation="border"
-					size="sm"
-					role="status"
-					aria-hidden="true"
-				/>
-				: <>{label}</>
-			}
+			{chooseSpinner() || <>{label}</>}
 		</Button>
 	)
 }
@@ -38,10 +48,11 @@ BtnWithSpinner.propTypes = {
 	type: PropTypes.string,
 	loadingState: PropTypes.bool.isRequired,
 	disabledState: PropTypes.bool,
+	waitingState: PropTypes.bool,
 	label: PropTypes.string.isRequired,
 	variant: PropTypes.string.isRequired,
 	dataCy: PropTypes.string.isRequired,
-	classList: PropTypes.string // Realy??
+	className: PropTypes.string // className
 }
 
 export default BtnWithSpinner

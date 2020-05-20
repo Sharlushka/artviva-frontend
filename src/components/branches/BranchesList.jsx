@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, Suspense } from 'react'
+import React, { useEffect, useState, Suspense } from 'react'
 import { connect } from 'react-redux'
 import { setNotification } from '../../reducers/notificationReducer'
 import { initializeBranches } from '../../reducers/branchesReducer'
@@ -6,14 +6,12 @@ import { initializeBranches } from '../../reducers/branchesReducer'
 import { Container, ListGroup } from 'react-bootstrap'
 import LoadingIndicator from '../common/LoadingIndicator'
 import CollapseForm from '../common/CollapseForm'
-// import Toggler from '../common/Toggler'
 import Branch from './Branch'
 
 const LazyBranchForm = React.lazy(() => import('../forms/BranchForm'))
 
 const BranchesList = ({ initializeBranches, branches }) => {
 
-	const branchFormRef = useRef(null)
 	const [isLoading, setIsLoading] = useState(true)
 
 	useEffect(() => {

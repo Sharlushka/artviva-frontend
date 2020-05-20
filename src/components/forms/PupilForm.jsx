@@ -190,7 +190,7 @@ const PupilForm = ({
 							>
 								<BtnWithSpinner
 									loadingState={processingForm}
-									classList="px-4"
+									className="px-4"
 									variant={editMode ? 'success' : 'primary'}
 									type="submit"
 									label={editMode ? 'Зберегти' : 'Додати'}

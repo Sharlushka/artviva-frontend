@@ -70,4 +70,19 @@ const update = async (id, payload) => {
 	return request.then(response => response.data)
 }
 
-export default { getAll, setToken, create, deleteById, update }
+/**
+ * Get single teacher details by id
+ * @param {string} id - Teacher ID
+ *
+ * @returns {Object} - Response data
+ */
+
+const getById = async id => {
+	const config = {
+		headers: { Authorization: token }
+	}
+	const request = axios.post(`${baseUrl}/${id}`, null, config)
+	return request.then(response => response.data)
+}
+
+export default { getAll, setToken, create, deleteById, update, getById }

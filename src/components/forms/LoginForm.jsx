@@ -1,24 +1,34 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { Redirect } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { login } from '../../reducers/loginReducer'
 import { setNotification } from '../../reducers/notificationReducer'
-import { Container, Col, Form, InputGroup, Button } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
-import ReCaptchaComp from '../common/ReCaptchaComp'
+
 import { Formik } from 'formik'
 import * as Yup from 'yup'
+
+import { Container, Col, Form, InputGroup, Button } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
+
+import ReCaptchaComp from '../common/ReCaptchaComp'
 import BtnWithSpinner from '../common/BtnWithSpinner'
 
+// const LoginForm = ({ user, setNotification, ...props }) => {
 const LoginForm = ({ setNotification, ...props }) => {
+
 	const unmounted = useRef(false)
+	const history = useHistory()
+	const [loginSuccessful, setLoginSuccessful] = useState(false)
+
+	useEffect(() => {
+		if (loginSuccessful) history.push('/school/overview')
+	}, [loginSuccessful, history])
+
 	useEffect(() => {
 		return () => { unmounted.current = true }
 	}, [])
 
-	const [loginSuccessful, setLoginSuccessful] = useState(false)
 	const [logginIn, setLogginIn] = useState(false)
 
 	const handleLogin = async ({ email, password }) => {
@@ -58,7 +68,8 @@ const LoginForm = ({ setNotification, ...props }) => {
 			.required('Введіть свою електронну пошту.'),
 		password: Yup.string()
 			.min(8, 'Мінімум 8 символів.')
-			.matches(mediumStrPass, 'Мінімум 8 символів, принаймні одна велика літера, одна маленька літера та одне число.')
+			.matches(mediumStrPass,
+				'Мінімум 8 символів, принаймні одна велика літера, одна маленька літера та одне число.')
 			.required('Будь ласка, введіть свій пароль.')
 	})
 
@@ -93,7 +104,6 @@ const LoginForm = ({ setNotification, ...props }) => {
 
 	return (
 		<>
-			{ loginSuccessful ? <Redirect to="/" /> : null }
 			<Container className="pb-4">
 				<h1 className="text-center custom-font py-4">
 					Логін
@@ -103,9 +113,8 @@ const LoginForm = ({ setNotification, ...props }) => {
 						email: '',
 						password: ''
 					}}
-					onSubmit={async (values, { resetForm }) => {
+					onSubmit={async (values) => {
 						await handleLogin(values)
-						if (loginSuccessful) resetForm()
 					}}
 					validationSchema={loginFormSchema}
 				>
@@ -214,10 +223,11 @@ const LoginForm = ({ setNotification, ...props }) => {
 										type="submit"
 										loadingState={logginIn}
 										disabledState={score <= .1 ? true : false}
+										waitingState={!score}
 										label="Логін"
 										variant="primary"
 										dataCy="login-btn"
-										classList="primary-color-shadow px-5"
+										className="primary-color-shadow px-5"
 									/>
 								</Form.Group>
 							</Form.Row>
