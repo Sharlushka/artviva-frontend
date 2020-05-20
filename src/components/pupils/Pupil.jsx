@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom'
 import { Container, Row, Col, Collapse, Button } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons'
-// import BtnWithIcon from '../common/BtnWithIcon'
+
 import LoadingIndicator from '../common/LoadingIndicator'
 import PupilForm from '../forms/PupilForm'
 import EntityControlButtons from '../common/EntityControlButtons'
@@ -93,25 +93,6 @@ const Pupil = ({ user, pupil, deletePupil }) => {
 							openDeleteModal={() => setDeleteModalShow(true)}
 						/>
 					</Row>
-
-					{/*<Row>
-						<Col className="my-2 d-flex justify-content-end">
-							<BtnWithIcon
-								label="Редагувати"
-								icon="edit"
-								variant="outline-success"
-								type="button"
-								handleClick={() => setEditModalShow(true)}
-							/>
-							<BtnWithIcon
-								label="Видалити"
-								icon="trash"
-								variant="outline-danger"
-								type="button"
-								handleClick={() => setDeleteModalShow(true)}
-							/>
-						</Col>
-					</Row>*/}
 
 				</Container>
 			</Collapse>

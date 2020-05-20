@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, Suspense } from 'react'
 import { connect } from 'react-redux'
 import { deleteBranch } from '../../reducers/branchesReducer'
 import branchService from '../../services/branches'
@@ -7,20 +7,19 @@ import { setNotification } from '../../reducers/notificationReducer'
 import { Container, Row, Col, Collapse, Button } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons'
-import ButtonComponent from '../common/Button'
-import EntityDeleteModal from '../common/EntityDeleteModal'
-import Toggler from '../common/Toggler'
+
 import BranchForm from '../forms/BranchForm'
+import LoadingIndicator from '../common/LoadingIndicator'
+import EntityControlButtons from '../common/EntityControlButtons'
+
+const LazyEntityDeleteModal = React.lazy(() => import('../common/EntityDeleteModal'))
+const LazyEntityEditModal = React.lazy(() => import('../common/EntityEditModal'))
 
 const Branch = ({ user, branch, deleteBranch }) => {
 
-	const branchFormRef = useRef(null)
 	const [open, setOpen] = useState(false)
-	const [modalShow, setModalShow] = useState(false)
-
-	const openDeleteModal = () => {
-		setModalShow(true)
-	}
+	const [deleteModalShow, setDeleteModalShow] = useState(false)
+	const [editModalShow, setEditModalShow] = useState(false)
 
 	// set auth token
 	useEffect(() => {
@@ -74,35 +73,43 @@ const Branch = ({ user, branch, deleteBranch }) => {
 						</Col>
 					</Row>
 
-					<Row className="d-flex justify-content-center">
-						<Col md={8} lg={6} xl={4}>
-							<Toggler
-								buttonLabel="Редагувати філію"
-								data-cy="edit-branch-btn"
-								ref={branchFormRef}
-							>
-								<BranchForm branch={branch} mode="edit" />
-							</Toggler>
-							<ButtonComponent
-								block
-								label="Видалити"
-								variant="danger"
-								type="button"
-								handleClick={() => openDeleteModal()}
-							/>
-						</Col>
+					<Row>
+						<EntityControlButtons
+							openEditModal={() => setEditModalShow(true)}
+							openDeleteModal={() => setDeleteModalShow(true)}
+						/>
 					</Row>
 				</Container>
 			</Collapse>
-			{/* Branch delete modal */}
-			<EntityDeleteModal
-				subject="філію"
-				subjectid={branch.id}
-				valuetoconfirm={branch.name}
-				show={modalShow}
-				handleDelete={handleDelete}
-				onHide={() => setModalShow(false)}
-			/>
+
+			{/* Branch edit, delete modals */}
+			<Suspense fallback={
+				<LoadingIndicator
+					animation="border"
+					variant="primary"
+					size="md"
+				/>}>
+				<LazyEntityEditModal
+					subject="філію"
+					subjectid={branch.id}
+					show={editModalShow}
+					onHide={() => setEditModalShow(false)}
+				>
+					<BranchForm
+						closeModal={() => setEditModalShow(false)}
+						branch={branch}
+						mode="edit"
+					/>
+				</LazyEntityEditModal>
+				<LazyEntityDeleteModal
+					subject="філію"
+					subjectid={branch.id}
+					valuetoconfirm={branch.name}
+					show={deleteModalShow}
+					handleDelete={handleDelete}
+					onHide={() => setDeleteModalShow(false)}
+				/>
+			</Suspense>
 		</>
 	)
 }

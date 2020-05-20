@@ -22,6 +22,7 @@ const getAll = async () => {
 		const response = await axios.get(baseUrl) // make it post
 		return response.data
 	} catch (error) {
+		console.log('Error')
 		return Promise.reject(error.response)
 	}
 }

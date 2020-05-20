@@ -10,7 +10,8 @@ import * as Yup from 'yup'
 import PropTypes from 'prop-types'
 
 import { Container, Col, Form } from 'react-bootstrap'
-import ButtonComponent from '../common/Button'
+// import ButtonComponent from '../common/Button'
+import BtnWithSpinner from '../common/BtnWithSpinner'
 
 const BranchForm = ({
 	branch,
@@ -18,9 +19,11 @@ const BranchForm = ({
 	setNotification,
 	createBranch,
 	updateBranch,
-	mode }) => {
+	mode,
+	closeModal }) => {
 
 	const [editMode, setEditMode] = useState(false)
+	const [processingForm, setProcessingForm] = useState(false)
 
 	// set auth token and mode
 	useEffect(() => {
@@ -30,11 +33,12 @@ const BranchForm = ({
 		}
 	}, [user, mode])
 
-	const handleBranch = (values, setErrors, resetForm) => [
+	const handleBranch = (values, setErrors, resetForm) => {
+		setProcessingForm(true)
 		editMode
 			? existingBranch(values)
 			: newBranch(values, setErrors, resetForm)
-	]
+	}
 
 	const newBranch = (values, setErrors, resetForm) => {
 		createBranch(values)
@@ -55,6 +59,7 @@ const BranchForm = ({
 					variant: 'danger'
 				}, 5)
 			})
+			.finally(() => setProcessingForm(false))
 	}
 
 	const existingBranch = (values) => {
@@ -64,6 +69,7 @@ const BranchForm = ({
 					message: 'Зміни успішно збережено.',
 					variant: 'success'
 				}, 5)
+				closeModal()
 			})
 			.catch(error => {
 				const { message } = { ...error.response.data }
@@ -72,6 +78,7 @@ const BranchForm = ({
 					variant: 'danger'
 				}, 5)
 			})
+			.finally(() => setProcessingForm(false))
 	}
 
 	const phoneNumber = /^\+?([0-9]{0,2}) ?\(?([0-9]{0,3})\)? ?[-. ]?([0-9]{0,3})[-. ]?([0-9]{0,2})-?([0-9]{0,2})$/
@@ -114,9 +121,6 @@ const BranchForm = ({
 
 	return (
 		<Container>
-			<h2 className="text-center custom-font py-4">
-				{editMode ? 'Редагувати' : 'Додати'} філію
-			</h2>
 			<Formik
 				initialValues={initialFormValues()}
 				enableReinitialize
@@ -298,12 +302,13 @@ const BranchForm = ({
 								as={Col}
 								className="pt-4"
 							>
-								<ButtonComponent
-									block
-									className="px-4 primary-color-shadow"
-									variant="primary"
+								<BtnWithSpinner
+									loadingState={processingForm}
+									classList="px-4"
+									variant={editMode ? 'success' : 'primary'}
 									type="submit"
-									label="Додати"
+									label={editMode ? 'Зберегти' : 'Додати'}
+									dataCy="add-branch-btn"
 								/>
 							</Form.Group>
 						</Form.Row>

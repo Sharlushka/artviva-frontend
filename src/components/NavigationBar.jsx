@@ -109,11 +109,11 @@ const NavigationBar = ({ user }) => {
 							{user
 								? <>
 									<NavDropdown.Item href="/school/overview">Огляд</NavDropdown.Item>
-									<NavDropdown.Item href="/school/classes">Класи</NavDropdown.Item>
+									{/*<NavDropdown.Item href="/school/classes">Класи</NavDropdown.Item>
 									<NavDropdown.Item href="/school/teachers">Вчителі</NavDropdown.Item>
 									<NavDropdown.Item href="/school/pupils">Учні</NavDropdown.Item>
 									<NavDropdown.Item href="/school/specialties">Спеціальності</NavDropdown.Item>
-									<NavDropdown.Item href="/school/branches">Філії</NavDropdown.Item>
+									<NavDropdown.Item href="/school/branches">Філії</NavDropdown.Item>*/}
 									<NavDropdown.Item href="/school/payments">Платежі</NavDropdown.Item>
 									<NavDropdown.Divider />
 									<NavDropdown.Item href="/school/payments"><Logout /></NavDropdown.Item>
