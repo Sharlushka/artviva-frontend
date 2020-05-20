@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { ParallaxProvider } from 'react-scroll-parallax'
 import { loadReCaptcha } from 'react-recaptcha-google'
+import PrivateRoute from './components/PrivateRoute'
 
 import Notification from './components/Notification'
 import NavigationBar from './components/NavigationBar'
@@ -19,6 +20,7 @@ import SchoolOverview from './components/views/SchoolOverview'
 import SchoolClassesList from './components/schoolClasses/SchoolClassesList'
 import SchoolClassDetails from './components/schoolClasses/SchoolClassDetails'
 import TeachersList from './components/teachers/TeachersList'
+import TeacherDetails from './components/teachers/TeacherDetails'
 import PupilsList from './components/pupils/PupilsList'
 import SpecialtiesList from './components/specialties/SpecialtiesList'
 import BranchesList from './components/branches/BranchesList'
@@ -31,6 +33,7 @@ import SchoolSectionsNav from './components/navigation/SchoolSectionsNav'
 
 import { setUserFromLocalStorage } from './reducers/loginReducer'
 import './css/index.css'
+
 
 const App = (props) => {
 	useEffect(() => {
@@ -65,17 +68,18 @@ const App = (props) => {
 			<Route path="/register" component={RegisterView} />
 			<Route path="/blog" component={BlogView} />
 			<Route path="/contacts" component={ContactsView} />
-			<Route path="/school" component={SchoolSectionsNav} />
-			<Route path="/school/overview" component={SchoolOverview} />
+			<PrivateRoute path="/school" component={SchoolSectionsNav} />
+			<PrivateRoute path="/school/overview" component={SchoolOverview} />
 			<Switch>
-				<Route path="/school/classes/:id" exact component={SchoolClassDetails} />
-				<Route path="/school/classes" component={SchoolClassesList} />
+				<PrivateRoute path="/school/classes/:id" exact component={SchoolClassDetails} />
+				<PrivateRoute path="/school/classes" component={SchoolClassesList} />
+				<PrivateRoute path="/school/teachers/:id" exact component={TeacherDetails} />
+				<PrivateRoute path="/school/teachers" component={TeachersList} />
 			</Switch>
-			<Route path="/school/teachers" component={TeachersList} />
-			<Route path="/school/pupils" component={PupilsList} />
-			<Route path="/school/specialties" component={SpecialtiesList} />
-			<Route path="/school/branches" component={BranchesList} />
-			<Route path="/school/payments" component={Payments} />
+			<PrivateRoute path="/school/pupils" component={PupilsList} />
+			<PrivateRoute path="/school/specialties" component={SpecialtiesList} />
+			<PrivateRoute path="/school/branches" component={BranchesList} />
+			<PrivateRoute path="/school/payments" component={Payments} />
 			<Route path="/pay/:status" component={PaymentView} />
 			<Route path="/activate/:email/:uuid" exact component={ActivateAccountView} />
 			<Route path="/reset/:email/:uuid" exact component={PassResetView} />
