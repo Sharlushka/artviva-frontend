@@ -41,7 +41,7 @@ const getAll = async () => {
 		headers: { Authorization: token }
 	}
 
-	const response = await axios.post(`${baseUrl}/list`, null, config)
+	const response = await axios.get(`${baseUrl}/list`, config)
 	return response.data
 }
 

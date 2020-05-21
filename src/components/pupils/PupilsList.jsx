@@ -2,6 +2,7 @@ import React, { useEffect, useState, Suspense } from 'react'
 import { connect } from 'react-redux'
 import { setNotification } from '../../reducers/notificationReducer'
 import { initializePupils } from '../../reducers/pupilsReducer'
+import pupilsService from '../../services/pupils'
 
 import { Container, ListGroup } from 'react-bootstrap'
 import Pupil from './Pupil'
@@ -10,22 +11,25 @@ import CollapseForm from '../common/CollapseForm'
 
 const LazyPupilForm = React.lazy(() => import('../forms/PupilForm'))
 
-const PupilsList = ({ pupils, initializePupils, setNotification }) => {
+const PupilsList = ({ user, pupils, initializePupils, setNotification }) => {
 
 	const [isLoading, setIsLoading] = useState(true)
 
 	useEffect(() => {
-		initializePupils()
-			.catch(error => {
-				setNotification({
-					message: `Щось пішло не так, спробуйте пізніше:
-						${error.status} ${error.statusText}`,
-					variant: 'danger'
-				}, 5)
-			})
-			.finally(() => setIsLoading(false))
+		if (user) {
+			pupilsService.setToken(user.token)
+			initializePupils()
+				.catch(error => {
+					setNotification({
+						message: `Щось пішло не так, спробуйте пізніше:
+							${error.status} ${error.statusText}`,
+						variant: 'danger'
+					}, 5)
+				})
+				.finally(() => setIsLoading(false))
+		}
 	// eslint-disable-next-line
-	}, [])
+	}, [user, initializePupils, setNotification])
 
 	return (
 		<Container>
@@ -75,7 +79,8 @@ const PupilsList = ({ pupils, initializePupils, setNotification }) => {
 
 const mapStateToProps = (state) => {
 	return {
-		pupils: state.pupils
+		pupils: state.pupils,
+		user: state.user
 	}
 }
 

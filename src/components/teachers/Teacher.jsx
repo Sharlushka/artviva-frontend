@@ -86,7 +86,23 @@ const Teacher = ({ user, teacher, deleteTeacher }) => {
 									<li key={payment.id}>
 										<em className="text-muted">{toHumanReadable('uk-ua', payment.create_date)}</em>
 										<br />
-										{payment.description}
+										{/*payment.description*/}
+										<p>
+											<span
+												className="text-muted"
+											>
+												Учень:</span> {payment.paymentDescr.pupil}
+											<br />
+											<span
+												className="text-muted"
+											>
+												Предмет:</span> {payment.paymentDescr.specialty}
+											<br />
+											<span className="text-muted">Місяці: </span>
+											{payment.paymentDescr.months.map(month =>
+												<span key={month}>{month}, </span>
+											)}
+										</p>
 									</li>
 								)}
 							</ol>
