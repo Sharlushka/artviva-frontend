@@ -7,6 +7,7 @@
 @import 'buttons.sass'
 @import 'icons.sass'
 @import 'lazyLoadingImage.sass'
+@import 'mixins.sass'
 
 html
 	scroll-behavior: smooth
@@ -207,8 +208,8 @@ nav
 	width: 5rem
 
 .section-link
-	// text-decoration: underline
+	&:hover
+		+linkHighlight()
 
 .is-active
-	background-color: #f1f1f1
-	text-decoration: underline
+	+linkHighlight()

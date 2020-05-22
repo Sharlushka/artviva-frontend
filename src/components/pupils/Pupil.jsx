@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Suspense } from 'react'
+import React, { useState, useEffect, useRef, Suspense } from 'react'
 import { connect } from 'react-redux'
 import { deletePupil } from '../../reducers/pupilsReducer'
 import pupilsService from '../../services/pupils'
@@ -21,13 +21,17 @@ const Pupil = ({ user, pupil, deletePupil }) => {
 	const [open, setOpen] = useState(false)
 	const [deleteModalShow, setDeleteModalShow] = useState(false)
 	const [editModalShow, setEditModalShow] = useState(false)
+	const [isDeleting, setIsDeleting] = useState(false)
+	const unmounted = useRef(false)
 
 	// set auth token
 	useEffect(() => {
 		pupilsService.setToken(user.token)
+		return () => { unmounted.current = true }
 	}, [user])
 
 	const handleDelete = id => {
+		setIsDeleting(true)
 		deletePupil(id)
 			.then(() => {
 				setNotification({
@@ -41,6 +45,9 @@ const Pupil = ({ user, pupil, deletePupil }) => {
 					message: notification.error,
 					variant: 'danger'
 				}, 5)
+			})
+			.finally(() => {
+				if (!unmounted) setIsDeleting(false)
 			})
 	}
 
@@ -121,6 +128,7 @@ const Pupil = ({ user, pupil, deletePupil }) => {
 					valuetoconfirm={pupil.name}
 					show={deleteModalShow}
 					handleDelete={handleDelete}
+					loadingState={isDeleting}
 					onHide={() => setDeleteModalShow(false)}
 				/>
 			</Suspense>

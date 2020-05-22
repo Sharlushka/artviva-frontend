@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Suspense } from 'react'
+import React, { useState, useEffect, useRef, Suspense } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { setNotification } from '../../reducers/notificationReducer'
@@ -19,13 +19,17 @@ const SchoolClass = ({ user, schoolClass, deleteSchoolClass }) => {
 	const [open, setOpen] = useState(false)
 	const [deleteModalShow, setDeleteModalShow] = useState(false)
 	const [editModalShow, setEditModalShow] = useState(false)
+	const [isDeleting, setIsDeleting] = useState(false)
+	const unmounted = useRef(false)
 
 	// set auth token
 	useEffect(() => {
 		schoolClassesService.setToken(user.token)
+		return () => { unmounted.current = true }
 	}, [user])
 
 	const handleDelete = id => {
+		setIsDeleting(true)
 		deleteSchoolClass(id)
 			.then(() => {
 				setNotification({
@@ -39,6 +43,9 @@ const SchoolClass = ({ user, schoolClass, deleteSchoolClass }) => {
 					message: notification.error,
 					variant: 'danger'
 				}, 5)
+			})
+			.finally(() => {
+				if (!unmounted) setIsDeleting(false)
 			})
 	}
 
@@ -111,6 +118,7 @@ const SchoolClass = ({ user, schoolClass, deleteSchoolClass }) => {
 					valuetoconfirm={schoolClass.title}
 					show={deleteModalShow}
 					handleDelete={handleDelete}
+					loadingState={isDeleting}
 					onHide={() => setDeleteModalShow(false)}
 				/>
 				<LazyEntityEditModal

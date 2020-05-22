@@ -1,19 +1,25 @@
 import React, { useEffect, useState, Suspense } from 'react'
 import { connect } from 'react-redux'
 import { setNotification } from '../../reducers/notificationReducer'
-import { initializePupils } from '../../reducers/pupilsReducer'
+import { initializePupils, sortPupils } from '../../reducers/pupilsReducer'
 import pupilsService from '../../services/pupils'
 
-import { Container, ListGroup } from 'react-bootstrap'
+import { Container, Row, Col, Form, ListGroup } from 'react-bootstrap'
 import Pupil from './Pupil'
 import LoadingIndicator from '../common/LoadingIndicator'
 import CollapseForm from '../common/CollapseForm'
 
 const LazyPupilForm = React.lazy(() => import('../forms/PupilForm'))
 
-const PupilsList = ({ user, pupils, initializePupils, setNotification }) => {
+const PupilsList = ({
+	user,
+	pupils,
+	initializePupils,
+	sortPupils,
+	setNotification }) => {
 
 	const [isLoading, setIsLoading] = useState(true)
+	const [defaultSortOrder, setdefaultSortOrder] = useState(true)
 
 	useEffect(() => {
 		if (user) {
@@ -31,6 +37,11 @@ const PupilsList = ({ user, pupils, initializePupils, setNotification }) => {
 	// eslint-disable-next-line
 	}, [user, initializePupils, setNotification])
 
+	const changeOrder = () => {
+		defaultSortOrder ? sortPupils('name') : sortPupils('name', 'desc')
+		setdefaultSortOrder(!defaultSortOrder)
+	}
+
 	return (
 		<Container>
 			{isLoading
@@ -39,9 +50,22 @@ const PupilsList = ({ user, pupils, initializePupils, setNotification }) => {
 					variant="primary"
 				/>
 				: <>
-					<p className="pt-3">
-						Список усіх учнів школи.
-					</p>
+					<Row className="py-2 border1 border-success">
+						<Col xs={8}>
+							<em className="text-muted">Список усіх учнів школи.</em>
+						</Col>
+						<Col xs={4}>
+							<Form>
+								<Form.Check
+									custom
+									type="checkbox"
+									id="sort-checkbox"
+									label="A-Z"
+									onClick={changeOrder}
+								/>
+							</Form>
+						</Col>
+					</Row>
 					<ListGroup>
 						{pupils.map(pupil =>
 							<ListGroup.Item
@@ -86,7 +110,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
 	setNotification,
-	initializePupils
+	initializePupils,
+	sortPupils
 }
 
 export default connect(

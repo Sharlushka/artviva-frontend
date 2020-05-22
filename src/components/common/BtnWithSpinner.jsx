@@ -3,11 +3,12 @@ import { Button, Spinner } from 'react-bootstrap'
 import PropTypes from 'prop-types'
 
 const BtnWithSpinner = ({
+	type,
+	handleClick,
 	loadingState,
 	disabledState,
 	waitingState,
 	label,
-	type,
 	variant,
 	dataCy,
 	className }) => {
@@ -32,6 +33,7 @@ const BtnWithSpinner = ({
 
 	return (
 		<Button
+			onClick={handleClick}
 			block
 			type={type}
 			variant={variant}
@@ -46,6 +48,7 @@ const BtnWithSpinner = ({
 
 BtnWithSpinner.propTypes = {
 	type: PropTypes.string,
+	handleClick: PropTypes.func,
 	loadingState: PropTypes.bool.isRequired,
 	disabledState: PropTypes.bool,
 	waitingState: PropTypes.bool,

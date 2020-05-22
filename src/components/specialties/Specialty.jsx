@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Suspense } from 'react'
+import React, { useState, useEffect, useRef, Suspense } from 'react'
 import { connect } from 'react-redux'
 import { setNotification } from '../../reducers/notificationReducer'
 import { deleteSpecialty } from '../../reducers/specialtiesReducer'
@@ -19,13 +19,17 @@ const Specialty = ({ user, specialty, deleteSpecialty }) => {
 	const [open, setOpen] = useState(false)
 	const [deleteModalShow, setDeleteModalShow] = useState(false)
 	const [editModalShow, setEditModalShow] = useState(false)
+	const [isDeleting, setIsDeleting] = useState(false)
+	const unmounted = useRef(false)
 
 	// set auth token
 	useEffect(() => {
 		specialtyService.setToken(user.token)
+		return () => { unmounted.current = true }
 	}, [user])
 
 	const handleDelete = id => {
+		setIsDeleting(true)
 		deleteSpecialty(id)
 			.then(() => {
 				setNotification({
@@ -39,6 +43,9 @@ const Specialty = ({ user, specialty, deleteSpecialty }) => {
 					message: notification.error,
 					variant: 'danger'
 				}, 5)
+			})
+			.finally(() => {
+				if (!unmounted) setIsDeleting(false)
 			})
 	}
 
@@ -104,6 +111,7 @@ const Specialty = ({ user, specialty, deleteSpecialty }) => {
 					valuetoconfirm={specialty.title}
 					show={deleteModalShow}
 					handleDelete={handleDelete}
+					loadingState={isDeleting}
 					onHide={() => setDeleteModalShow(false)}
 				/>
 			</Suspense>

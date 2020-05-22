@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Suspense } from 'react'
+import React, { useState, useEffect, useRef, Suspense } from 'react'
 import { connect } from 'react-redux'
 import { setNotification } from '../../reducers/notificationReducer'
 import { deleteTeacher } from '../../reducers/teachersReducer'
@@ -19,13 +19,17 @@ const Teacher = ({ user, teacher, deleteTeacher }) => {
 	const [open, setOpen] = useState(false)
 	const [deleteModalShow, setDeleteModalShow] = useState(false)
 	const [editModalShow, setEditModalShow] = useState(false)
+	const [isDeleting, setIsDeleting] = useState(false)
+	const unmounted = useRef(false)
 
 	// set auth token
 	useEffect(() => {
 		teachersService.setToken(user.token)
+		return () => { unmounted.current = true }
 	}, [user])
 
 	const handleDelete = id => {
+		setIsDeleting(true)
 		deleteTeacher(id)
 			.then(() => {
 				setNotification({
@@ -39,6 +43,9 @@ const Teacher = ({ user, teacher, deleteTeacher }) => {
 					message: notification.error,
 					variant: 'danger'
 				}, 5)
+			})
+			.finally(() => {
+				if (!unmounted) setIsDeleting(false)
 			})
 	}
 
@@ -142,6 +149,7 @@ const Teacher = ({ user, teacher, deleteTeacher }) => {
 					valuetoconfirm={teacher.name}
 					show={deleteModalShow}
 					handleDelete={handleDelete}
+					loadingState={isDeleting}
 					onHide={() => setDeleteModalShow(false)}
 				/>
 			</Suspense>
