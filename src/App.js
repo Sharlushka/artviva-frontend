@@ -6,7 +6,7 @@ import { loadReCaptcha } from 'react-recaptcha-google'
 import PrivateRoute from './components/PrivateRoute'
 
 import Notification from './components/Notification'
-import NavigationBar from './components/NavigationBar'
+import NavigationBar from './components/navigation/NavigationBar'
 import Footer from './components/Footer'
 import MainPage from './components/MainPage'
 import AboutView from './components/views/AboutView'
@@ -30,6 +30,7 @@ import ActivateAccountView from './components/views/ActivateAccountView'
 import PassResetView from './components/views/PassResetView'
 import ScrollToTop from './components/common/ScrollToTop'
 import SchoolSectionsNav from './components/navigation/SchoolSectionsNav'
+import ShowcaseView from './components/views/ShowcaseView'
 
 import { setUserFromLocalStorage } from './reducers/loginReducer'
 import './css/index.css'
@@ -62,6 +63,7 @@ const App = (props) => {
 				<Route path="/" exact component={MainPage} />
 			</ParallaxProvider>
 			<Route path="/about" component={AboutView} />
+			<Route path="/showcase" component={ShowcaseView} />
 			<Route path="/teachers/:department?" component={TeachersView} />
 			<Route path="/login" component={LoginView} />
 			<Route path="/recover" component={RecoverView} />

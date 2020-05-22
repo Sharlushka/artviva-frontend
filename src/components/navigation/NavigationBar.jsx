@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { connect } from 'react-redux'
 import { Navbar, Nav, NavDropdown, Image } from 'react-bootstrap'
-// import UserInfoPopover from './common/UserInfoPopover'
-import NavBarLink from './common/NavBarLink'
-import NavTogglerIcon from './common/NavTogglerIcon'
-import Logout from './common/Logout'
+import NavBarLink from '../common/NavBarLink'
+import NavTogglerIcon from '../common/NavTogglerIcon'
+import Logout from '../common/Logout'
 
 const NavigationBar = ({ user }) => {
 
@@ -51,6 +50,11 @@ const NavigationBar = ({ user }) => {
 		{
 			to: '/teachers',
 			label: 'Вчителі',
+			className: linkClassList
+		},
+		{
+			to: '/showcase',
+			label: 'На сцені',
 			className: linkClassList
 		},
 		{

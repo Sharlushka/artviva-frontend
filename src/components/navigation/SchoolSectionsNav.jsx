@@ -16,7 +16,7 @@ const SchoolDataNav = () => {
 		},
 		{
 			to: '/school/teachers',
-			label: 'Вчітелі'
+			label: 'Вчителі'
 		},
 		{
 			to: '/school/pupils',

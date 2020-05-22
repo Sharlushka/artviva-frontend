@@ -43,6 +43,10 @@ html
 	border-radius: .3rem
 	box-shadow: 0 0 .5rem 0 rgba(0, 123, 255, 1)
 
+.gray-shadow
+	border-radius: .3rem
+	box-shadow: 0 0 .5rem 0 #6b6b6b
+
 .teacher-specs-list
 	list-style: none
 	padding: 0
@@ -213,3 +217,16 @@ nav
 
 .is-active
 	+linkHighlight()
+
+.video-responsive
+	overflow: hidden
+	padding-bottom: 56.25%
+	position: relative
+	height: 0
+
+.video-responsive iframe
+	left: 0
+	top: 0
+	height: 100%
+	width: 100%
+	position: absolute
