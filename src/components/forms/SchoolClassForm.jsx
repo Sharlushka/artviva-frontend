@@ -4,6 +4,8 @@ import { setNotification } from '../../reducers/notificationReducer'
 import { createSchoolClass, updateSchoolClass } from '../../reducers/schoolClassesReducer'
 import searchService from '../../services/search'
 import schoolClassesService from '../../services/schoolClasses'
+import { debounce } from '../../utils/debounce'
+import { trimObject } from '../../utils/objectHelpers'
 
 import { Formik, FieldArray, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
@@ -12,8 +14,7 @@ import PropTypes from 'prop-types'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons'
 import { Container, Row, Col, Form, Button } from 'react-bootstrap'
-import ButtonComponent from '../common/Button'
-
+import BtnWithSpinner from '../common/BtnWithSpinner'
 
 const SchoolClassForm = ({
 	schoolClass,
@@ -21,10 +22,12 @@ const SchoolClassForm = ({
 	setNotification,
 	createSchoolClass,
 	updateSchoolClass,
+	closeModal,
 	mode }) => {
 
 	const [editMode, setEditMode] = useState(false)
 	const [pupilError, setPupilError] = useState(false)
+	const [processingForm, setProcessingForm] = useState(false)
 
 	useEffect(() => {
 		if (mode === 'edit') {
@@ -38,48 +41,72 @@ const SchoolClassForm = ({
 		schoolClassesService.setToken(user.token)
 	}, [user])
 
-	// lists for form input autocopmlete suggestions
+	// lists for form input autocomplete suggestions
 	const [teachersList, setTeachersList] = useState([])
 	const [pupilsList, setPupilsList] = useState([])
 	const [specialtiesList, setSpecialtiesList] = useState([])
 
-	const getTeachers = (value) => {
-		if (value.length >= 2) {
-			const query = { value }
-			searchService.teachers(query)
-				.then((data) => {
-					setTeachersList(data)
-				})
-				.catch(error => {
-					console.error(error)
-				})
+	// search something in db as user types
+	const search = data => {
+		// pupils data.value is unique id in the
+		// values array, as it is a multiline input
+		// hence this rename
+		const pupilsPattern = /pupils(\[)(\d{0,2})(])/i
+		if (pupilsPattern.exec(data.name)) {
+			data = { ...data, name: 'pupil' }
 		}
+
+		// then
+		if (data.value <= 2 ) {
+			return console.warn('Потрібно більше даних для пошуку.')
+		}
+
+		const queryPattern = /^[A-ZА-ЯҐЄІЇ]{2,64}$/i
+		if (queryPattern.exec(data.value)) {
+			const query = {
+				value: data.value
+			}
+			switch (data.name) {
+			case 'teacher':
+				return searchTeachers(query)
+			case 'pupil':
+				return searchPupils(query)
+			case 'specialty':
+				return searchSpecialties(query)
+			default:
+				return false
+			}
+		} else console.warn('Перевірте формат data.value.')
 	}
 
-	const getPupils = value => {
-		if (value.length >= 2) {
-			const query = { value }
-			searchService.pupils(query)
-				.then((data) => {
-					setPupilsList(data)
-				})
-				.catch(error => {
-					console.error(error)
-				})
-		}
+	const searchTeachers = query => {
+		searchService.teachers(query)
+			.then((data) => {
+				setTeachersList(data)
+			})
+			.catch(error => {
+				console.error(error)
+			})
 	}
 
-	const getSpecialties = value => {
-		if (value.length >= 2) {
-			const query = { value }
-			searchService.specialties(query)
-				.then((data) => {
-					setSpecialtiesList(data)
-				})
-				.catch(error => {
-					console.error(error)
-				})
-		}
+	const searchPupils = query => {
+		searchService.pupils(query)
+			.then((data) => {
+				setPupilsList(data)
+			})
+			.catch(error => {
+				console.error(error)
+			})
+	}
+
+	const searchSpecialties = query => {
+		searchService.specialties(query)
+			.then((data) => {
+				setSpecialtiesList(data)
+			})
+			.catch(error => {
+				console.error(error)
+			})
 	}
 
 	const checkSubmitBtnState = ({ pupils }) => {
@@ -89,16 +116,17 @@ const SchoolClassForm = ({
 	}
 
 	const handleSchoolClass = (values, setErrors, resetForm) => {
+		setProcessingForm(true)
 		// check if at least one pupil was added
 		// need this cause of variable number of pupils fields
 		if (values.pupils.length === 0) {
 			setPupilError(true)
 			return
 		}
-		// if current from mode is edit or create..
+		// if current form mode is edit or create..
 		editMode
-			? existingSchoolClass(values)
-			: newSchoolClass(values, setErrors, resetForm)
+			? existingSchoolClass(trimObject(values))
+			: newSchoolClass(trimObject(values), setErrors, resetForm)
 	}
 
 	const newSchoolClass = (values, setErrors, resetForm) => {
@@ -120,16 +148,17 @@ const SchoolClassForm = ({
 					variant: 'danger'
 				}, 5)
 			})
+			.finally(() => setProcessingForm(false))
 	}
 
 	const existingSchoolClass = (values) => {
-		console.log('Updating', values)
 		updateSchoolClass(schoolClass.id, values)
 			.then(() => {
 				setNotification({
 					message: 'Зміни успішно збережено.',
 					variant: 'success'
 				}, 5)
+				if (closeModal) closeModal()
 			})
 			.catch(error => {
 				const { message } = { ...error.response.data }
@@ -138,8 +167,8 @@ const SchoolClassForm = ({
 					variant: 'danger'
 				}, 5)
 			})
+			.finally(() => setProcessingForm(false))
 	}
-
 
 	// form data and schema
 	const initialFormValues = () =>
@@ -155,19 +184,19 @@ const SchoolClassForm = ({
 		title: Yup.string()
 			.min(2, 'Не менш 2 символів.')
 			.max(128, 'Максимум 128 символів.')
-			.required('Enter class title'),
+			.required('Введіть назву класу.'),
 		info: Yup.string()
 			.min(2, 'Не менш 2 символів.')
-			.max(255, 'Максимум 255 символів.')
-			.required('Enter some description'),
+			.max(255, 'Максимум 255 символів.'),
+		// .required('Введіть опис.'),
 		teacher: Yup.string()
 			.min(2, 'Не менш 2 символів.')
 			.max(128, 'Максимум 128 символів.')
-			.required('Enter teacher name'),
+			.required('Введіть ім\'я викладача.'),
 		specialty: Yup.string()
 			.min(2, 'Не менш 2 символів.')
 			.max(128, 'Максимум 128 символів.')
-			.required('Enter teacher name'),
+			.required('Введіть назву спеціальності.'),
 		pupils: Yup.array().of(
 			Yup.string()
 				.min(2, 'Не менш 2 символів.')
@@ -178,9 +207,6 @@ const SchoolClassForm = ({
 
 	return (
 		<Container>
-			<h2 className="text-center custom-font py-4">
-				{editMode ? 'Редагувати' : 'Додати'} клас
-			</h2>
 			<Formik
 				initialValues={initialFormValues()}
 				enableReinitialize
@@ -214,6 +240,7 @@ const SchoolClassForm = ({
 							>
 								<Form.Label>
 									Назва класу
+									<span className="form-required-mark"> *</span>
 								</Form.Label>
 								<Form.Control
 									type="text"
@@ -272,22 +299,23 @@ const SchoolClassForm = ({
 								className="mb-4"
 							>
 								<Form.Label>
-									Вчітель
+									Викладач
+									<span className="form-required-mark"> *</span>
 								</Form.Label>
 								<Form.Control
 									type="text"
 									name="teacher"
-									data-cy="teacher-input"
-									list="teachers-list"
+									data-cy="teacher-name-input"
+									list={editMode ? `teachers-list-${schoolClass.id}` : 'teachers-list'}
 									autoComplete="off"
 									onChange={handleChange}
-									onKeyUp={event => getTeachers(event.target.value)}
+									onKeyUp={event => debounce(search(event.target), 1000)}
 									onBlur={handleBlur}
 									value={values.teacher}
 									isValid={touched.teacher && !errors.teacher}
 									isInvalid={touched.teacher && !!errors.teacher}
 								/>
-								<datalist id="teachers-list">
+								<datalist id={editMode ? `teachers-list-${schoolClass.id}` : 'teachers-list'}>
 									{teachersList.map((name) =>
 										<option key={name} value={name} />
 									)}
@@ -310,21 +338,26 @@ const SchoolClassForm = ({
 							>
 								<Form.Label>
 									Фах класу
+									<span className="form-required-mark"> *</span>
 								</Form.Label>
 								<Form.Control
 									type="text"
 									name="specialty"
 									data-cy="specialty-input"
-									list="specialties-list"
+									list={editMode
+										? `specialties-list-${schoolClass.id}`
+										: 'specialties-list'}
 									autoComplete="off"
 									onChange={handleChange}
-									onKeyUp={event => getSpecialties(event.target.value)}
+									onKeyUp={event => debounce(search(event.target), 1000)}
 									onBlur={handleBlur}
 									value={values.specialty}
 									isValid={touched.specialty && !errors.specialty}
 									isInvalid={touched.specialty && !!errors.specialty}
 								/>
-								<datalist id="specialties-list">
+								<datalist id={editMode
+									? `specialties-list-${schoolClass.id}`
+									: 'specialties-list'}>
 									{specialtiesList.map((title) =>
 										<option key={title} value={title} />
 									)}
@@ -341,27 +374,33 @@ const SchoolClassForm = ({
 							render={arrayHelpers => (
 								<>
 									<Form.Label>
-										Учні
+										Перелік учнів
+										<span className="form-required-mark"> *</span>
 									</Form.Label>
 									{values.pupils && values.pupils.length > 0 ? (
-										values.pupils.map((specialty, index) => (
+										values.pupils.map((pupil, index) => (
 											<Form.Row key={index} className="d-flex justify-content-end">
 												<Col xs={12}>
 													<Form.Control
 														type="text"
-														list="pupils-list"
-														autoComplete="off"
-														className="mb-2"
 														name={`pupils[${index}]`}
+														list={editMode
+															? `pupils-list-${schoolClass.id}`
+															: 'pupils-list'}
+														autoComplete="off"
 														value={values.pupils[index]}
 														onChange={handleChange}
-														onKeyUp={event => getPupils(event.target.value)}
+														onBlur={handleBlur}
+														onKeyUp={event => debounce(search(event.target), 1000)}
 														isValid={touched.pupils && !errors.pupils}
 														// isInvalid={touched.specialties && !!errors.specialties}
 													/>
-													<datalist id="pupils-list">
-														{pupilsList.map((name) =>
-															<option key={name} value={name} />
+													<datalist id={editMode
+														? `pupils-list-${schoolClass.id}`
+														: 'pupils-list'}>
+														{pupilsList.map(name => (
+															<option key={name} value={name} >{name}</option>
+														)
 														)}
 													</datalist>
 												</Col>
@@ -432,12 +471,13 @@ const SchoolClassForm = ({
 								as={Col}
 								className="pt-4"
 							>
-								<ButtonComponent
-									block
-									className="px-4 primary-color-shadow"
-									variant="primary"
+								<BtnWithSpinner
+									className="px-4"
+									variant={editMode ? 'success' : 'primary'}
 									type="submit"
-									label="Додати"
+									label={editMode ? 'Зберегти' : 'Додати новій клас'}
+									dataCy="add-class-btn"
+									loadingState={processingForm}
 								/>
 							</Form.Group>
 						</Form.Row>
@@ -454,7 +494,8 @@ SchoolClassForm.propTypes = {
 	setNotification: PropTypes.func.isRequired,
 	createSchoolClass: PropTypes.func.isRequired,
 	updateSchoolClass: PropTypes.func.isRequired,
-	mode: PropTypes.oneOf(['create', 'edit']).isRequired
+	mode: PropTypes.oneOf(['create', 'edit']).isRequired,
+	closeModal: PropTypes.func
 }
 
 const mapStateToProps = (state) => {

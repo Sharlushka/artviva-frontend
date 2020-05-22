@@ -1,9 +1,17 @@
-import React, { useState } from 'react'
-import { Modal, Form, Button } from 'react-bootstrap'
-import { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 
-const EntityDeleteModal = ({ handleDelete, valuetoconfirm, subject, subjectid, ...props }) => {
+import { Modal, Form, Button, Container, Row, Col } from 'react-bootstrap'
+import BtnWithSpinner from './BtnWithSpinner'
+
+const EntityDeleteModal = ({
+	handleDelete,
+	valuetoconfirm,
+	subject,
+	subjectid,
+	loadingState,
+	...props }) => {
+
 	const [valueChange, setValueChange] = useState('')
 	const [deleteBtnState, setDeleteBtnState] = useState(true)
 
@@ -44,19 +52,29 @@ const EntityDeleteModal = ({ handleDelete, valuetoconfirm, subject, subjectid, .
 				</Form.Group>
 			</Modal.Body>
 			<Modal.Footer>
-				<Button
-					onClick={props.onHide}
-				>
-					Скасуваті
-				</Button>
-				<Button
-					onClick={() => handleDelete(subjectid)}
-					disabled={deleteBtnState}
-					type="button"
-					variant="danger"
-				>
-					Видалити
-				</Button>
+				<Container>
+					<Row className="d-flex justify-content-end">
+						<Col className="px-1" xs={5} md={3}>
+							<Button
+								onClick={props.onHide}
+								block
+							>
+								Скасуваті
+							</Button>
+						</Col>
+						<Col className="px-1" xs={5} md={3}>
+							<BtnWithSpinner
+								handleClick={() => handleDelete(subjectid)}
+								type="button"
+								loadingState={loadingState}
+								disabledState={deleteBtnState}
+								label="Видалити"
+								variant="danger"
+								dataCy="delete-entity-btn"
+							/>
+						</Col>
+					</Row>
+				</Container>
 			</Modal.Footer>
 		</Modal>
 	)

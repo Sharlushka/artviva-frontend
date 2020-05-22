@@ -1,4 +1,5 @@
 import pupilsService from '../services/pupils'
+import { compareValues } from '../utils/arrayHelpers'
 
 const pupilsReducer = (state = [], action) => {
 	switch (action.type) {
@@ -9,13 +10,37 @@ const pupilsReducer = (state = [], action) => {
 	case 'INIT_PUPILS':
 		return action.data
 	case 'UPDATE_PUPIL': {
-		const updatedPupil= action.data
+		const updatedPupil = action.data
 		return state.map(pupil =>
 			pupil.id !== action.data.id ? pupil : updatedPupil
 		)
 	}
+	case 'SORT_PUPILS_LIST': {
+		const { field, order } = { ...action.data }
+		return state.slice().sort(compareValues(field, order))
+	}
 	default:
 		return state
+	}
+}
+
+/**
+ * Sort pupils list
+ * @param {string} field - Field to sort by
+ * @param {string} order - Order of sort
+*/
+export const sortPupils = (field, order) => {
+
+	const data = {
+		field,
+		order
+	}
+
+	return async dispatch => {
+		dispatch ({
+			type: 'SORT_PUPILS_LIST',
+			data
+		})
 	}
 }
 

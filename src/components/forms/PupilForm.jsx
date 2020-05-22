@@ -3,13 +3,14 @@ import { connect } from 'react-redux'
 import { setNotification } from '../../reducers/notificationReducer'
 import { createPupil, updatePupil } from '../../reducers/pupilsReducer'
 import pupilsService from '../../services/pupils'
+import { trimObject } from '../../utils/objectHelpers'
 
 import { Formik } from 'formik'
 import * as Yup from 'yup'
 import PropTypes from 'prop-types'
 
 import { Container, Col, Form } from 'react-bootstrap'
-import ButtonComponent from '../common/Button'
+import BtnWithSpinner from '../common/BtnWithSpinner'
 
 const PupilForm = ({
 	pupil,
@@ -17,9 +18,11 @@ const PupilForm = ({
 	setNotification,
 	createPupil,
 	updatePupil,
-	mode }) => {
+	mode,
+	closeModal }) => {
 
 	const [editMode, setEditMode] = useState(false)
+	const [processingForm, setProcessingForm] = useState(false)
 
 	// set auth token and mode
 	useEffect(() => {
@@ -31,9 +34,10 @@ const PupilForm = ({
 
 	// handle edit or create
 	const handlePupil = (values, setErrors, resetForm) => {
+		setProcessingForm(true)
 		editMode
-			? existingPupil(values, setErrors)
-			: newPupil(values, setErrors, resetForm)
+			? existingPupil(trimObject(values), setErrors)
+			: newPupil(trimObject(values), setErrors, resetForm)
 	}
 
 	const newPupil = (values, setErrors, resetForm ) => {
@@ -55,15 +59,17 @@ const PupilForm = ({
 					variant: 'danger'
 				}, 5)
 			})
+			.finally(() => setProcessingForm(false))
 	}
 
 	const existingPupil = (values, setErrors) => {
-		updatePupil(pupil.id, values)
+		updatePupil(pupil.id, { name: values.name, info: values.info })
 			.then(() => {
 				setNotification({
 					message: 'Зміни успішно збережено.',
 					variant: 'success'
 				}, 5)
+				closeModal()
 			})
 			.catch(error => {
 				const { message, cause } = { ...error.response.data }
@@ -75,6 +81,7 @@ const PupilForm = ({
 					variant: 'danger'
 				}, 5)
 			})
+			.finally(() => setProcessingForm(false))
 	}
 
 	// form data and schema
@@ -93,9 +100,6 @@ const PupilForm = ({
 
 	return (
 		<Container>
-			<h4 className="text-center custom-font py-4">
-				{editMode ? 'Редагувати' : 'Додати'} учня
-			</h4>
 			<Formik
 				initialValues={initialFormValues()}
 				enableReinitialize
@@ -126,7 +130,8 @@ const PupilForm = ({
 								as={Col}
 							>
 								<Form.Label>
-									Полне ім&apos;я учня
+									Повне ім&apos;я учня
+									<span className="form-required-mark"> *</span>
 								</Form.Label>
 								<Form.Control
 									type="text"
@@ -184,12 +189,13 @@ const PupilForm = ({
 								as={Col}
 								className="pt-4"
 							>
-								<ButtonComponent
-									block
-									className="px-4 primary-color-shadow"
-									variant="primary"
+								<BtnWithSpinner
+									loadingState={processingForm}
+									className="px-4"
+									variant={editMode ? 'success' : 'primary'}
 									type="submit"
-									label="Додати"
+									label={editMode ? 'Зберегти' : 'Додати'}
+									dataCy="add-pupil-btn"
 								/>
 							</Form.Group>
 						</Form.Row>
@@ -206,7 +212,8 @@ PupilForm.propTypes = {
 	setNotification: PropTypes.func.isRequired,
 	createPupil: PropTypes.func.isRequired,
 	updatePupil: PropTypes.func.isRequired,
-	mode: PropTypes.oneOf(['create', 'edit']).isRequired
+	mode: PropTypes.oneOf(['create', 'edit']).isRequired,
+	closeModal: PropTypes.func
 }
 
 const mapStateToProps = (state) => {

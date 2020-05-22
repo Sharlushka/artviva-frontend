@@ -17,7 +17,7 @@ const PaymentsList = ({ user, payments, initialisePayments, setNotification }) =
 		if (user) {
 			// set token
 			paymentService.setToken(user.token)
-			// get a list of payments
+			// get list of payments
 			initialisePayments()
 				.catch(error => {
 					setNotification({
@@ -31,13 +31,16 @@ const PaymentsList = ({ user, payments, initialisePayments, setNotification }) =
 	}, [user, setNotification, initialisePayments])
 
 	return (
-		<Container className='text-center'>
+		<Container>
 			{isLoading
 				? <LoadingIndicator
 					animation="border"
 					variant="primary"
 				/>
 				: <>
+					<p className="pt-3">
+						Список усіх платежів.
+					</p>
 					<ListGroup>
 						{payments.map(payment =>
 							<ListGroup.Item

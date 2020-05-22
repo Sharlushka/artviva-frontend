@@ -1,41 +1,71 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, Suspense } from 'react'
 import { connect } from 'react-redux'
 import { setNotification } from '../../reducers/notificationReducer'
-import { initializePupils } from '../../reducers/pupilsReducer'
+import { initializePupils, sortPupils } from '../../reducers/pupilsReducer'
+import pupilsService from '../../services/pupils'
 
-import { Container, ListGroup } from 'react-bootstrap'
+import { Container, Row, Col, Form, ListGroup } from 'react-bootstrap'
 import Pupil from './Pupil'
 import LoadingIndicator from '../common/LoadingIndicator'
-import PupilForm from '../forms/PupilForm'
-import Toggler from '../common/Toggler'
+import CollapseForm from '../common/CollapseForm'
 
-const PupilsList = ({ pupils, initializePupils, setNotification }) => {
+const LazyPupilForm = React.lazy(() => import('../forms/PupilForm'))
 
-	const PupilFormRef = useRef(null)
+const PupilsList = ({
+	user,
+	pupils,
+	initializePupils,
+	sortPupils,
+	setNotification }) => {
+
 	const [isLoading, setIsLoading] = useState(true)
+	const [defaultSortOrder, setdefaultSortOrder] = useState(true)
 
 	useEffect(() => {
-		initializePupils()
-			.catch(error => {
-				setNotification({
-					message: `Щось пішло не так, спробуйте пізніше:
-						${error.status} ${error.statusText}`,
-					variant: 'danger'
-				}, 5)
-			})
-			.finally(() => setIsLoading(false))
+		if (user) {
+			pupilsService.setToken(user.token)
+			initializePupils()
+				.catch(error => {
+					setNotification({
+						message: `Щось пішло не так, спробуйте пізніше:
+							${error.status} ${error.statusText}`,
+						variant: 'danger'
+					}, 5)
+				})
+				.finally(() => setIsLoading(false))
+		}
 	// eslint-disable-next-line
-	}, [])
+	}, [user, initializePupils, setNotification])
+
+	const changeOrder = () => {
+		defaultSortOrder ? sortPupils('name') : sortPupils('name', 'desc')
+		setdefaultSortOrder(!defaultSortOrder)
+	}
 
 	return (
-		<Container className='mt-5 text-center'>
-			<h4 className="pt-4 custom-font">Учні</h4>
+		<Container>
 			{isLoading
 				? <LoadingIndicator
 					animation="border"
 					variant="primary"
 				/>
 				: <>
+					<Row className="py-2 border1 border-success">
+						<Col xs={8}>
+							<em className="text-muted">Список усіх учнів школи.</em>
+						</Col>
+						<Col xs={4}>
+							<Form>
+								<Form.Check
+									custom
+									type="checkbox"
+									id="sort-checkbox"
+									label="A-Z"
+									onClick={changeOrder}
+								/>
+							</Form>
+						</Col>
+					</Row>
 					<ListGroup>
 						{pupils.map(pupil =>
 							<ListGroup.Item
@@ -46,13 +76,25 @@ const PupilsList = ({ pupils, initializePupils, setNotification }) => {
 							</ListGroup.Item>
 						)}
 					</ListGroup>
-					<Toggler
-						buttonLabel="Додати нового учня"
-						data-cy="add-new-pupil-btn"
-						ref={PupilFormRef}
+					<p className="pt-3 text-muted">
+						Щоб створити учня, вам потрібна така інформація:
+						<strong> Ім&apos;я та прізвище</strong>.
+						Додаткова інформація не є обов&apos;язковою.
+					</p>
+
+					<CollapseForm
+						title="Додати нового учня"
+						ariaControls="pupil-add-form-collapse"
 					>
-						<PupilForm mode='create' />
-					</Toggler>
+						<Suspense
+							fallback={
+								<LoadingIndicator
+									animation="border"
+									variant="primary"
+								/>}>
+							<LazyPupilForm mode="create" />
+						</Suspense>
+					</CollapseForm>
 				</>
 			}
 		</Container>
@@ -61,13 +103,15 @@ const PupilsList = ({ pupils, initializePupils, setNotification }) => {
 
 const mapStateToProps = (state) => {
 	return {
-		pupils: state.pupils
+		pupils: state.pupils,
+		user: state.user
 	}
 }
 
 const mapDispatchToProps = {
 	setNotification,
-	initializePupils
+	initializePupils,
+	sortPupils
 }
 
 export default connect(

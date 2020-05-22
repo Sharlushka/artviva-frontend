@@ -7,6 +7,7 @@ import specialtyService from '../../services/specialties'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
 import PropTypes from 'prop-types'
+import { trimObject } from '../../utils/objectHelpers'
 
 import { Container, Col, Form } from 'react-bootstrap'
 import ButtonComponent from '../common/Button'
@@ -17,7 +18,8 @@ const SpecialtyForm = ({
 	setNotification,
 	createSpecialty,
 	updateSpecialty,
-	mode }) => {
+	mode,
+	closeModal }) => {
 
 	const [editMode, setEditMode] = useState(false)
 
@@ -32,8 +34,8 @@ const SpecialtyForm = ({
 	// edit or save
 	const handleSpecialty = (values, setErrors, resetForm) => {
 		editMode
-			? existingSpecialty(values)
-			: newSpecialty(values, setErrors, resetForm)
+			? existingSpecialty(trimObject(values))
+			: newSpecialty(trimObject(values), setErrors, resetForm)
 	}
 
 	const newSpecialty = (values, setErrors, resetForm) => {
@@ -64,6 +66,7 @@ const SpecialtyForm = ({
 					message: 'Зміни успішно збережено.',
 					variant: 'success'
 				}, 5)
+				closeModal()
 			})
 			.catch(error => {
 				const { message } = { ...error.response.data }
@@ -85,20 +88,18 @@ const SpecialtyForm = ({
 			.required('Введіть повну назву філії.'),
 		cost: Yup.number()
 			.typeError('Повинно бути числом.')
+			.max(9999, 'Не більше 9999 грн.')
 			.required('Обов\'язкове поле.')
 			.positive('Повинно бути більше нуля.')
 			.integer('Повинно бути цілим числом.'),
 		info: Yup.string()
 			.min(3, 'Не менш 3 символів.')
 			.max(255, 'Максимум 255 символів.')
-			.required('Введіть опис.')
+			// .required('Введіть опис.')
 	})
 
 	return (
 		<Container>
-			<h2 className="text-center custom-font py-4">
-				{editMode ? 'Редагувати' : 'Додати'} спеціальність
-			</h2>
 			<Formik
 				initialValues={initialFormValues()}
 				enableReinitialize
@@ -130,6 +131,7 @@ const SpecialtyForm = ({
 							>
 								<Form.Label>
 									Полна назва спеціальності
+									<span className="form-required-mark"> *</span>
 								</Form.Label>
 								<Form.Control
 									type="text"
@@ -160,6 +162,7 @@ const SpecialtyForm = ({
 							>
 								<Form.Label>
 									Вартість навчання за місяць
+									<span className="form-required-mark"> *</span>
 								</Form.Label>
 								<Form.Control
 									type="text"

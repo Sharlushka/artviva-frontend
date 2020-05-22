@@ -19,7 +19,10 @@ const setToken = newToken => {
  */
 const getAll = async () => {
 	try {
-		const response = await axios.get(baseUrl)
+		const config = {
+			headers: { Authorization: token }
+		}
+		const response = await axios.get(baseUrl, config)
 		return response.data
 	} catch (error) {
 		return Promise.reject(error.response)
@@ -67,7 +70,10 @@ const deleteById = async id => {
  */
 
 const update = async (id, payload) => {
-	const request = axios.put(`${baseUrl}/${id}`, payload)
+	const config = {
+		headers: { Authorization: token }
+	}
+	const request = axios.put(`${baseUrl}/${id}`, payload, config)
 	return request.then(response => response.data)
 }
 

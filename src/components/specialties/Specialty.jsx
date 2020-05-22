@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, Suspense } from 'react'
 import { connect } from 'react-redux'
 import { setNotification } from '../../reducers/notificationReducer'
 import { deleteSpecialty } from '../../reducers/specialtiesReducer'
@@ -7,26 +7,29 @@ import specialtyService from '../../services/specialties'
 import { Container, Row, Col, Collapse, Button } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons'
-import ButtonComponent from '../common/Button'
-import EntityDeleteModal from '../common/EntityDeleteModal'
-import Toggler from '../common/Toggler'
+import LoadingIndicator from '../common/LoadingIndicator'
 import SpecialtyForm from '../forms/SpecialtyForm'
+import EntityControlButtons from '../common/EntityControlButtons'
+
+const LazyEntityDeleteModal = React.lazy(() => import('../common/EntityDeleteModal'))
+const LazyEntityEditModal = React.lazy(() => import('../common/EntityEditModal'))
 
 const Specialty = ({ user, specialty, deleteSpecialty }) => {
-	const specialtyFormRef = useRef(null)
-	const [open, setOpen] = useState(false)
-	const [modalShow, setModalShow] = useState(false)
 
-	const openDeleteModal = () => {
-		setModalShow(true)
-	}
+	const [open, setOpen] = useState(false)
+	const [deleteModalShow, setDeleteModalShow] = useState(false)
+	const [editModalShow, setEditModalShow] = useState(false)
+	const [isDeleting, setIsDeleting] = useState(false)
+	const unmounted = useRef(false)
 
 	// set auth token
 	useEffect(() => {
 		specialtyService.setToken(user.token)
+		return () => { unmounted.current = true }
 	}, [user])
 
 	const handleDelete = id => {
+		setIsDeleting(true)
 		deleteSpecialty(id)
 			.then(() => {
 				setNotification({
@@ -40,6 +43,9 @@ const Specialty = ({ user, specialty, deleteSpecialty }) => {
 					message: notification.error,
 					variant: 'danger'
 				}, 5)
+			})
+			.finally(() => {
+				if (!unmounted) setIsDeleting(false)
 			})
 	}
 
@@ -71,35 +77,44 @@ const Specialty = ({ user, specialty, deleteSpecialty }) => {
 						</Col>
 					</Row>
 
-					<Row className="d-flex justify-content-center">
-						<Col md={8} lg={6} xl={4}>
-							<Toggler
-								buttonLabel="Редагувати спеціальність"
-								data-cy="edit-specialty-btn"
-								ref={specialtyFormRef}
-							>
-								<SpecialtyForm specialty={specialty} mode="edit" />
-							</Toggler>
-							<ButtonComponent
-								block
-								label="Видалити"
-								variant="danger"
-								type="button"
-								handleClick={() => openDeleteModal()}
-							/>
-						</Col>
+					<Row>
+						<EntityControlButtons
+							openEditModal={() => setEditModalShow(true)}
+							openDeleteModal={() => setDeleteModalShow(true)}
+						/>
 					</Row>
 				</Container>
 			</Collapse>
-			{/* Specialty delete modal */}
-			<EntityDeleteModal
-				subject="спеціальність"
-				subjectid={specialty.id}
-				valuetoconfirm={specialty.title}
-				show={modalShow}
-				handleDelete={handleDelete}
-				onHide={() => setModalShow(false)}
-			/>
+
+			{/* Specialty edit and delete modals */}
+			<Suspense fallback={
+				<LoadingIndicator
+					animation="border"
+					variant="primary"
+					size="md"
+				/>}>
+				<LazyEntityEditModal
+					subject="спеціальність"
+					subjectid={specialty.id}
+					show={editModalShow}
+					onHide={() => setEditModalShow(false)}
+				>
+					<SpecialtyForm
+						closeModal={() => setEditModalShow(false)}
+						specialty={specialty}
+						mode="edit"
+					/>
+				</LazyEntityEditModal>
+				<LazyEntityDeleteModal
+					subject="спеціальність"
+					subjectid={specialty.id}
+					valuetoconfirm={specialty.title}
+					show={deleteModalShow}
+					handleDelete={handleDelete}
+					loadingState={isDeleting}
+					onHide={() => setDeleteModalShow(false)}
+				/>
+			</Suspense>
 		</>
 	)
 }

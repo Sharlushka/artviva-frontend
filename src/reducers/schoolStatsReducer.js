@@ -10,21 +10,6 @@ const schoolStatsReducer = (state = [], action) => {
 }
 
 /**
- * Create new teacher
- * @param {Object} payload - New teacher data
- * @param {string} payload.name - Unique teacher name
- */
-export const createTeacher = payload => {
-	return async dispatch => {
-		const newTeacher = await schoolStatsService.create(payload)
-		dispatch ({
-			type: 'CREATE_TEACHER',
-			data: newTeacher
-		})
-	}
-}
-
-/**
  * Get all current school stats
  */
 export const initializeSchoolStats = () => {

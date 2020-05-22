@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { connect } from 'react-redux'
 import { Navbar, Nav, NavDropdown, Image } from 'react-bootstrap'
-// import UserInfoPopover from './common/UserInfoPopover'
-import NavBarLink from './common/NavBarLink'
-import NavTogglerIcon from './common/NavTogglerIcon'
-import Logout from './common/Logout'
+import NavBarLink from '../common/NavBarLink'
+import NavTogglerIcon from '../common/NavTogglerIcon'
+import Logout from '../common/Logout'
 
 const NavigationBar = ({ user }) => {
 
@@ -51,6 +50,11 @@ const NavigationBar = ({ user }) => {
 		{
 			to: '/teachers',
 			label: 'Вчителі',
+			className: linkClassList
+		},
+		{
+			to: '/showcase',
+			label: 'На сцені',
 			className: linkClassList
 		},
 		{
@@ -109,11 +113,11 @@ const NavigationBar = ({ user }) => {
 							{user
 								? <>
 									<NavDropdown.Item href="/school/overview">Огляд</NavDropdown.Item>
-									<NavDropdown.Item href="/school/classes">Класи</NavDropdown.Item>
+									{/*<NavDropdown.Item href="/school/classes">Класи</NavDropdown.Item>
 									<NavDropdown.Item href="/school/teachers">Вчителі</NavDropdown.Item>
 									<NavDropdown.Item href="/school/pupils">Учні</NavDropdown.Item>
 									<NavDropdown.Item href="/school/specialties">Спеціальності</NavDropdown.Item>
-									<NavDropdown.Item href="/school/branches">Філії</NavDropdown.Item>
+									<NavDropdown.Item href="/school/branches">Філії</NavDropdown.Item>*/}
 									<NavDropdown.Item href="/school/payments">Платежі</NavDropdown.Item>
 									<NavDropdown.Divider />
 									<NavDropdown.Item href="/school/payments"><Logout /></NavDropdown.Item>

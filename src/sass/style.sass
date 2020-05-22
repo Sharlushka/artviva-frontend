@@ -7,6 +7,7 @@
 @import 'buttons.sass'
 @import 'icons.sass'
 @import 'lazyLoadingImage.sass'
+@import 'mixins.sass'
 
 html
 	scroll-behavior: smooth
@@ -41,6 +42,10 @@ html
 .primary-color-shadow
 	border-radius: .3rem
 	box-shadow: 0 0 .5rem 0 rgba(0, 123, 255, 1)
+
+.gray-shadow
+	border-radius: .3rem
+	box-shadow: 0 0 .5rem 0 #6b6b6b
 
 .teacher-specs-list
 	list-style: none
@@ -101,6 +106,7 @@ html
 		border-bottom: .1rem solid $primary-color
 
 .carousel-container
+	margin-top: -5rem
 	img
 		height: 50vh
 		object-fit: cover
@@ -112,7 +118,7 @@ html
 	position: absolute
 
 .elevated-z-index
-	z-index: 3
+	// z-index: 3
 
 .custom-gray-border
 	border-right: 1px solid #dee2e6
@@ -170,6 +176,9 @@ nav
 .form-label
 	margin-top: .75rem
 
+.form-required-mark
+	color: #dc3545
+
 .form-validation-error
 	color: #dc3545
 	position: absolute
@@ -186,3 +195,38 @@ nav
 
 .login-pass-feedback
 	position: inherit
+
+.fixed-wdth-btn
+	width: 4rem
+	margin: 0rem 1rem
+
+.position-center
+	position: fixed
+	display: flex
+	justify-content: center
+	top: 50%
+	left: 50%
+	transform: translate(-50%, -50%)
+
+.btn-with-icon
+	width: 5rem
+
+.section-link
+	&:hover
+		+linkHighlight()
+
+.is-active
+	+linkHighlight()
+
+.video-responsive
+	overflow: hidden
+	padding-bottom: 56.25%
+	position: relative
+	height: 0
+
+.video-responsive iframe
+	left: 0
+	top: 0
+	height: 100%
+	width: 100%
+	position: absolute

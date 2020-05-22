@@ -27,6 +27,21 @@ const getAll = async () => {
 }
 
 /**
+ * Get single school class details by id
+ * @param {string} id - School class ID
+ *
+ * @returns {Object} - Response data
+ */
+
+const getById = async id => {
+	const config = {
+		headers: { Authorization: token }
+	}
+	const request = axios.post(`${baseUrl}/${id}`, null, config)
+	return request.then(response => response.data)
+}
+
+/**
  * Create new school class
  * @param {Object} payload - New school class data
  * @param {string} payload.title - Unique class title
@@ -78,4 +93,4 @@ const update = async (id, payload) => {
 	return request.then(response => response.data)
 }
 
-export default { getAll, setToken, create, deleteById, update }
+export default { getAll, getById, setToken, create, deleteById, update }

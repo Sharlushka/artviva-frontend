@@ -1,32 +1,37 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, Suspense } from 'react'
 import { connect } from 'react-redux'
 import { deletePupil } from '../../reducers/pupilsReducer'
 import pupilsService from '../../services/pupils'
 import { setNotification } from '../../reducers/notificationReducer'
 
+import { Link } from 'react-router-dom'
 import { Container, Row, Col, Collapse, Button } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons'
-import ButtonComponent from '../common/Button'
-import EntityDeleteModal from '../common/EntityDeleteModal'
-import Toggler from '../common/Toggler'
+
+import LoadingIndicator from '../common/LoadingIndicator'
 import PupilForm from '../forms/PupilForm'
+import EntityControlButtons from '../common/EntityControlButtons'
+
+const LazyEntityDeleteModal = React.lazy(() => import('../common/EntityDeleteModal'))
+const LazyEntityEditModal = React.lazy(() => import('../common/EntityEditModal'))
 
 const Pupil = ({ user, pupil, deletePupil }) => {
-	const editPupilFormRef = useRef(null)
-	const [open, setOpen] = useState(false)
-	const [modalShow, setModalShow] = useState(false)
 
-	const openDeleteModal = () => {
-		setModalShow(true)
-	}
+	const [open, setOpen] = useState(false)
+	const [deleteModalShow, setDeleteModalShow] = useState(false)
+	const [editModalShow, setEditModalShow] = useState(false)
+	const [isDeleting, setIsDeleting] = useState(false)
+	const unmounted = useRef(false)
 
 	// set auth token
 	useEffect(() => {
 		pupilsService.setToken(user.token)
+		return () => { unmounted.current = true }
 	}, [user])
 
 	const handleDelete = id => {
+		setIsDeleting(true)
 		deletePupil(id)
 			.then(() => {
 				setNotification({
@@ -40,6 +45,9 @@ const Pupil = ({ user, pupil, deletePupil }) => {
 					message: notification.error,
 					variant: 'danger'
 				}, 5)
+			})
+			.finally(() => {
+				if (!unmounted) setIsDeleting(false)
 			})
 	}
 
@@ -65,39 +73,65 @@ const Pupil = ({ user, pupil, deletePupil }) => {
 				<Container fluid className="text-left">
 					<Row>
 						<Col>
-							<p>Им&apos;я: {pupil.name}</p>
+							<p>
+								<em className="text-muted">Им&apos;я:</em> {pupil.name}
+							</p>
+							<p>
+								<em className="text-muted">Додаткова інформація:</em> {pupil.info}
+							</p>
+							<div>
+								<em className="text-muted">Класи:</em>
+								<ol>
+									{pupil.schoolClasses.map(schoolClass =>
+										<li key={schoolClass.id}>
+											<Link to={`classes/${schoolClass.id}`}>
+												{schoolClass.title}
+											</Link>
+										</li>
+									)}
+								</ol>
+							</div>
 						</Col>
 					</Row>
 
-					<Row className="d-flex justify-content-center">
-						<Col md={8} lg={6} xl={4}>
-							<Toggler
-								buttonLabel="Редагувати данні учня"
-								dataCy="edit-teacher-btn"
-								ref={editPupilFormRef}
-							>
-								<PupilForm pupil={pupil} mode='edit' />
-							</Toggler>
-							<ButtonComponent
-								block
-								label="Видалити"
-								variant="danger"
-								type="button"
-								handleClick={() => openDeleteModal()}
-							/>
-						</Col>
+					<Row>
+						<EntityControlButtons
+							openEditModal={() => setEditModalShow(true)}
+							openDeleteModal={() => setDeleteModalShow(true)}
+						/>
 					</Row>
+
 				</Container>
 			</Collapse>
-			{/* Pupil delete modal */}
-			<EntityDeleteModal
-				subject="учня"
-				subjectid={pupil.id}
-				valuetoconfirm={pupil.name}
-				show={modalShow}
-				handleDelete={handleDelete}
-				onHide={() => setModalShow(false)}
-			/>
+
+			{/* Pupil edit and delete modal */}
+			<Suspense fallback={
+				<LoadingIndicator
+					animation="border"
+					variant="primary"
+					size="md"
+				/>}>
+				<LazyEntityEditModal
+					subject="учня"
+					subjectid={pupil.id}
+					show={editModalShow}
+					onHide={() => setEditModalShow(false)}
+				>
+					<PupilForm
+						closeModal={() => setEditModalShow(false)}
+						pupil={pupil}
+						mode="edit" />
+				</LazyEntityEditModal>
+				<LazyEntityDeleteModal
+					subject="учня"
+					subjectid={pupil.id}
+					valuetoconfirm={pupil.name}
+					show={deleteModalShow}
+					handleDelete={handleDelete}
+					loadingState={isDeleting}
+					onHide={() => setDeleteModalShow(false)}
+				/>
+			</Suspense>
 		</>
 	)
 }

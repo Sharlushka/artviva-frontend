@@ -1,19 +1,19 @@
-import React, { useEffect, useState, useRef, Suspense } from 'react'
+import React, { useEffect, useState, Suspense } from 'react'
 import { connect } from 'react-redux'
 import { setNotification } from '../../reducers/notificationReducer'
 import { initializeTeachers } from '../../reducers/teachersReducer'
 import { initializeSpecialties } from '../../reducers/specialtiesReducer'
 
+import { Link } from 'react-router-dom'
 import { Container, ListGroup } from 'react-bootstrap'
+import CollapseForm from '../common/CollapseForm'
 import Teacher from './Teacher'
 import LoadingIndicator from '../common/LoadingIndicator'
-import Toggler from '../common/Toggler'
 
 const LazyTeacherForm = React.lazy(() => import('../forms/TeacherForm'))
 
 const TeachersList = ({ teachers, setNotification, initializeTeachers, initializeSpecialties }) => {
 
-	const teacherFormRef = useRef(null)
 	const [isLoading, setIsLoading] = useState(true)
 
 	useEffect(() => {
@@ -39,14 +39,16 @@ const TeachersList = ({ teachers, setNotification, initializeTeachers, initializ
 	}, [])
 
 	return (
-		<Container className="mt-5 text-center">
-			<h4 className="pt-4 custom-font">Вчітелі</h4>
+		<Container>
 			{isLoading
 				? <LoadingIndicator
 					animation="border"
 					variant="primary"
 				/>
 				: <>
+					<p className="pt-3">
+						Список усіх вчителів школи.
+					</p>
 					<ListGroup>
 						{teachers.map(teacher =>
 							<ListGroup.Item
@@ -57,15 +59,26 @@ const TeachersList = ({ teachers, setNotification, initializeTeachers, initializ
 							</ListGroup.Item>
 						)}
 					</ListGroup>
-					<Toggler
-						buttonLabel="Додати нового вчітеля"
-						data-cy="add-new-branch-btn"
-						ref={teacherFormRef}
+
+					<p className="pt-3 text-muted">
+						Щоб додати нового викладача, спочатку потрібно створити його
+						<Link to="/school/specialties"> спеціальність</Link>,
+						якщо ви цього ще не зробили.
+					</p>
+
+					<CollapseForm
+						title="Додати нового вчітеля"
+						ariaControls="school-class-add-form-collapse"
 					>
-						<Suspense fallback={<div>Loading...</div>}>
+						<Suspense
+							fallback={
+								<LoadingIndicator
+									animation="border"
+									variant="primary"
+								/>}>
 							<LazyTeacherForm mode="create" />
 						</Suspense>
-					</Toggler>
+					</CollapseForm>
 				</>
 			}
 		</Container>

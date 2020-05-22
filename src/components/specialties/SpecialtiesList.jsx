@@ -1,18 +1,17 @@
-import React, { useEffect, useState, useRef, Suspense } from 'react'
+import React, { useEffect, useState, Suspense } from 'react'
 import { connect } from 'react-redux'
 import { setNotification } from '../../reducers/notificationReducer'
 import { initializeSpecialties } from '../../reducers/specialtiesReducer'
 
 import { Container, ListGroup } from 'react-bootstrap'
 import LoadingIndicator from '../common/LoadingIndicator'
-import Toggler from '../common/Toggler'
+import CollapseForm from '../common/CollapseForm'
 import Specialty from './Specialty'
 
 const LazySpecialtyForm = React.lazy(() => import('../forms/SpecialtyForm'))
 
 const SpecialtiesList = ({ initializeSpecialties, specialties }) => {
 
-	const specialtyFormRef = useRef(null)
 	const [isLoading, setIsLoading] = useState(true)
 
 	useEffect(() => {
@@ -30,14 +29,16 @@ const SpecialtiesList = ({ initializeSpecialties, specialties }) => {
 	}, [])
 
 	return (
-		<Container className="mt-5 text-center">
-			<h4 className="pt-4 custom-font">Спеціальності</h4>
+		<Container>
 			{isLoading
 				? <LoadingIndicator
 					animation="border"
 					variant="primary"
 				/>
 				: <>
+					<p className="pt-3">
+						Список усіх спеціальностей школи.
+					</p>
 					<ListGroup>
 						{specialties.map(specialty =>
 							<ListGroup.Item
@@ -48,15 +49,25 @@ const SpecialtiesList = ({ initializeSpecialties, specialties }) => {
 							</ListGroup.Item>
 						)}
 					</ListGroup>
-					<Toggler
-						buttonLabel="Додати новій фах"
-						data-cy="add-specialty-btn"
-						ref={specialtyFormRef}
+					<p className="pt-3 text-muted">
+						Щоб створити спеціальність, вам потрібна така інформація:
+						<strong> назва спеціальності, вартість</strong>.
+						Додаткова інформація не є обов&apos;язковою.
+					</p>
+
+					<CollapseForm
+						title="Додати новій фах"
+						ariaControls="specialty-add-form-collapse"
 					>
-						<Suspense fallback={<div>Loading...</div>}>
+						<Suspense
+							fallback={
+								<LoadingIndicator
+									animation="border"
+									variant="primary"
+								/>}>
 							<LazySpecialtyForm mode="create" />
 						</Suspense>
-					</Toggler>
+					</CollapseForm>
 				</>
 			}
 		</Container>
