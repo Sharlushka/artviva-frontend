@@ -7,6 +7,7 @@ import specialtyService from '../../services/specialties'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
 import PropTypes from 'prop-types'
+import { trimObject } from '../../utils/objectHelpers'
 
 import { Container, Col, Form } from 'react-bootstrap'
 import ButtonComponent from '../common/Button'
@@ -33,8 +34,8 @@ const SpecialtyForm = ({
 	// edit or save
 	const handleSpecialty = (values, setErrors, resetForm) => {
 		editMode
-			? existingSpecialty(values)
-			: newSpecialty(values, setErrors, resetForm)
+			? existingSpecialty(trimObject(values))
+			: newSpecialty(trimObject(values), setErrors, resetForm)
 	}
 
 	const newSpecialty = (values, setErrors, resetForm) => {
@@ -87,6 +88,7 @@ const SpecialtyForm = ({
 			.required('Введіть повну назву філії.'),
 		cost: Yup.number()
 			.typeError('Повинно бути числом.')
+			.max(9999, 'Не більше 9999 грн.')
 			.required('Обов\'язкове поле.')
 			.positive('Повинно бути більше нуля.')
 			.integer('Повинно бути цілим числом.'),

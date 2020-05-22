@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { setNotification } from '../../reducers/notificationReducer'
 import { createTeacher, updateTeacher } from '../../reducers/teachersReducer'
 import teachersService from '../../services/teachers'
+import { trimObject } from '../../utils/objectHelpers'
 
 import { Formik, FieldArray, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
@@ -66,12 +67,17 @@ const TeacherForm = ({
 			specialtiesIds.push(specialties[index].id)
 		})
 		// replace specialties in values with their newly found ids
-		const valuesToSend = { ...values, specialties: specialtiesIds }
+		// const valuesToSend = { ...values, specialties: specialtiesIds }
+		const valuesToSend  = {
+			name: values.name,
+			specialties: specialtiesIds
+		}
+		console.log('Sending values to update', valuesToSend)
 
 		// if current from mode is edit or create..
 		editMode
-			? existingTeacher(valuesToSend)
-			: newTeacher(valuesToSend, setErrors, resetForm)
+			? existingTeacher(trimObject(valuesToSend))
+			: newTeacher(trimObject(valuesToSend), setErrors, resetForm)
 	}
 
 	const newTeacher = (values, setErrors, resetForm) => {

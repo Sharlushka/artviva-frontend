@@ -5,6 +5,7 @@ import { createSchoolClass, updateSchoolClass } from '../../reducers/schoolClass
 import searchService from '../../services/search'
 import schoolClassesService from '../../services/schoolClasses'
 import { debounce } from '../../utils/debounce'
+import { trimObject } from '../../utils/objectHelpers'
 
 import { Formik, FieldArray, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
@@ -124,8 +125,8 @@ const SchoolClassForm = ({
 		}
 		// if current form mode is edit or create..
 		editMode
-			? existingSchoolClass(values)
-			: newSchoolClass(values, setErrors, resetForm)
+			? existingSchoolClass(trimObject(values))
+			: newSchoolClass(trimObject(values), setErrors, resetForm)
 	}
 
 	const newSchoolClass = (values, setErrors, resetForm) => {

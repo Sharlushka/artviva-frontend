@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { setNotification } from '../../reducers/notificationReducer'
 import { createPupil, updatePupil } from '../../reducers/pupilsReducer'
 import pupilsService from '../../services/pupils'
+import { trimObject } from '../../utils/objectHelpers'
 
 import { Formik } from 'formik'
 import * as Yup from 'yup'
@@ -35,8 +36,8 @@ const PupilForm = ({
 	const handlePupil = (values, setErrors, resetForm) => {
 		setProcessingForm(true)
 		editMode
-			? existingPupil(values, setErrors)
-			: newPupil(values, setErrors, resetForm)
+			? existingPupil(trimObject(values), setErrors)
+			: newPupil(trimObject(values), setErrors, resetForm)
 	}
 
 	const newPupil = (values, setErrors, resetForm ) => {

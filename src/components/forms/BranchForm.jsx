@@ -4,6 +4,7 @@ import { setNotification } from '../../reducers/notificationReducer'
 import { createBranch, updateBranch } from '../../reducers/branchesReducer'
 import { formatPhoneNumber } from '../../utils/formatPhoneNumber'
 import branchesService from '../../services/branches'
+import { trimObject } from '../../utils/objectHelpers'
 
 import { Formik } from 'formik'
 import * as Yup from 'yup'
@@ -35,8 +36,8 @@ const BranchForm = ({
 	const handleBranch = (values, setErrors, resetForm) => {
 		setProcessingForm(true)
 		editMode
-			? existingBranch(values)
-			: newBranch(values, setErrors, resetForm)
+			? existingBranch(trimObject(values))
+			: newBranch(trimObject(values), setErrors, resetForm)
 	}
 
 	const newBranch = (values, setErrors, resetForm) => {

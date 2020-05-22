@@ -102,7 +102,7 @@ const PaymentForm = () => {
 			amount: total,
 			currency: 'UAH',
 			// eslint-disable-next-line
-			description: `Оплата:${months.map(month => ` ${month}`)}. Викладач: ${teacher}. Учень: ${pupil}. Предмет: ${specialty}.`,
+			description: `Оплата:${months.map(month => ` ${month}`)}. Викладач: ${teacher.trim()}. Учень: ${pupil.trim()}. Предмет: ${specialty}.`,
 			order_id: uuidv4(),
 			version: '3',
 			language: 'uk',
