@@ -21,3 +21,15 @@ export const compareValues = (key, order = 'asc') => {
 		)
 	}
 }
+
+/**
+ * Find object in array by property value
+ * @param {string} value - Value to search
+ * @param {string} field - Name of the field to search for given value
+ * @param {array} data - Array of objects
+ *
+ * @return {object} - Resulting object
+ */
+
+export const findByPropertyValue =
+	(value, field, data) => data.find(item => item[field] === value)
