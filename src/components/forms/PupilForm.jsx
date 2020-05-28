@@ -16,6 +16,7 @@ import PropTypes from 'prop-types'
 
 import { Container, Col, Form } from 'react-bootstrap'
 import BtnWithSpinner from '../common/BtnWithSpinner'
+import ResetBtn from './buttons/Reset'
 import TextInput from './components/TextInput'
 import TextAreaInput from './components/TextAreaInput'
 import Select from './components/Select'
@@ -35,9 +36,10 @@ const PupilForm = ({
 	const [processingForm, setProcessingForm] = useState(false)
 	const [specialtiesNames, setSpecialtiesNames] = useState([])
 	const [specialtiesData, setSpecialtiesData] = useState([])
-	const genders = ['male', 'female']
-	const classNumbers = [1, 2, 3, 4, 6, 7, 8, 9, 10, 11]
-	const benefits = [50, 100]
+	const genders = ['Чоловіча', 'Жіноча']
+	const classNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+	const artClassNumbers = [1, 2, 3, 4, 5, 6, 7, 8]
+	const benefits = [50, 100] // %
 
 	// set auth token and mode
 	useEffect(() => {
@@ -123,6 +125,7 @@ const PupilForm = ({
 			: { name: '',
 				applicantName: '',
 				specialty: '',
+				artSchoolClass: '',
 				dateOfBirth: '',
 				mainSchool: '',
 				mainSchoolClass: '',
@@ -150,31 +153,35 @@ const PupilForm = ({
 		applicantName: Yup.string()
 			.min(2, 'Не менш 2 символів.')
 			.max(128, 'Максимум 128 символів.')
-			.required('Введіть повнe applicant ім\'я.'),
+			.required('Введіть повнe ім\'я.'),
 		specialty: Yup.string()
 			.oneOf(specialtiesNames, 'Виберіть фах учня.')
-			.required('Select specialty.'),
+			.required('Виберіть фах.'),
+		artSchoolClass: Yup.number()
+			.min(1)
+			.max(8),
 		dateOfBirth: Yup.date()
-			.min(new Date(1950, 0, 1))
-			.max(new Date(2019, 0, 1))
-			.required('Select date of birth.'),
+			.min(new Date(1950, 0, 1), 'Занадто старий.')
+			.max(new Date(2019, 0, 1), 'Занадто молодий.')
+			.required('Введіть дату народження.'),
 		mainSchool: Yup.string()
 			.min(3, 'Не менш 3 символів.')
 			.max(255, 'Максимум 255 символів.')
-			.required('Enter main school address.'),
+			.required('Введіть основну адресу школи.'),
 		mainSchoolClass: Yup.number()
 			.min(1)
 			.max(11)
-			.required('Enter current class.'),
+			.required('Введіть поточний клас.'),
 		gender: Yup.string()
-			.oneOf(genders, 'Select gender')
-			.required('Select gender of your child.'),
+			.oneOf(genders, 'Виберіть стать.')
+			.required('Виберіть стать своєї дитини.'),
 		hasBenefit: Yup.number()
 			.min(0)
 			.max(100),
 		fathersName: Yup.string()
 			.min(2, 'Не менш 2 символів.')
-			.max(128, 'Максимум 128 символів.'),
+			.max(128, 'Максимум 128 символів.')
+			.required('Введіть повнe ім\'я.'),
 		fathersPhone: Yup.string()
 			.min(3, 'Не менш 19 символів.')
 			.max(19, 'Максимум 19 символів.')
@@ -182,10 +189,12 @@ const PupilForm = ({
 			.required('Введіть номер телефону.'),
 		fathersEmploymentInfo: Yup.string()
 			.min(2, 'Не менш 2 символів.')
-			.max(128, 'Максимум 128 символів.'),
+			.max(128, 'Максимум 128 символів.')
+			.required('Місто, вулиця, назва організації, посада.'),
 		mothersName: Yup.string()
 			.min(2, 'Не менш 2 символів.')
-			.max(128, 'Максимум 128 символів.'),
+			.max(128, 'Максимум 128 символів.')
+			.required('Введіть повнe ім\'я.'),
 		mothersPhone: Yup.string()
 			.min(3, 'Не менш 19 символів.')
 			.max(19, 'Максимум 19 символів.')
@@ -193,7 +202,8 @@ const PupilForm = ({
 			.required('Введіть номер телефону.'),
 		mothersEmploymentInfo: Yup.string()
 			.min(2, 'Не менш 2 символів.')
-			.max(128, 'Максимум 128 символів.'),
+			.max(128, 'Максимум 128 символів.')
+			.required('Місто, вулиця, назва організації, посада.'),
 		contactEmail: Yup.string()
 			.email('Адреса електронної пошти недійсна.')
 			.required('Введіть електронну пошту.'),
@@ -226,6 +236,7 @@ const PupilForm = ({
 					handleChange,
 					handleBlur,
 					setFieldValue,
+					handleReset,
 					values,
 					touched,
 					errors
@@ -263,9 +274,25 @@ const PupilForm = ({
 							/>
 						</Form.Row>
 
+						{editMode
+							? <Form.Row>
+								<Select
+									label="Рік навчання у ДШМ"
+									name="artSchoolClass"
+									options={artClassNumbers}
+									onChange={handleChange}
+									onBlur={handleBlur}
+									value={values.artSchoolClass || ''}
+									touched={touched.artSchoolClass}
+									errors={errors.artSchoolClass}
+								/>
+							</Form.Row>
+							: null
+						}
+
 						<Form.Row>
 							<Select
-								label="Пол"
+								label="Стать"
 								name="gender"
 								options={genders}
 								onChange={handleChange}
@@ -276,7 +303,7 @@ const PupilForm = ({
 							/>
 
 							<DateInput
-								label="Birth date"
+								label="Дата народження"
 								name="dateOfBirth"
 								onChange={handleChange}
 								onBlur={handleBlur}
@@ -288,7 +315,7 @@ const PupilForm = ({
 
 						<Form.Row>
 							<Select
-								label="Поточний клас"
+								label="Клас ЗОШ"
 								name="mainSchoolClass"
 								options={classNumbers}
 								onChange={handleChange}
@@ -302,6 +329,7 @@ const PupilForm = ({
 								label="Пільги %"
 								name="hasBenefit"
 								options={benefits}
+								customselectvalue={'Без пільг'}
 								onChange={handleChange}
 								onBlur={handleBlur}
 								value={values.hasBenefit}
@@ -430,18 +458,7 @@ const PupilForm = ({
 								errors={errors.info}
 							/>
 							: <Form.Row>
-								<Col xs={12}>
-									<p className="pt-2">До договору додаються:</p>
-									<ol style={{ paddingLeft: '1rem' }}>
-										<li>
-											Копія свідоцтва про народження
-										</li>
-										<li>
-											Медічна довідка про відсутність противопоказань до занять обраним фахом.
-										</li>
-									</ol>
-								</Col>
-								<Col xs={12} className="pb-2">
+								<Col xs={12} className="pt-4">
 									<CheckBox
 										type="checkbox"
 										id="docs-checkbox"
@@ -449,10 +466,19 @@ const PupilForm = ({
 										name="docsCheck"
 										onChange={handleChange}
 										onBlur={handleBlur}
+										checked={values.docsCheck}
 										value={values.docsCheck}
 										touched={touched.docsCheck}
 										errors={errors.docsCheck}
 									/>
+									<ol style={{ marginBottom: '0rem', paddingLeft: '2.5rem' }}>
+										<li>
+											Копія свідоцтва про народження
+										</li>
+										<li>
+											Медічна довідка про відсутність противопоказань до занять обраним фахом.
+										</li>
+									</ol>
 								</Col>
 								<Col xs={12} className="py-2">
 									<CheckBox
@@ -462,6 +488,7 @@ const PupilForm = ({
 										name="processDataCheck"
 										onChange={handleChange}
 										onBlur={handleBlur}
+										checked={values.processDataCheck}
 										value={values.processDataCheck}
 										touched={touched.processDataCheck}
 										errors={errors.processDataCheck}
@@ -475,6 +502,7 @@ const PupilForm = ({
 										name="paymentObligationsCheck"
 										onChange={handleChange}
 										onBlur={handleBlur}
+										checked={values.paymentObligationsCheck}
 										value={values.paymentObligationsCheck}
 										touched={touched.paymentObligationsCheck}
 										errors={errors.paymentObligationsCheck}
@@ -484,21 +512,25 @@ const PupilForm = ({
 						}
 
 						{/* Button */}
-						<Form.Row className="d-flex justify-content-center text-center">
-							<Form.Group
-								as={Col}
-								className="pt-4"
-							>
-								<BtnWithSpinner
-									loadingState={processingForm}
-									className="px-4"
-									variant={editMode ? 'success' : 'primary'}
-									type="submit"
-									label={editMode ? 'Зберегти' : 'Додати'}
-									dataCy="add-pupil-btn"
-								/>
-							</Form.Group>
-						</Form.Row>
+						<Form.Group
+							as={Col}
+							className="pt-4 px-0 d-flex justify-content-end"
+						>
+							<BtnWithSpinner
+								label={editMode ? 'Зберегти' : 'Додати'}
+								variant={editMode ? 'success' : 'primary'}
+								type="submit"
+								loadingState={processingForm}
+								dataCy="add-pupil-btn"
+								className="default-width-btn"
+							/>
+							<ResetBtn
+								label="Очистити"
+								variant="light"
+								onClick={handleReset}
+								className="ml-2 default-width-btn"
+							/>
+						</Form.Group>
 					</Form>
 				)}
 			</Formik>

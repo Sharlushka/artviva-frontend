@@ -5,8 +5,9 @@ import { Button } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons'
 
-const BtnWithIcon = ({ className, variant, type, handleClick, label, block, disabled, icon }) => {
+const BtnWithIcon = props => {
 
+	const { label, icon, className, ...other } = props
 	const chooseIcon = () => {
 		if (icon === 'trash') return <FontAwesomeIcon icon={faTrash} />
 		if (icon === 'edit') return <FontAwesomeIcon icon={faEdit} />
@@ -14,12 +15,8 @@ const BtnWithIcon = ({ className, variant, type, handleClick, label, block, disa
 
 	return (
 		<Button
-			block={block}
+			{ ...other }
 			className={`${className} ml-2 btn-with-icon`}
-			variant={variant}
-			type={type}
-			onClick={handleClick}
-			disabled={disabled}
 		>
 			{chooseIcon() || label}
 		</Button>

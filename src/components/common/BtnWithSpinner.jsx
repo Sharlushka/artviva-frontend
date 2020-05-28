@@ -2,17 +2,12 @@ import React from 'react'
 import { Button, Spinner } from 'react-bootstrap'
 import PropTypes from 'prop-types'
 
-const BtnWithSpinner = ({
-	type,
-	handleClick,
-	loadingState,
-	disabledState,
-	waitingState,
-	label,
-	variant,
-	dataCy,
-	className }) => {
-
+const BtnWithSpinner = props => {
+	const { waitingState,
+		loadingState,
+		dataCy,
+		label,
+		...other } = props
 	const chooseSpinner = () => {
 		const loadingSpinner = () => <Spinner
 			as="span"
@@ -33,13 +28,8 @@ const BtnWithSpinner = ({
 
 	return (
 		<Button
-			onClick={handleClick}
-			block
-			type={type}
-			variant={variant}
 			data-cy={dataCy}
-			className={className}
-			disabled={disabledState}
+			{ ...other }
 		>
 			{chooseSpinner() || <>{label}</>}
 		</Button>
@@ -47,15 +37,15 @@ const BtnWithSpinner = ({
 }
 
 BtnWithSpinner.propTypes = {
-	type: PropTypes.string,
+	type: PropTypes.string.isRequired,
 	handleClick: PropTypes.func,
 	loadingState: PropTypes.bool.isRequired,
-	disabledState: PropTypes.bool,
+	disabled: PropTypes.bool,
 	waitingState: PropTypes.bool,
 	label: PropTypes.string.isRequired,
 	variant: PropTypes.string.isRequired,
 	dataCy: PropTypes.string.isRequired,
-	className: PropTypes.string // className
+	className: PropTypes.string
 }
 
 export default BtnWithSpinner

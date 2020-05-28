@@ -15,14 +15,14 @@ const EntityControlButtons = ({
 				icon="edit"
 				variant="outline-success"
 				type="button"
-				handleClick={() => openEditModal()}
+				onClick={() => openEditModal()}
 			/>
 			{<BtnWithIcon
 				label="Видалити"
 				icon="trash"
 				variant="outline-danger"
 				type="button"
-				handleClick={() => openDeleteModal()}
+				onClick={() => openDeleteModal()}
 			/>}
 		</Col>
 	)
