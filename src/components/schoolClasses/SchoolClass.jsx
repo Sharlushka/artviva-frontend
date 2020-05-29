@@ -71,7 +71,6 @@ const SchoolClass = ({ user, schoolClass, deleteSchoolClass }) => {
 				<Container fluid className="text-left">
 					<Row>
 						<Col>
-							{/*<p>Назва класу: <strong>{schoolClass.title}</strong></p>*/}
 							<p>Вчітель: <strong>{schoolClass.teacher.name}</strong>
 								<small>
 									<Link

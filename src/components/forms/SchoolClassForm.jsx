@@ -139,14 +139,23 @@ const SchoolClassForm = ({
 				resetForm()
 			})
 			.catch(error => {
-				const { message, cause } = { ...error.response.data }
-				if (cause === 'name') { // this!
-					setErrors({ name: message })
+				if (error.response) {
+					const { message } = error.response.data
+					message
+						? setNotification({
+							message,
+							variant: 'warning'
+						}, 5)
+						: setNotification({
+							message: error.response.statusText,
+							variant: 'danger'
+						}, 5)
+
+				} else if (error.request) {
+					console.log(error.request)
+				} else {
+					console.log('Error', error.message)
 				}
-				setNotification({
-					message,
-					variant: 'danger'
-				}, 5)
 			})
 			.finally(() => setProcessingForm(false))
 	}
@@ -472,10 +481,10 @@ const SchoolClassForm = ({
 								className="pt-4"
 							>
 								<BtnWithSpinner
-									className="px-4"
+									className="default-width-btn"
 									variant={editMode ? 'success' : 'primary'}
 									type="submit"
-									label={editMode ? 'Зберегти' : 'Додати новій клас'}
+									label={editMode ? 'Зберегти' : 'Додати'}
 									dataCy="add-class-btn"
 									loadingState={processingForm}
 								/>

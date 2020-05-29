@@ -12,14 +12,19 @@ const setToken = newToken => {
 	token = `bearer ${newToken}`
 }
 
+
+
 /**
  * Get list of all classes
  *
  * @returns {Object} - Response data
  */
 const getAll = async () => {
+	const config = {
+		headers: { Authorization: token }
+	}
 	try {
-		const response = await axios.get(baseUrl)
+		const response = await axios.get(baseUrl, config)
 		return response.data
 	} catch (error) {
 		return Promise.reject(error.response)
