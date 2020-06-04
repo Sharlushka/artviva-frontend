@@ -21,6 +21,7 @@ CheckBox.propTypes = {
 	label: PropTypes.string.isRequired,
 	name: PropTypes.string.isRequired,
 	value: PropTypes.bool.isRequired,
+	checked: PropTypes.bool.isRequired,
 	touched: PropTypes.bool,
 	errors: PropTypes.string,
 	onChange: PropTypes.func.isRequired,

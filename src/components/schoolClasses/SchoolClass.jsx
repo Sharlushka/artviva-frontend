@@ -38,9 +38,9 @@ const SchoolClass = ({ user, schoolClass, deleteSchoolClass }) => {
 				}, 5)
 			})
 			.catch(error => {
-				const notification = JSON.parse(error.request.responseText)
+				const { message } = { ...error.response.data }
 				setNotification({
-					message: notification.error,
+					message,
 					variant: 'danger'
 				}, 5)
 			})

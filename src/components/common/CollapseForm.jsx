@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons'
 
 const CollapseForm = ({ title, ariaControls, children }) => {
-	const [open, setOpen] = useState(false)
+	const [open, setOpen] = useState(true)
 
 	return (
 		<>
@@ -30,7 +30,7 @@ const CollapseForm = ({ title, ariaControls, children }) => {
 
 			{/* Collapsed form goes here */}
 			<Collapse in={open}>
-				<Container>
+				<Container className="px-0">
 					{children}
 				</Container>
 			</Collapse>

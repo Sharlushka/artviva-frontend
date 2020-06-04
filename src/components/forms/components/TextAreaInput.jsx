@@ -7,28 +7,26 @@ const TextAreaInput = props => {
 	const { touched, ...other } = props
 
 	return (
-		<Form.Row className="d-flex justify-content-center">
-			<Form.Group
-				controlId={`${props.name}-input`}
-				as={Col}
-			>
-				<Form.Label>
-					{props.label}
-				</Form.Label>
-				<Form.Control
-					as="textarea"
-					isValid={touched && !props.errors}
-					isInvalid={touched && !!props.errors}
-					{ ...other }
-				/>
-				<Form.Control.Feedback>
-					Ok
-				</Form.Control.Feedback>
-				<Form.Control.Feedback type="invalid">
-					{props.errors}
-				</Form.Control.Feedback>
-			</Form.Group>
-		</Form.Row>
+		<Form.Group
+			controlId={`${props.name}-input`}
+			as={Col}
+		>
+			<Form.Label>
+				{props.label}
+			</Form.Label>
+			<Form.Control
+				as="textarea"
+				isValid={touched && !props.errors}
+				isInvalid={touched && !!props.errors}
+				{ ...other }
+			/>
+			<Form.Control.Feedback>
+				Ok
+			</Form.Control.Feedback>
+			<Form.Control.Feedback type="invalid">
+				{props.errors}
+			</Form.Control.Feedback>
+		</Form.Group>
 	)
 }
 

@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { setNotification } from '../../reducers/notificationReducer'
 import { deleteSpecialty } from '../../reducers/specialtiesReducer'
 import specialtyService from '../../services/specialties'
+import PropTypes from 'prop-types'
 
 import { Container, Row, Col, Collapse, Button } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -14,7 +15,7 @@ import EntityControlButtons from '../common/EntityControlButtons'
 const LazyEntityDeleteModal = React.lazy(() => import('../common/EntityDeleteModal'))
 const LazyEntityEditModal = React.lazy(() => import('../common/EntityEditModal'))
 
-const Specialty = ({ user, specialty, deleteSpecialty }) => {
+const Specialty = ({ user, specialty, deleteSpecialty, setNotification }) => {
 
 	const [open, setOpen] = useState(false)
 	const [deleteModalShow, setDeleteModalShow] = useState(false)
@@ -38,11 +39,24 @@ const Specialty = ({ user, specialty, deleteSpecialty }) => {
 				}, 5)
 			})
 			.catch(error => {
-				const notification = JSON.parse(error.request.responseText)
-				setNotification({
-					message: notification.error,
-					variant: 'danger'
-				}, 5)
+				if (error.response) {
+					const { message } = error.response.data
+					message
+						? setNotification({
+							message,
+							variant: 'warning'
+						}, 5)
+						: setNotification({
+							message: error.response.statusText,
+							variant: 'danger'
+						}, 5)
+				// this..
+				} else if (error.request) {
+					console.error(error.request)
+				} else {
+					console.error('Error', error.message)
+				}
+				setIsDeleting(false)
 			})
 			.finally(() => {
 				if (!unmounted) setIsDeleting(false)
@@ -117,6 +131,13 @@ const Specialty = ({ user, specialty, deleteSpecialty }) => {
 			</Suspense>
 		</>
 	)
+}
+
+Specialty.propTypes = {
+	user: PropTypes.object,
+	specialty: PropTypes.object.isRequired,
+	setNotification: PropTypes.func.isRequired,
+	deleteSpecialty: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state) => {

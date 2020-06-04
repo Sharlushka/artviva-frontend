@@ -63,7 +63,7 @@ const Pupil = ({ user, pupil, deletePupil }) => {
 				variant="link"
 				className="d-flex justify-content-between align-items-center"
 			>
-				<span>
+				<span className="text-left">
 					{pupil.name}: {pupil.specialty.title} {pupil.artSchoolClass ? `${pupil.artSchoolClass} клас` : null}
 				</span>
 				{ open

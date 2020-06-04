@@ -70,7 +70,10 @@ const deleteById = async id => {
  */
 
 const update = async (id, payload) => {
-	const request = axios.put(`${baseUrl}/${id}`, payload)
+	const config = {
+		headers: { Authorization: token }
+	}
+	const request = axios.put(`${baseUrl}/${id}`, payload, config)
 	return request.then(response => response.data)
 }
 

@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { Col, Form } from 'react-bootstrap'
+import { Form, Col } from 'react-bootstrap'
 
 const DateInput = props => {
 	const { touched, ...other } = props
@@ -11,7 +11,6 @@ const DateInput = props => {
 			controlId={`${props.name}-input`}
 			as={Col}
 			xs={12}
-			sm={6}
 		>
 			<Form.Label>
 				{props.label}

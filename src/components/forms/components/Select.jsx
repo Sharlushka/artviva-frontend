@@ -10,6 +10,7 @@ const Select = (props) => {
 		<Form.Group
 			controlId={`${props.name}-input`}
 			as={Col}
+			xs={12}
 		>
 			<Form.Label>
 				{props.label}

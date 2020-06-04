@@ -1,6 +1,6 @@
 export const formatPhoneNumber = (event, fieldName, setFieldValue) => {
+	// eslint-disable-next-line
 	const phoneNumberPattern = /^\+?([0-9]{0,2}) ?\(?([0-9]{0,3})\)? ?[-. ]?([0-9]{0,3})[-. ]?([0-9]{0,2})-?([0-9]{0,2})$/
-	console.log('Formatting', event.target.value)
 	let result
 	const value = event.target.value
 

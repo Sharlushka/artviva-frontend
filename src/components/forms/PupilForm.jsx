@@ -336,180 +336,180 @@ const PupilForm = ({
 								touched={touched.hasBenefit}
 								errors={errors.hasBenefit}
 							/>
-
-							<TextInput
-								label="В якому закладі навчается"
-								name="mainSchool"
-								onChange={handleChange}
-								onBlur={handleBlur}
-								value={values.mainSchool}
-								touched={touched.mainSchool}
-								errors={errors.mainSchool}
-							/>
-
-							<TextInput
-								label="Домашня адреса"
-								name="homeAddress"
-								onChange={handleChange}
-								onBlur={handleBlur}
-								value={values.homeAddress}
-								touched={touched.homeAddress}
-								errors={errors.homeAddress}
-							/>
-
-							<TextInput
-								label="Ім'я особи, яка звертається із заявою"
-								name="applicantName"
-								onChange={handleChange}
-								onBlur={handleBlur}
-								value={values.applicantName}
-								touched={touched.applicantName}
-								errors={errors.applicantName}
-							/>
-
-							<TextInput
-								label="Контактна електронна пошта"
-								name="contactEmail"
-								onChange={handleChange}
-								onBlur={handleBlur}
-								value={values.contactEmail}
-								touched={touched.contactEmail}
-								errors={errors.contactEmail}
-							/>
 						</Form.Row>
+
+						<TextInput
+							label="В якому закладі навчается"
+							name="mainSchool"
+							onChange={handleChange}
+							onBlur={handleBlur}
+							value={values.mainSchool}
+							touched={touched.mainSchool}
+							errors={errors.mainSchool}
+						/>
+
+						<TextInput
+							label="Домашня адреса"
+							name="homeAddress"
+							onChange={handleChange}
+							onBlur={handleBlur}
+							value={values.homeAddress}
+							touched={touched.homeAddress}
+							errors={errors.homeAddress}
+						/>
+
+						<TextInput
+							label="Ім'я особи, яка звертається із заявою"
+							name="applicantName"
+							onChange={handleChange}
+							onBlur={handleBlur}
+							value={values.applicantName}
+							touched={touched.applicantName}
+							errors={errors.applicantName}
+						/>
+
+						<TextInput
+							label="Контактна електронна пошта"
+							name="contactEmail"
+							onChange={handleChange}
+							onBlur={handleBlur}
+							value={values.contactEmail}
+							touched={touched.contactEmail}
+							errors={errors.contactEmail}
+						/>
 
 						<p className="pt-2 mb-1 text-muted text-center">
 							Дані/інформація о батьках
 						</p>
 
+						<TextInput
+							label="Ім'я батька"
+							name="fathersName"
+							onChange={handleChange}
+							onBlur={handleBlur}
+							value={values.fathersName}
+							touched={touched.fathersName}
+							errors={errors.fathersName}
+						/>
+
+						<TextInput
+							label="Телефонний номер батька"
+							name="fathersPhone"
+							onChange={handleChange}
+							onKeyUp={event => formatPhoneNumber(event, 'fathersPhone', setFieldValue)}
+							onBlur={handleBlur}
+							value={values.fathersPhone}
+							touched={touched.fathersPhone}
+							errors={errors.fathersPhone}
+						/>
+
+						<TextInput
+							label="Місце роботи батька"
+							name="fathersEmploymentInfo"
+							onChange={handleChange}
+							onBlur={handleBlur}
+							value={values.fathersEmploymentInfo}
+							touched={touched.fathersEmploymentInfo}
+							errors={errors.fathersEmploymentInfo}
+						/>
+
+						<TextInput
+							label="Ім'я матері"
+							name="mothersName"
+							onChange={handleChange}
+							onBlur={handleBlur}
+							value={values.mothersName}
+							touched={touched.mothersName}
+							errors={errors.mothersName}
+						/>
+
+						<TextInput
+							label="Телефонний номер матері"
+							name="mothersPhone"
+							onChange={handleChange}
+							onKeyUp={event => formatPhoneNumber(event, 'mothersPhone', setFieldValue)}
+							onBlur={handleBlur}
+							value={values.mothersPhone}
+							touched={touched.mothersPhone}
+							errors={errors.mothersPhone}
+						/>
+
+						<TextInput
+							label="Місце роботи матері"
+							name="mothersEmploymentInfo"
+							onChange={handleChange}
+							onBlur={handleBlur}
+							value={values.mothersEmploymentInfo}
+							touched={touched.mothersEmploymentInfo}
+							errors={errors.mothersEmploymentInfo}
+						/>
+
 						<Form.Row>
-							<TextInput
-								label="Ім'я батька"
-								name="fathersName"
-								onChange={handleChange}
-								onBlur={handleBlur}
-								value={values.fathersName}
-								touched={touched.fathersName}
-								errors={errors.fathersName}
-							/>
-
-							<TextInput
-								label="Телефонний номер батька"
-								name="fathersPhone"
-								onChange={handleChange}
-								onKeyUp={event => formatPhoneNumber(event, 'fathersPhone', setFieldValue)}
-								onBlur={handleBlur}
-								value={values.fathersPhone}
-								touched={touched.fathersPhone}
-								errors={errors.fathersPhone}
-							/>
-
-							<TextInput
-								label="Місце роботи батька"
-								name="fathersEmploymentInfo"
-								onChange={handleChange}
-								onBlur={handleBlur}
-								value={values.fathersEmploymentInfo}
-								touched={touched.fathersEmploymentInfo}
-								errors={errors.fathersEmploymentInfo}
-							/>
-
-							<TextInput
-								label="Ім'я матері"
-								name="mothersName"
-								onChange={handleChange}
-								onBlur={handleBlur}
-								value={values.mothersName}
-								touched={touched.mothersName}
-								errors={errors.mothersName}
-							/>
-
-							<TextInput
-								label="Телефонний номер матері"
-								name="mothersPhone"
-								onChange={handleChange}
-								onKeyUp={event => formatPhoneNumber(event, 'mothersPhone', setFieldValue)}
-								onBlur={handleBlur}
-								value={values.mothersPhone}
-								touched={touched.mothersPhone}
-								errors={errors.mothersPhone}
-							/>
-
-							<TextInput
-								label="Місце роботи матері"
-								name="mothersEmploymentInfo"
-								onChange={handleChange}
-								onBlur={handleBlur}
-								value={values.mothersEmploymentInfo}
-								touched={touched.mothersEmploymentInfo}
-								errors={errors.mothersEmploymentInfo}
-							/>
+							{editMode
+								?	<TextAreaInput
+									label="Додаткова інформація/опис"
+									rows={2}
+									name="info"
+									onChange={handleChange}
+									onBlur={handleBlur}
+									value={values.info}
+									touched={touched.info}
+									errors={errors.info}
+								/>
+								: <>
+									<Col xs={12} className="pt-4">
+										<CheckBox
+											type="checkbox"
+											id="docs-checkbox"
+											label="Я зобов'язаний надати ці документи шкільному відділу"
+											name="docsCheck"
+											onChange={handleChange}
+											onBlur={handleBlur}
+											checked={values.docsCheck}
+											value={values.docsCheck}
+											touched={touched.docsCheck}
+											errors={errors.docsCheck}
+										/>
+										<ol style={{ marginBottom: '0rem', paddingLeft: '2.5rem' }}>
+											<li>
+												Копія свідоцтва про народження
+											</li>
+											<li>
+												Медічна довідка про відсутність противопоказань до занять обраним фахом.
+											</li>
+										</ol>
+									</Col>
+									<Col xs={12} className="py-2">
+										<CheckBox
+											type="checkbox"
+											id="personal-data-checkbox"
+											label="Я згоден на збір та обробку моїх персональних даних"
+											name="processDataCheck"
+											onChange={handleChange}
+											onBlur={handleBlur}
+											checked={values.processDataCheck}
+											value={values.processDataCheck}
+											touched={touched.processDataCheck}
+											errors={errors.processDataCheck}
+										/>
+									</Col>
+									<Col xs={12} className="py-2">
+										<CheckBox
+											type="checkbox"
+											id="payment-checkbox"
+											label="Зобов'язання про оплату"
+											name="paymentObligationsCheck"
+											onChange={handleChange}
+											onBlur={handleBlur}
+											checked={values.paymentObligationsCheck}
+											value={values.paymentObligationsCheck}
+											touched={touched.paymentObligationsCheck}
+											errors={errors.paymentObligationsCheck}
+										/>
+									</Col>
+								</>
+							}
 						</Form.Row>
-
-						{editMode
-							? <TextAreaInput
-								label="Додаткова інформація/опис"
-								rows={2}
-								name="info"
-								onChange={handleChange}
-								onBlur={handleBlur}
-								value={values.info}
-								touched={touched.info}
-								errors={errors.info}
-							/>
-							: <Form.Row>
-								<Col xs={12} className="pt-4">
-									<CheckBox
-										type="checkbox"
-										id="docs-checkbox"
-										label="Я зобов'язаний надати ці документи шкільному відділу"
-										name="docsCheck"
-										onChange={handleChange}
-										onBlur={handleBlur}
-										checked={values.docsCheck}
-										value={values.docsCheck}
-										touched={touched.docsCheck}
-										errors={errors.docsCheck}
-									/>
-									<ol style={{ marginBottom: '0rem', paddingLeft: '2.5rem' }}>
-										<li>
-											Копія свідоцтва про народження
-										</li>
-										<li>
-											Медічна довідка про відсутність противопоказань до занять обраним фахом.
-										</li>
-									</ol>
-								</Col>
-								<Col xs={12} className="py-2">
-									<CheckBox
-										type="checkbox"
-										id="personal-data-checkbox"
-										label="Я згоден на збір та обробку моїх персональних даних"
-										name="processDataCheck"
-										onChange={handleChange}
-										onBlur={handleBlur}
-										checked={values.processDataCheck}
-										value={values.processDataCheck}
-										touched={touched.processDataCheck}
-										errors={errors.processDataCheck}
-									/>
-								</Col>
-								<Col xs={12} className="py-2">
-									<CheckBox
-										type="checkbox"
-										id="payment-checkbox"
-										label="Зобов'язання про оплату"
-										name="paymentObligationsCheck"
-										onChange={handleChange}
-										onBlur={handleBlur}
-										checked={values.paymentObligationsCheck}
-										value={values.paymentObligationsCheck}
-										touched={touched.paymentObligationsCheck}
-										errors={errors.paymentObligationsCheck}
-									/>
-								</Col>
-							</Form.Row>
-						}
 
 						{/* Button */}
 						<Form.Group
