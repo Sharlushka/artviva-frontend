@@ -221,8 +221,9 @@ const LoginForm = ({ setNotification, ...props }) => {
 								>
 									<BtnWithSpinner
 										type="submit"
+										style= {{ width: '7rem' }}
 										loadingState={logginIn}
-										disabledState={score <= .1 ? true : false}
+										disabled={score <= .1 ? true : false}
 										waitingState={!score}
 										label="Логін"
 										variant="primary"

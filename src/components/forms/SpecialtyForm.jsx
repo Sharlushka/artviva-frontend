@@ -9,8 +9,11 @@ import * as Yup from 'yup'
 import PropTypes from 'prop-types'
 import { trimObject } from '../../utils/objectHelpers'
 
-import { Container, Col, Form } from 'react-bootstrap'
-import ButtonComponent from '../common/Button'
+import { Col, Form } from 'react-bootstrap'
+import TextAreaInput from './components/TextAreaInput'
+import TextInput from './components/TextInput'
+import BtnWithSpinner from '../common/BtnWithSpinner'
+import ResetBtn from './buttons/Reset'
 
 const SpecialtyForm = ({
 	specialty,
@@ -22,6 +25,7 @@ const SpecialtyForm = ({
 	closeModal }) => {
 
 	const [editMode, setEditMode] = useState(false)
+	const [processingForm, setProcessingForm] = useState(false)
 
 	// set auth token and mode
 	useEffect(() => {
@@ -33,6 +37,7 @@ const SpecialtyForm = ({
 
 	// edit or save
 	const handleSpecialty = (values, setErrors, resetForm) => {
+		setProcessingForm(true)
 		editMode
 			? existingSpecialty(trimObject(values))
 			: newSpecialty(trimObject(values), setErrors, resetForm)
@@ -57,6 +62,7 @@ const SpecialtyForm = ({
 					variant: 'danger'
 				}, 5)
 			})
+			.finally(() => setProcessingForm(false))
 	}
 
 	const existingSpecialty = (values) => {
@@ -75,6 +81,7 @@ const SpecialtyForm = ({
 					variant: 'danger'
 				}, 5)
 			})
+			.finally(() => setProcessingForm(false))
 	}
 
 	// form data
@@ -95,144 +102,88 @@ const SpecialtyForm = ({
 		info: Yup.string()
 			.min(3, 'Не менш 3 символів.')
 			.max(255, 'Максимум 255 символів.')
-			// .required('Введіть опис.')
 	})
 
 	return (
-		<Container>
-			<Formik
-				initialValues={initialFormValues()}
-				enableReinitialize
-				onSubmit={async (values, { resetForm, setErrors }) => {
-					await handleSpecialty(values, setErrors, resetForm)
-				}}
-				validationSchema={specialtyFormSchema}
-			>
-				{({ handleSubmit,
-					handleChange,
-					handleBlur,
-					values,
-					touched,
-					errors
-				}) => (
-					<Form
-						data-cy="specialty-form"
-						noValidate
-						onSubmit={handleSubmit}
-						className="text-left"
+		<Formik
+			initialValues={initialFormValues()}
+			enableReinitialize
+			onSubmit={async (values, { resetForm, setErrors }) => {
+				await handleSpecialty(values, setErrors, resetForm)
+			}}
+			validationSchema={specialtyFormSchema}
+		>
+			{({ handleSubmit,
+				handleChange,
+				handleBlur,
+				handleReset,
+				values,
+				touched,
+				errors
+			}) => (
+				<Form
+					data-cy="specialty-form"
+					noValidate
+					onSubmit={handleSubmit}
+					className="text-left"
+				>
+					{/* Specialty title input*/}
+					<TextInput
+						label="Полна назва спеціальності"
+						name="title"
+						onChange={handleChange}
+						onBlur={handleBlur}
+						value={values.title}
+						touched={touched.title}
+						errors={errors.title}
+					/>
+
+					{/* Specialty cost input */}
+					<TextInput
+						label="Вартість навчання за місяць"
+						name="cost"
+						onChange={handleChange}
+						onBlur={handleBlur}
+						value={values.cost}
+						touched={touched.cost}
+						errors={errors.cost}
+					/>
+
+					{/* Specilalty info / descr input */}
+					<TextAreaInput
+						label="Додаткова інформація/опис"
+						rows={2}
+						name="info"
+						onChange={handleChange}
+						onBlur={handleBlur}
+						value={values.info}
+						touched={touched.info}
+						errors={errors.info}
+					/>
+
+					{/* Button */}
+					<Form.Group
+						as={Col}
+						className="pt-4 px-0 d-flex justify-content-end"
 					>
-						{/* Specialty title input */}
-						<Form.Row className="d-flex justify-content-center">
-							<Form.Group
-								controlId={editMode
-									? `specialty-title-input-${specialty.id}`
-									: 'specialty-title-input'}
-								as={Col}
-							>
-								<Form.Label>
-									Полна назва спеціальності
-									<span className="form-required-mark"> *</span>
-								</Form.Label>
-								<Form.Control
-									type="text"
-									name="title"
-									data-cy="title-input"
-									onChange={handleChange}
-									onBlur={handleBlur}
-									value={values.title}
-									isValid={touched.title && !errors.title}
-									isInvalid={touched.title && !!errors.title}
-								/>
-								<Form.Control.Feedback>
-									Ok
-								</Form.Control.Feedback>
-								<Form.Control.Feedback type="invalid">
-									{errors.title}
-								</Form.Control.Feedback>
-							</Form.Group>
-						</Form.Row>
-
-						{/* Specialty cost input */}
-						<Form.Row className="d-flex justify-content-center">
-							<Form.Group
-								controlId={editMode
-									? `specialty-cost-input-${specialty.id}`
-									: 'specialty-cost-input'}
-								as={Col}
-							>
-								<Form.Label>
-									Вартість навчання за місяць
-									<span className="form-required-mark"> *</span>
-								</Form.Label>
-								<Form.Control
-									type="text"
-									name="cost"
-									data-cy="specialty-cost-input"
-									onChange={handleChange}
-									onBlur={handleBlur}
-									value={values.cost}
-									isValid={touched.cost && !errors.cost}
-									isInvalid={touched.cost && !!errors.cost}
-								/>
-								<Form.Control.Feedback>
-									Ok
-								</Form.Control.Feedback>
-								<Form.Control.Feedback type="invalid">
-									{errors.cost}
-								</Form.Control.Feedback>
-							</Form.Group>
-						</Form.Row>
-
-						{/* Specilaty info / descr input */}
-						<Form.Row className="d-flex justify-content-center">
-							<Form.Group
-								controlId={editMode
-									? `specialty-info-input-${specialty.id}`
-									: 'specialty-info-input'}
-								as={Col}
-							>
-								<Form.Label>
-									Додаткова інформація / опис
-								</Form.Label>
-								<Form.Control
-									as="textarea"
-									name="info"
-									rows="3"
-									data-cy="specialty-info-input"
-									onChange={handleChange}
-									onBlur={handleBlur}
-									value={values.info}
-									isValid={touched.info && !errors.info}
-									isInvalid={touched.info && !!errors.info}
-								/>
-								<Form.Control.Feedback>
-									Ok
-								</Form.Control.Feedback>
-								<Form.Control.Feedback type="invalid">
-									{errors.info}
-								</Form.Control.Feedback>
-							</Form.Group>
-						</Form.Row>
-
-						{/* Button */}
-						<Form.Row className="d-flex justify-content-center text-center">
-							<Form.Group
-								as={Col}
-								className="pt-4"
-							>
-								<ButtonComponent
-									block
-									className="px-4 primary-color-shadow"
-									variant="primary"
-									type="submit"
-									label="Додати"
-								/>
-							</Form.Group>
-						</Form.Row>
-					</Form>
-				)}
-			</Formik>
-		</Container>
+						<BtnWithSpinner
+							className="default-width-btn"
+							variant={editMode ? 'success' : 'primary'}
+							type="submit"
+							label={editMode ? 'Зберегти' : 'Додати'}
+							dataCy="add-class-btn"
+							loadingState={processingForm}
+						/>
+						<ResetBtn
+							label="Очистити"
+							variant="light"
+							onClick={handleReset}
+							className="ml-2 default-width-btn"
+						/>
+					</Form.Group>
+				</Form>
+			)}
+		</Formik>
 	)
 }
 

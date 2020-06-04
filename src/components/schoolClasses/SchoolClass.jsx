@@ -38,9 +38,9 @@ const SchoolClass = ({ user, schoolClass, deleteSchoolClass }) => {
 				}, 5)
 			})
 			.catch(error => {
-				const notification = JSON.parse(error.request.responseText)
+				const { message } = { ...error.response.data }
 				setNotification({
-					message: notification.error,
+					message,
 					variant: 'danger'
 				}, 5)
 			})
@@ -71,7 +71,6 @@ const SchoolClass = ({ user, schoolClass, deleteSchoolClass }) => {
 				<Container fluid className="text-left">
 					<Row>
 						<Col>
-							{/*<p>Назва класу: <strong>{schoolClass.title}</strong></p>*/}
 							<p>Вчітель: <strong>{schoolClass.teacher.name}</strong>
 								<small>
 									<Link

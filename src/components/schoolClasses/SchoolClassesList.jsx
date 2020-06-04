@@ -2,6 +2,7 @@ import React, { useState, useEffect, Suspense } from 'react'
 import { connect } from 'react-redux'
 import { setNotification } from '../../reducers/notificationReducer'
 import { initializeSchoolClasses } from '../../reducers/schoolClassesReducer'
+import schoolClassesService from '../../services/schoolClasses'
 
 import { Link } from 'react-router-dom'
 import { Container, ListGroup } from 'react-bootstrap'
@@ -12,6 +13,7 @@ import CollapseForm from '../common/CollapseForm'
 const LazySchoolClassForm = React.lazy(() => import('../forms/SchoolClassForm'))
 
 const SchoolClassesList = ({
+	user,
 	schoolClasses,
 	setNotification,
 	initializeSchoolClasses
@@ -20,17 +22,19 @@ const SchoolClassesList = ({
 	const [isLoading, setIsLoading] = useState(true)
 
 	useEffect(() => {
-		initializeSchoolClasses()
-			.catch(error => {
-				setNotification({
-					message: `Щось пішло не так, спробуйте пізніше:
-						${error.status} ${error.statusText}`,
-					variant: 'danger'
-				}, 5)
-			})
-			.finally(() => setIsLoading(false))
-	// eslint-disable-next-line
-	}, [])
+		if (user) {
+			schoolClassesService.setToken(user.token)
+			initializeSchoolClasses()
+				.catch(error => {
+					setNotification({
+						message: `Щось пішло не так, спробуйте пізніше:
+							${error.status} ${error.statusText}`,
+						variant: 'danger'
+					}, 5)
+				})
+				.finally(() => setIsLoading(false))
+		}
+	}, [user, initializeSchoolClasses, setNotification])
 
 	return (
 		<Container>
@@ -40,19 +44,6 @@ const SchoolClassesList = ({
 					variant="primary"
 				/>
 				: <>
-					<p className="pt-3">
-						Список усіх класів школи.
-					</p>
-					<ListGroup>
-						{schoolClasses.map(schoolClass =>
-							<ListGroup.Item
-								className="px-0 py-1"
-								key={schoolClass.id}
-							>
-								<SchoolClass schoolClass={schoolClass} />
-							</ListGroup.Item>
-						)}
-					</ListGroup>
 					<p className="pt-3 text-muted">
 						Щоб створити клас, ви повинні бути впевнені,
 						що ви створили <Link to="/school/teachers">вчителя</Link>,&nbsp;
@@ -73,6 +64,20 @@ const SchoolClassesList = ({
 							<LazySchoolClassForm mode="create" />
 						</Suspense>
 					</CollapseForm>
+
+					<p className="pt-3">
+						Список усіх класів школи.
+					</p>
+					<ListGroup>
+						{schoolClasses.map(schoolClass =>
+							<ListGroup.Item
+								className="px-0 py-1"
+								key={schoolClass.id}
+							>
+								<SchoolClass schoolClass={schoolClass} />
+							</ListGroup.Item>
+						)}
+					</ListGroup>
 				</>
 			}
 		</Container>
@@ -81,6 +86,7 @@ const SchoolClassesList = ({
 
 const mapStateToProps = (state) => {
 	return {
+		user: state.user,
 		schoolClasses: state.schoolClasses
 	}
 }

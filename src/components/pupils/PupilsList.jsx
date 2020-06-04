@@ -50,7 +50,25 @@ const PupilsList = ({
 					variant="primary"
 				/>
 				: <>
-					<Row className="py-2 border1 border-success">
+					{/*<p className="pt-3 text-muted">
+						Щоб створити учня, вам потрібна така інформація:
+						<strong> Ім&apos;я та прізвище</strong>.
+						Додаткова інформація не є обов&apos;язковою.
+					</p>*/}
+					<CollapseForm
+						title="Додати нового учня"
+						ariaControls="pupil-add-form-collapse"
+					>
+						<Suspense
+							fallback={
+								<LoadingIndicator
+									animation="border"
+									variant="primary"
+								/>}>
+							<LazyPupilForm mode="create" />
+						</Suspense>
+					</CollapseForm>
+					<Row className="py-2">
 						<Col xs={8}>
 							<em className="text-muted">Список усіх учнів школи.</em>
 						</Col>
@@ -76,25 +94,6 @@ const PupilsList = ({
 							</ListGroup.Item>
 						)}
 					</ListGroup>
-					<p className="pt-3 text-muted">
-						Щоб створити учня, вам потрібна така інформація:
-						<strong> Ім&apos;я та прізвище</strong>.
-						Додаткова інформація не є обов&apos;язковою.
-					</p>
-
-					<CollapseForm
-						title="Додати нового учня"
-						ariaControls="pupil-add-form-collapse"
-					>
-						<Suspense
-							fallback={
-								<LoadingIndicator
-									animation="border"
-									variant="primary"
-								/>}>
-							<LazyPupilForm mode="create" />
-						</Suspense>
-					</CollapseForm>
 				</>
 			}
 		</Container>

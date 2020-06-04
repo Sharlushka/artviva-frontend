@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { deletePupil } from '../../reducers/pupilsReducer'
 import pupilsService from '../../services/pupils'
 import { setNotification } from '../../reducers/notificationReducer'
+import moment from 'moment'
 
 import { Link } from 'react-router-dom'
 import { Container, Row, Col, Collapse, Button } from 'react-bootstrap'
@@ -12,6 +13,7 @@ import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons'
 import LoadingIndicator from '../common/LoadingIndicator'
 import PupilForm from '../forms/PupilForm'
 import EntityControlButtons from '../common/EntityControlButtons'
+import ListItem from './ListItem'
 
 const LazyEntityDeleteModal = React.lazy(() => import('../common/EntityDeleteModal'))
 const LazyEntityEditModal = React.lazy(() => import('../common/EntityEditModal'))
@@ -61,8 +63,8 @@ const Pupil = ({ user, pupil, deletePupil }) => {
 				variant="link"
 				className="d-flex justify-content-between align-items-center"
 			>
-				<span>
-					{pupil.name}
+				<span className="text-left">
+					{pupil.name}: {pupil.specialty.title} {pupil.artSchoolClass ? `${pupil.artSchoolClass} клас` : null}
 				</span>
 				{ open
 					? <FontAwesomeIcon icon={faAngleUp} />
@@ -70,15 +72,61 @@ const Pupil = ({ user, pupil, deletePupil }) => {
 				}
 			</Button>
 			<Collapse in={open}>
-				<Container fluid className="text-left">
+				<Container fluid className="text-left borde1r border-primary">
 					<Row>
 						<Col>
-							<p>
-								<em className="text-muted">Им&apos;я:</em> {pupil.name}
-							</p>
-							<p>
-								<em className="text-muted">Додаткова інформація:</em> {pupil.info}
-							</p>
+							<ul style={{ paddingLeft: '0rem', listStyle: 'none' }}>
+								<ListItem
+									label="Им'я контактної особі: "
+									data={pupil.applicantName}
+								/>
+								<li>
+									<span className="text-muted">
+										Її email: </span>
+									<a href={`mailto:${pupil.contactEmail}`}>{pupil.contactEmail}</a>
+								</li>
+								<ListItem
+									label="Домашня адреса: "
+									data={pupil.homeAddress}
+								/>
+
+								<ListItem
+									label="Загально освітня школа: "
+									data={`${pupil.mainSchool} ${pupil.mainSchoolClass} клас`}
+								/>
+
+								<ListItem
+									label="Стать: "
+									data={pupil.gender}
+								/>
+
+								<ListItem
+									label="Возраст: "
+									data={moment(pupil.dateOfBirth).fromNow().split(' ')[0]}
+								/>
+
+								<ListItem
+									label="День народження: "
+									// data={moment(pupil.dateOfBirth).format('YYYY-MM-DD')}
+									data={moment(pupil.dateOfBirth).format('Do MMM YYYY')}
+								/>
+
+								<ListItem
+									label="Ім'я батька, тел. та місто роботи: "
+									data={`${pupil.fathersName}. ${pupil.fathersPhone} ${pupil.fathersEmploymentInfo}`}
+								/>
+
+								<ListItem
+									label="Ім'я матері, тел. та місто роботи: "
+									data={`${pupil.mothersName}. ${pupil.mothersPhone} ${pupil.mothersEmploymentInfo}`}
+								/>
+
+								<ListItem
+									label="Дата подяння заяві: "
+									data={moment(pupil.createdAt).format('LL')}
+								/>
+							</ul>
+
 							<div>
 								<em className="text-muted">Класи:</em>
 								<ol>

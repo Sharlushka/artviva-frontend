@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 
-import { Modal, Form, Button, Container, Row, Col } from 'react-bootstrap'
+import { Modal, Form, Button, Container, Row } from 'react-bootstrap'
 import BtnWithSpinner from './BtnWithSpinner'
 
 const EntityDeleteModal = ({
@@ -54,25 +54,23 @@ const EntityDeleteModal = ({
 			<Modal.Footer>
 				<Container>
 					<Row className="d-flex justify-content-end">
-						<Col className="px-1" xs={5} md={3}>
-							<Button
-								onClick={props.onHide}
-								block
-							>
-								Скасуваті
-							</Button>
-						</Col>
-						<Col className="px-1" xs={5} md={3}>
-							<BtnWithSpinner
-								handleClick={() => handleDelete(subjectid)}
-								type="button"
-								loadingState={loadingState}
-								disabledState={deleteBtnState}
-								label="Видалити"
-								variant="danger"
-								dataCy="delete-entity-btn"
-							/>
-						</Col>
+						<Button
+							onClick={props.onHide}
+							block
+							className="default-width-btn"
+						>
+							Скасуваті
+						</Button>
+						<BtnWithSpinner
+							onClick={() => handleDelete(subjectid)}
+							type="button"
+							loadingState={loadingState}
+							disabled={deleteBtnState}
+							label="Видалити"
+							variant="danger"
+							dataCy="delete-entity-btn"
+							className="ml-2 default-width-btn"
+						/>
 					</Row>
 				</Container>
 			</Modal.Footer>
