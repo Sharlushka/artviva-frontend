@@ -21,10 +21,7 @@ const Select = (props) => {
 				isValid={touched && !props.errors}
 				isInvalid={touched && !!props.errors}
 			>
-				{props.customselectvalue
-					? <option value={0}>{props.customselectvalue}</option>
-					: <option>Виберіть...</option>
-				}
+				<option>Виберіть...</option>
 				{props.options.map(item =>
 					<option value={item} key={item}>{item}</option>
 				)}
@@ -49,7 +46,6 @@ Select.propTypes = {
 		PropTypes.string.isRequired,
 		PropTypes.number.isRequired
 	]),
-	customselectvalue: PropTypes.string,
 	touched: PropTypes.bool,
 	errors: PropTypes.string
 }

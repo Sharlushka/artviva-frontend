@@ -15,7 +15,7 @@ import EntityControlButtons from '../common/EntityControlButtons'
 const LazyEntityDeleteModal = React.lazy(() => import('../common/EntityDeleteModal'))
 const LazyEntityEditModal = React.lazy(() => import('../common/EntityEditModal'))
 
-const Teacher = ({ user, teacher, deleteTeacher }) => {
+const Teacher = ({ user, teacher, deleteTeacher, setNotification }) => {
 	const [open, setOpen] = useState(false)
 	const [deleteModalShow, setDeleteModalShow] = useState(false)
 	const [editModalShow, setEditModalShow] = useState(false)
@@ -38,11 +38,13 @@ const Teacher = ({ user, teacher, deleteTeacher }) => {
 				}, 5)
 			})
 			.catch(error => {
-				const notification = JSON.parse(error.request.responseText)
+				const { message } = { ...error.response.data }
 				setNotification({
-					message: notification.error,
+					message,
 					variant: 'danger'
 				}, 5)
+				setIsDeleting(false)
+				setDeleteModalShow(false)
 			})
 			.finally(() => {
 				if (!unmounted) setIsDeleting(false)

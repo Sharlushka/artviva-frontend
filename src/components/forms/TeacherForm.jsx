@@ -49,8 +49,8 @@ const TeacherForm = ({
 	const educationTypes = ['Повна віща освіта', 'Базова віща освіта', 'Неповна віща освіта']
 	const educationDegrees = ['Магистр', 'Спеціаліст', 'Бакалавр', 'Молодший спеціаліст']
 	const qualificationsList = ['Немає', 'ІІ категорія', 'І категорія', 'Вища категорія']
-	const teacherTitles = ['Старший викладач', 'Викладач-методист']
-	const scienceDegrees = ['Доктор наук', 'Кандидат наук']
+	const teacherTitles = ['Немає', 'Старший викладач', 'Викладач-методист']
+	const scienceDegrees = ['Немає', 'Доктор наук', 'Кандидат наук']
 	const categoryList = [9, 10, 11, 12, 13, 14, 15, 16, 17]
 	const employeeTypes = ['Штатний співробітник', 'Сумісник']
 
@@ -101,7 +101,9 @@ const TeacherForm = ({
 			specialtiesIds.push(specialties[index].id)
 		})
 
-		let { years, months, days, ...valuesToSend } = values
+		// remove classes so we don't send them in this form
+		// eslint-disable-next-line
+		let { years, months, days, schoolClasses, ...valuesToSend } = values
 
 		// update some fields with prepared data
 		valuesToSend = { ...valuesToSend,
@@ -110,7 +112,7 @@ const TeacherForm = ({
 				? { years: parseIntegerValue(years),
 					months: parseIntegerValue(months),
 					days: parseIntegerValue(days) }
-				: employeeExperience
+				: employeeExperience,
 		}
 
 		// if current from mode is edit or create..

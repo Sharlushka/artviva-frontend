@@ -39,7 +39,7 @@ const PupilForm = ({
 	const genders = ['Чоловіча', 'Жіноча']
 	const classNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
 	const artClassNumbers = [1, 2, 3, 4, 5, 6, 7, 8]
-	const benefits = [50, 100] // %
+	const benefits = [0, 50, 100] // %
 
 	// set auth token and mode
 	useEffect(() => {
@@ -142,6 +142,7 @@ const PupilForm = ({
 				docsCheck: false,
 				processDataCheck: false,
 				paymentObligationsCheck: false,
+				docsPresent: false,
 				info: ''
 			}
 
@@ -329,7 +330,6 @@ const PupilForm = ({
 								label="Пільги %"
 								name="hasBenefit"
 								options={benefits}
-								customselectvalue={'Без пільг'}
 								onChange={handleChange}
 								onBlur={handleBlur}
 								value={values.hasBenefit}
@@ -446,16 +446,32 @@ const PupilForm = ({
 
 						<Form.Row>
 							{editMode
-								?	<TextAreaInput
-									label="Додаткова інформація/опис"
-									rows={2}
-									name="info"
-									onChange={handleChange}
-									onBlur={handleBlur}
-									value={values.info}
-									touched={touched.info}
-									errors={errors.info}
-								/>
+								?	<>
+									<Col xs={12} className="pt-4">
+										<CheckBox
+											type="checkbox"
+											id="docs-present-checkbox"
+											label="Надав усі необхідні документи."
+											name="docsPresent"
+											onChange={handleChange}
+											onBlur={handleBlur}
+											checked={values.docsPresent}
+											value={values.docsPresent}
+											touched={touched.docsPresent}
+											errors={errors.docsPresent}
+										/>
+										<TextAreaInput
+											label="Додаткова інформація/опис"
+											rows={2}
+											name="info"
+											onChange={handleChange}
+											onBlur={handleBlur}
+											value={values.info}
+											touched={touched.info}
+											errors={errors.info}
+										/>
+									</Col>
+								</>
 								: <>
 									<Col xs={12} className="pt-4">
 										<CheckBox
