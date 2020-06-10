@@ -1,3 +1,5 @@
+@use "sass:color"
+
 @import 'fonts.sass'
 @import 'text.sass'
 @import 'notification.sass'
@@ -19,6 +21,10 @@ html
 		font-size: 120%
 	+desktop(96dpi, 1440px)
 		font-size: 160%
+
+p
+	margin: 0
+	padding: 0
 
 .contacts-list
 	list-style: none
@@ -230,3 +236,19 @@ nav
 	height: 100%
 	width: 100%
 	position: absolute
+
+.payment-description-container:nth-child(even)
+	// background-color: $lightestColor
+
+.payment-date
+	font-size: .75rem
+
+.payment-month
+	// color: blue
+	@for $i from 1 through 9
+		&:nth-child(#{$i})
+			background-color: color.adjust($month-color, $hue: $i * 15%)
+			// color: red
+
+.payment-month
+	font-size: .8rem

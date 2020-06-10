@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef, Suspense } from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { setNotification } from '../../reducers/notificationReducer'
 import { deleteTeacher } from '../../reducers/teachersReducer'
 import teachersService from '../../services/teachers'
-import { toHumanReadable } from '../../utils/datesAndTime'
 
 import { Container, Row, Col, Collapse, Button } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -89,32 +89,12 @@ const Teacher = ({ user, teacher, deleteTeacher, setNotification }) => {
 							</ol>
 						</Col>
 						<Col>
-							<em className="text-muted">Оплати:</em>
-							<ol>
-								{teacher.payments.map(payment =>
-									<li key={payment.id}>
-										<em className="text-muted">{toHumanReadable('uk-ua', payment.create_date)}</em>
-										<br />
-										{/*payment.description*/}
-										<p>
-											<span
-												className="text-muted"
-											>
-												Учень:</span> {payment.paymentDescr.pupil}
-											<br />
-											<span
-												className="text-muted"
-											>
-												Предмет:</span> {payment.paymentDescr.specialty}
-											<br />
-											<span className="text-muted">Місяці: </span>
-											{payment.paymentDescr.months.map(month =>
-												<span key={month}>{month}, </span>
-											)}
-										</p>
-									</li>
-								)}
-							</ol>
+							<Link
+								to={`/school/teachers/${teacher.id}`}
+								className="px-2"
+							>
+								Детальніше...
+							</Link>
 						</Col>
 					</Row>
 
