@@ -101,9 +101,9 @@ const TeacherForm = ({
 			specialtiesIds.push(specialties[index].id)
 		})
 
-		// remove classes so we don't send them in this form
+		// remove classes and payments so we don't send them in this form
 		// eslint-disable-next-line
-		let { years, months, days, schoolClasses, ...valuesToSend } = values
+		let { years, months, days, payments, schoolClasses, ...valuesToSend } = values
 
 		// update some fields with prepared data
 		valuesToSend = { ...valuesToSend,

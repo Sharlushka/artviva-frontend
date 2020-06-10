@@ -125,7 +125,7 @@ const PupilForm = ({
 			: { name: '',
 				applicantName: '',
 				specialty: '',
-				artSchoolClass: '',
+				artSchoolClass: 1,
 				dateOfBirth: '',
 				mainSchool: '',
 				mainSchoolClass: '',
@@ -159,8 +159,9 @@ const PupilForm = ({
 			.oneOf(specialtiesNames, 'Виберіть фах учня.')
 			.required('Виберіть фах.'),
 		artSchoolClass: Yup.number()
-			.min(1)
-			.max(8),
+			.min(1, 'Перший або восьмий.')
+			.max(8, 'Перший або восьмий.')
+			.typeError('У якому класи навчается?'),
 		dateOfBirth: Yup.date()
 			.min(new Date(1950, 0, 1), 'Занадто старий.')
 			.max(new Date(2019, 0, 1), 'Занадто молодий.')
