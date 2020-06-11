@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useRef, Suspense } from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
 import { setNotification } from '../../reducers/notificationReducer'
 import { deleteTeacher } from '../../reducers/teachersReducer'
 import teachersService from '../../services/teachers'
 
-import { Container, Row, Col, Collapse, Button } from 'react-bootstrap'
+import { Container, Row, Collapse, Button } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons'
 import TeacherForm from '../forms/TeacherForm'
@@ -72,34 +71,8 @@ const Teacher = ({ user, teacher, deleteTeacher, setNotification }) => {
 			<Collapse in={open}>
 				<Container fluid className="text-left">
 					<Row>
-						<Col xs={12}>
-							<p>
-								<em className="text-muted">Им&apos;я: </em>
-								{teacher.name}
-							</p>
-						</Col>
-						<Col xs={12}>
-							<em className="text-muted">Cпеціальність:</em>
-							<ol>
-								{teacher.specialties.map(specialty =>
-									<li key={specialty.id}>
-										{specialty.title}
-									</li>
-								)}
-							</ol>
-						</Col>
-						<Col>
-							<Link
-								to={`/school/teachers/${teacher.id}`}
-								className="px-2"
-							>
-								Детальніше...
-							</Link>
-						</Col>
-					</Row>
-
-					<Row>
 						<EntityControlButtons
+							route={`/school/teachers/${teacher.id}`}
 							openEditModal={() => setEditModalShow(true)}
 							openDeleteModal={() => setDeleteModalShow(true)}
 						/>

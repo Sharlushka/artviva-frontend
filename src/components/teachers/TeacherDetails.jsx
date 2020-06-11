@@ -5,14 +5,17 @@ import { setNotification } from '../../reducers/notificationReducer'
 import moment from 'moment'
 import 'moment-precise-range-plugin'
 
-import { Container, Row, Col } from 'react-bootstrap'
+import { Container, Row, Col, Card } from 'react-bootstrap'
 import LoadingIndicator from '../common/LoadingIndicator'
 import PaymentDescr from './PaymentDescr'
+import Emoji from '../common/Emoji'
 
 const TeacherDetails = ({ user, match, setNotification }) => {
 
 	const [teacherDetails, setTeacherDetails] = useState(null)
-	const [teacherExperience, setTeacherExperience] = useState('')
+	const [teacherExperience, setTeacherExperience] = useState({})
+	const cardStyle = 'mb-3'
+
 	// date now
 	const today = moment(new Date())
 	// start and end date of the current school year
@@ -24,16 +27,12 @@ const TeacherDetails = ({ user, match, setNotification }) => {
 		endOfSchoolYear
 	}
 
-	useEffect(() => {
-		if (teacherDetails) {
-			const { employmentDate, experienceToDate } = teacherDetails
-			const { years, months, days } = experienceToDate
-			const adjustedExperienceDate = moment(employmentDate).subtract({ years, months, days })
-			const experience = moment.preciseDiff(adjustedExperienceDate, today)
-
-			setTeacherExperience(experience)
-		}
-	}, [teacherDetails, today])
+	const calcXpToDate = ({ employmentDate, experienceToDate }) => {
+		const { years, months, days } = experienceToDate
+		const adjustedExperienceDate = moment(employmentDate).subtract({ years, months, days })
+		const experience = moment.preciseDiff(adjustedExperienceDate, today, true)
+		setTeacherExperience(experience)
+	}
 
 	useEffect(() => {
 		if (user) {
@@ -41,6 +40,7 @@ const TeacherDetails = ({ user, match, setNotification }) => {
 			teachersService.getById(match.params.id)
 				.then((data) => {
 					setTeacherDetails(data)
+					calcXpToDate(data)
 				})
 				.catch(error => {
 					const notification = JSON.parse(error.request.responseText)
@@ -56,30 +56,129 @@ const TeacherDetails = ({ user, match, setNotification }) => {
 	return (
 		<>
 			{teacherDetails
-				? <Container>
-					<h4 className="text-muted">Детальна інформація про вчітеля</h4>
-					<Row className="pt-3">
+				? <Container className="pt-3">
+					<Row>
 						<Col>
-							<h5>{teacherDetails.name}</h5>
-							<p>
-								<span>Фах: </span>
-								{teacherDetails.specialties.map(specialty => (
-									<span key={specialty.id}>{specialty.title}</span>
-								))}
-							</p>
-							<p>
-								Працює з: {moment(teacherDetails.employmentDate).format('LL')}
-							</p>
-							<p>
-								Стаж: {teacherExperience}
-							</p>
-							<p className="text-muted">
-								Додатковій стаж: {teacherDetails.experienceToDate.years} років
-								&nbsp;{teacherDetails.experienceToDate.months} місяців
-								&nbsp;{teacherDetails.experienceToDate.days} днів
-							</p>
+							<h6>
+								{/* eslint-disable-next-line */}
+								<Emoji label="Magnifying Glass Tilted Right" emoji={'🔎'} /> Детальна інформація про вчітеля
+							</h6>
+							{/* Teacher info */}
+							<Card className={cardStyle}>
+								<Card.Body>
+									<Card.Text>
+										<strong>{teacherDetails.name}</strong> - {teacherDetails.employeeType}<br />
+										{teacherDetails.specialties.map(specialty => (
+											<span key={specialty.id}>{specialty.title}</span>
+										))}
+									</Card.Text>
+									<Card.Text>
+										Працює з: {moment(teacherDetails.employmentDate).format('LL')}
+									</Card.Text>
+									<Card.Text>
+										{/* eslint-disable-next-line */}
+										Повний стаж с урахуванням додаткового: {teacherExperience.years} років {teacherExperience.months} місяців {teacherExperience.days} днів
+									</Card.Text>
+									<Card.Text>
+										{/* eslint-disable-next-line */}
+										Додатковій стаж: {teacherDetails.experienceToDate.years} років {teacherDetails.experienceToDate.months} місяців {teacherDetails.experienceToDate.days} днів
+									</Card.Text>
+									<Card.Text>
+										Розряд: {teacherDetails.category}
+									</Card.Text>
+									<Card.Text>
+										{teacherDetails.isAdministration ? 'Адміністрація ' : null }
+										{teacherDetails.isRetired ? 'Пенсионер ' : null }
+										{teacherDetails.employeeIsAStudent ? 'Навчается у ВНЗ' : null }
+									</Card.Text>
+									<Card.Text>
+										Кваліфікаційна категорія: {teacherDetails.qualification}
+									</Card.Text>
+									<Card.Text>
+										Педагогічне звання: {teacherDetails.teacherTitle}
+									</Card.Text>
+									<Card.Text>
+										Наукова ступінь: {teacherDetails.scienceDegree}
+									</Card.Text>
+								</Card.Body>
+							</Card>
 
-							<h6 className="pt-4">Платежі:</h6>
+							{/* Contacts */}
+							<Card className={cardStyle}>
+								<Card.Body>
+									<Card.Subtitle className="mb-2 text-muted">
+										<Emoji label="Telephone Receiver" emoji={'📞'} /> Контактні дані
+									</Card.Subtitle>
+									<Card.Text>
+										Електронна пошта: <a href={`mailto:${teacherDetails.contactEmail}`}>
+											{teacherDetails.contactEmail}
+										</a>
+									</Card.Text>
+									<Card.Text>
+										Телефонний №: {teacherDetails.phone}
+									</Card.Text>
+									<Card.Text>
+										{/* eslint-disable-next-line */}House with Garden
+										Місцевість проживання: {teacherDetails.residence === 'Місто'
+											? <Emoji label="Cityscape" emoji={'🏙️'} />
+											: <Emoji label="House with Garden" emoji={'🏡'} />}
+											&nbsp;{teacherDetails.residence}
+									</Card.Text>
+								</Card.Body>
+							</Card>
+
+							{/* Personal info */}
+							<Card className={cardStyle}>
+								<Card.Body>
+									<Card.Subtitle className="mb-2 text-muted">
+										<Emoji label="Memo" emoji={'📝'} /> Персональна інформація
+									</Card.Subtitle>
+									<Card.Text>
+										{/* eslint-disable-next-line */} {/* no gender diversity ( */}
+										Стать: {teacherDetails.gender === 'Чоловіча'
+											? <Emoji label="Man" emoji={'👨'} />
+											: <Emoji label="Woman" emoji={'👩'} />}
+											&nbsp;{teacherDetails.gender}
+									</Card.Text>
+									<Card.Text>
+										Сімеїний стан: {teacherDetails.maritalStatus}
+									</Card.Text>
+								</Card.Body>
+							</Card>
+
+							{/* Education info */}
+							<Card className={cardStyle}>
+								<Card.Body>
+									<Card.Subtitle className="mb-2 text-muted">
+										<Emoji label="Graduation Cap" emoji={'🎓'} /> Освіта
+									</Card.Subtitle>
+									<Card.Text>
+										Навчальний заклад: {teacherDetails.university}
+									</Card.Text>
+									<Card.Text>
+										Освітній рівень: {teacherDetails.educationType}
+									</Card.Text>
+									<Card.Text>
+										Освітньо-кваліфікаційний рівень: {teacherDetails.educationDegree}
+									</Card.Text>
+								</Card.Body>
+							</Card>
+
+							{/* Additinal info */}
+							<Card className={cardStyle}>
+								<Card.Body>
+									<Card.Subtitle className="mb-2 text-muted">
+										<Emoji label="Green Book" emoji={'📗'} /> Додаткова інформація
+									</Card.Subtitle>
+									<Card.Text>
+										{teacherDetails.info || 'Немає'}
+									</Card.Text>
+								</Card.Body>
+							</Card>
+
+							<h6>
+								<Emoji label="Dollar Banknote" emoji={'💵'} /> Платежі:
+							</h6>
 							{teacherDetails.payments.map(payment => (
 								<Container
 									key={payment.id}
