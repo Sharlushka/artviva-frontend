@@ -5,7 +5,7 @@ import { initializeSpecialties } from '../../reducers/specialtiesReducer'
 import specialtiesService from '../../services/specialties'
 import PropTypes from 'prop-types'
 
-import { Container, ListGroup } from 'react-bootstrap'
+import { Container, ListGroup, Row, Col } from 'react-bootstrap'
 import LoadingIndicator from '../common/LoadingIndicator'
 import CollapseForm from '../common/CollapseForm'
 import Specialty from './Specialty'
@@ -33,47 +33,51 @@ const SpecialtiesList = ({ user, initializeSpecialties, specialties, setNotifica
 
 	return (
 		<Container>
-			{isLoading
-				? <LoadingIndicator
-					animation="border"
-					variant="primary"
-				/>
-				: <>
-					<p className="pt-3 text-muted">
-						Щоб створити спеціальність, вам потрібна така інформація:
-						<strong> назва спеціальності, вартість</strong>.
-						Додаткова інформація не є обов&apos;язковою.
-					</p>
+			<Row className="d-flex justify-content-center">
+				<Col md={10} xl={8}>
+					{isLoading
+						? <LoadingIndicator
+							animation="border"
+							variant="primary"
+						/>
+						: <>
+							<p className="py-3 text-muted">
+								Щоб створити спеціальність, вам потрібна така інформація:
+								<strong> назва спеціальності, вартість</strong>.
+								Додаткова інформація не є обов&apos;язковою.
+							</p>
 
-					<CollapseForm
-						title="Додати новій фах"
-						ariaControls="specialty-add-form-collapse"
-					>
-						<Suspense
-							fallback={
-								<LoadingIndicator
-									animation="border"
-									variant="primary"
-								/>}>
-							<LazySpecialtyForm mode="create" />
-						</Suspense>
-					</CollapseForm>
-
-					<p className="pt-3">
-						Список усіх спеціальностей школи.
-					</p>
-					<ListGroup>
-						{specialties.map(specialty =>
-							<ListGroup.Item
-								className="px-0 py-1"
-								key={specialty.id}
+							<CollapseForm
+								title="Додати новій фах"
+								ariaControls="specialty-add-form-collapse"
 							>
-								<Specialty specialty={specialty} />
-							</ListGroup.Item>
-						)}
-					</ListGroup>
-				</>
-			}
+								<Suspense
+									fallback={
+										<LoadingIndicator
+											animation="border"
+											variant="primary"
+										/>}>
+									<LazySpecialtyForm mode="create" />
+								</Suspense>
+							</CollapseForm>
+
+							<p className="py-3 text-muted">
+								<em>Список усіх спеціальностей школи.</em>
+							</p>
+							<ListGroup>
+								{specialties.map(specialty =>
+									<ListGroup.Item
+										className="px-0 py-1"
+										key={specialty.id}
+									>
+										<Specialty specialty={specialty} />
+									</ListGroup.Item>
+								)}
+							</ListGroup>
+						</>
+					}
+				</Col>
+			</Row>
 		</Container>
 	)
 }

@@ -248,7 +248,7 @@ const SchoolClassForm = ({
 								className="mb-4"
 							>
 								<Form.Label>
-									Назва класу
+									Назва групи
 									<span className="form-required-mark"> *</span>
 								</Form.Label>
 								<Form.Control
@@ -278,7 +278,7 @@ const SchoolClassForm = ({
 								className="mb-4"
 							>
 								<Form.Label>
-									Опис/інформація про клас
+									Опис групи
 								</Form.Label>
 								<Form.Control
 									as="textarea"
@@ -297,7 +297,7 @@ const SchoolClassForm = ({
 							</Form.Group>
 						</Form.Row>
 
-						{/* School class teacher */}
+						{/* School group teacher */}
 						<Form.Row className="d-flex justify-content-center">
 							<Form.Group
 								controlId={
@@ -346,7 +346,7 @@ const SchoolClassForm = ({
 								className="mb-4"
 							>
 								<Form.Label>
-									Фах класу
+									Фах групи
 									<span className="form-required-mark"> *</span>
 								</Form.Label>
 								<Form.Control

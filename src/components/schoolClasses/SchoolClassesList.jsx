@@ -5,7 +5,7 @@ import { initializeSchoolClasses } from '../../reducers/schoolClassesReducer'
 import schoolClassesService from '../../services/schoolClasses'
 
 import { Link } from 'react-router-dom'
-import { Container, ListGroup } from 'react-bootstrap'
+import { Container, ListGroup, Row, Col } from 'react-bootstrap'
 import SchoolClass from './SchoolClass'
 import LoadingIndicator from '../common/LoadingIndicator'
 import CollapseForm from '../common/CollapseForm'
@@ -38,48 +38,52 @@ const SchoolClassesList = ({
 
 	return (
 		<Container>
-			{isLoading
-				? <LoadingIndicator
-					animation="border"
-					variant="primary"
-				/>
-				: <>
-					<p className="pt-3 text-muted">
-						Щоб створити клас, ви повинні бути впевнені,
-						що ви створили <Link to="/school/teachers">вчителя</Link>,&nbsp;
-						<Link to="/school/specialties">спеціальність</Link> та&nbsp;
-						<Link to="/school/pupils">учнів</Link> для вашого нового класу.
-					</p>
+			<Row className="d-flex justify-content-center">
+				<Col md={10} xl={8}>
+					{isLoading
+						? <LoadingIndicator
+							animation="border"
+							variant="primary"
+						/>
+						: <>
+							<p className="py-3 text-muted">
+								Для створення групи, ви повинні бути впевнені,
+								що ви створили <Link to="/school/teachers">вчителя</Link>,&nbsp;
+								<Link to="/school/specialties">спеціальність</Link> та&nbsp;
+								<Link to="/school/pupils">учнів</Link> для вашої нової групи.
+							</p>
 
-					<CollapseForm
-						title="Додати новий клас"
-						ariaControls="school-class-add-form-collapse"
-					>
-						<Suspense
-							fallback={
-								<LoadingIndicator
-									animation="border"
-									variant="primary"
-								/>}>
-							<LazySchoolClassForm mode="create" />
-						</Suspense>
-					</CollapseForm>
-
-					<p className="pt-3">
-						Список усіх класів школи.
-					</p>
-					<ListGroup>
-						{schoolClasses.map(schoolClass =>
-							<ListGroup.Item
-								className="px-0 py-1"
-								key={schoolClass.id}
+							<CollapseForm
+								title="Додати нову групу"
+								ariaControls="school-class-add-form-collapse"
 							>
-								<SchoolClass schoolClass={schoolClass} />
-							</ListGroup.Item>
-						)}
-					</ListGroup>
-				</>
-			}
+								<Suspense
+									fallback={
+										<LoadingIndicator
+											animation="border"
+											variant="primary"
+										/>}>
+									<LazySchoolClassForm mode="create" />
+								</Suspense>
+							</CollapseForm>
+
+							<p className="py-3 text-muted">
+								<em>Список усіх груп школи.</em>
+							</p>
+							<ListGroup>
+								{schoolClasses.map(schoolClass =>
+									<ListGroup.Item
+										className="px-0 py-1"
+										key={schoolClass.id}
+									>
+										<SchoolClass schoolClass={schoolClass} />
+									</ListGroup.Item>
+								)}
+							</ListGroup>
+						</>
+					}
+				</Col>
+			</Row>
 		</Container>
 	)
 }

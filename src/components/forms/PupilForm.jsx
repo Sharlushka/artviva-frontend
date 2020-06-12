@@ -251,17 +251,15 @@ const PupilForm = ({
 						<p className="pt-2 mb-1 text-muted text-center">
 							Дані/інформація про учня
 						</p>
-						<Form.Row>
-							<TextInput
-								label="Повне ім'я учня"
-								name="name"
-								onChange={handleChange}
-								onBlur={handleBlur}
-								value={values.name}
-								touched={touched.name}
-								errors={errors.name}
-							/>
-						</Form.Row>
+						<TextInput
+							label="Повне ім'я учня"
+							name="name"
+							onChange={handleChange}
+							onBlur={handleBlur}
+							value={values.name}
+							touched={touched.name}
+							errors={errors.name}
+						/>
 
 						<Form.Row>
 							<Select

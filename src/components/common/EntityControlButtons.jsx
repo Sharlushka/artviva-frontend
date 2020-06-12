@@ -19,13 +19,16 @@ const EntityControlButtons = ({
 
 	return (
 		<Col className="my-2 d-flex justify-content-end align-items-center">
-			<BtnWithIcon
-				label="Детальніше"
-				icon="info"
-				variant="outline-primary"
-				type="button"
-				onClick={routeChange}
-			/>
+			{route
+				? <BtnWithIcon
+					label="Детальніше"
+					icon="info"
+					variant="outline-primary"
+					type="button"
+					onClick={routeChange}
+				/>
+				: null
+			}
 			<BtnWithIcon
 				label="Редагувати"
 				icon="edit"

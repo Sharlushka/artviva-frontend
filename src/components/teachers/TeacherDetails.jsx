@@ -4,8 +4,9 @@ import teachersService from '../../services/teachers'
 import { setNotification } from '../../reducers/notificationReducer'
 import moment from 'moment'
 import 'moment-precise-range-plugin'
+import { nestedSort } from '../../utils/arrayHelpers'
 
-import { Container, Row, Col, Card } from 'react-bootstrap'
+import { Container, Row, Col, Card, Form } from 'react-bootstrap'
 import LoadingIndicator from '../common/LoadingIndicator'
 import PaymentDescr from './PaymentDescr'
 import Emoji from '../common/Emoji'
@@ -14,6 +15,9 @@ const TeacherDetails = ({ user, match, setNotification }) => {
 
 	const [teacherDetails, setTeacherDetails] = useState(null)
 	const [teacherExperience, setTeacherExperience] = useState({})
+	const [descPayPupilNameSortOrder, setDescPayPupilNameSortOrder] = useState(false)
+	const [descPayDateSortOrder, setDescPayDateSortOrder] = useState(true)
+
 	const cardStyle = 'mb-3'
 
 	// date now
@@ -34,12 +38,37 @@ const TeacherDetails = ({ user, match, setNotification }) => {
 		setTeacherExperience(experience)
 	}
 
+	const sortByField = ({ checked, id }) => {
+		const order = checked ? 'desc' : 'asc'
+		switch (id) {
+		case 'pupil':
+			setDescPayPupilNameSortOrder(checked)
+			setTeacherDetails({
+				...teacherDetails,
+				payments: teacherDetails.payments.sort(nestedSort('paymentDescr', id, order))
+			})
+			break
+		case 'create_date':
+			setDescPayDateSortOrder(checked)
+			setTeacherDetails({
+				...teacherDetails,
+				payments: teacherDetails.payments.sort(nestedSort(id, null, order))
+			})
+			break
+		default:
+			console.warn('Check sort criteria.')
+		}
+	}
+
 	useEffect(() => {
 		if (user) {
 			teachersService.setToken(user.token)
 			teachersService.getById(match.params.id)
 				.then((data) => {
-					setTeacherDetails(data)
+					setTeacherDetails({
+						...data,
+						payments: data.payments.sort(nestedSort('create_date', null, 'desc'))
+					})
 					calcXpToDate(data)
 				})
 				.catch(error => {
@@ -179,6 +208,28 @@ const TeacherDetails = ({ user, match, setNotification }) => {
 							<h6>
 								<Emoji label="Dollar Banknote" emoji={'💵'} /> Платежі:
 							</h6>
+							{/* Sorting controls */}
+							<Form>
+								<Form.Check
+									custom
+									inline
+									type="checkbox"
+									id="pupil"
+									label="Ім'я учня Я-А"
+									checked={descPayPupilNameSortOrder}
+									onChange={event => sortByField(event.target)}
+								/>
+								<Form.Check
+									custom
+									inline
+									type="checkbox"
+									id="create_date"
+									label={`Дата оплати ${descPayDateSortOrder ? ' - нові вгорі' : ''}`}
+									checked={descPayDateSortOrder}
+									onChange={event => sortByField(event.target)}
+								/>
+							</Form>
+
 							{teacherDetails.payments.map(payment => (
 								<Container
 									key={payment.id}

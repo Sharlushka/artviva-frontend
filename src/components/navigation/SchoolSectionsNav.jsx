@@ -12,7 +12,7 @@ const SchoolDataNav = () => {
 		},*/
 		{
 			to: '/school/classes',
-			label: 'Класи'
+			label: 'Групи'
 		},
 		{
 			to: '/school/teachers',

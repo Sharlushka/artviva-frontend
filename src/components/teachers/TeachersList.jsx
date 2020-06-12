@@ -41,7 +41,7 @@ const TeachersList = ({ teachers, setNotification, initializeTeachers, initializ
 	return (
 		<Container>
 			<Row className="d-flex justify-content-center">
-				<Col sm={10} md={7}>
+				<Col md={10} xl={8}>
 					{isLoading
 						? <LoadingIndicator
 							animation="border"
@@ -68,8 +68,8 @@ const TeachersList = ({ teachers, setNotification, initializeTeachers, initializ
 								</Suspense>
 							</CollapseForm>
 
-							<p className="py-3">
-								Список усіх вчителів школи.
+							<p className="py-3 text-muted">
+								<em>Список усіх вчителів школи.</em>
 							</p>
 							<ListGroup>
 								{teachers.map(teacher =>
