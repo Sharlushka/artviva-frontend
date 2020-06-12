@@ -118,7 +118,7 @@ const TeacherDetails = ({ user, match, setNotification }) => {
 										Телефонний №: {teacherDetails.phone}
 									</Card.Text>
 									<Card.Text>
-										{/* eslint-disable-next-line */}House with Garden
+										{/* eslint-disable-next-line */}
 										Місцевість проживання: {teacherDetails.residence === 'Місто'
 											? <Emoji label="Cityscape" emoji={'🏙️'} />
 											: <Emoji label="House with Garden" emoji={'🏡'} />}
