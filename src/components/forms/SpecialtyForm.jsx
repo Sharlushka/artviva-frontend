@@ -9,7 +9,7 @@ import * as Yup from 'yup'
 import PropTypes from 'prop-types'
 import { trimObject } from '../../utils/objectHelpers'
 
-import { Col, Form } from 'react-bootstrap'
+import { Col, Row, Form } from 'react-bootstrap'
 import TextAreaInput from './components/TextAreaInput'
 import TextInput from './components/TextInput'
 import BtnWithSpinner from '../common/BtnWithSpinner'
@@ -150,16 +150,18 @@ const SpecialtyForm = ({
 					/>
 
 					{/* Specilalty info / descr input */}
-					<TextAreaInput
-						label="Додаткова інформація/опис"
-						rows={2}
-						name="info"
-						onChange={handleChange}
-						onBlur={handleBlur}
-						value={values.info}
-						touched={touched.info}
-						errors={errors.info}
-					/>
+					<Row>
+						<TextAreaInput
+							label="Додаткова інформація/опис"
+							rows={2}
+							name="info"
+							onChange={handleChange}
+							onBlur={handleBlur}
+							value={values.info}
+							touched={touched.info}
+							errors={errors.info}
+						/>
+					</Row>
 
 					{/* Button */}
 					<Form.Group

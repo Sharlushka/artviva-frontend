@@ -5,7 +5,7 @@ import { initializeTeachers } from '../../reducers/teachersReducer'
 import { initializeSpecialties } from '../../reducers/specialtiesReducer'
 
 import { Link } from 'react-router-dom'
-import { Container, ListGroup } from 'react-bootstrap'
+import { Container, ListGroup, Row, Col } from 'react-bootstrap'
 import CollapseForm from '../common/CollapseForm'
 import Teacher from './Teacher'
 import LoadingIndicator from '../common/LoadingIndicator'
@@ -40,47 +40,51 @@ const TeachersList = ({ teachers, setNotification, initializeTeachers, initializ
 
 	return (
 		<Container>
-			{isLoading
-				? <LoadingIndicator
-					animation="border"
-					variant="primary"
-				/>
-				: <>
-					<p className="pt-3">
-						Список усіх вчителів школи.
-					</p>
-					<ListGroup>
-						{teachers.map(teacher =>
-							<ListGroup.Item
-								className="px-0 py-1"
-								key={teacher.id}
+			<Row className="d-flex justify-content-center">
+				<Col md={10} xl={8}>
+					{isLoading
+						? <LoadingIndicator
+							animation="border"
+							variant="primary"
+						/>
+						: <>
+							<p className="py-3 text-muted">
+								Щоб додати нового викладача, спочатку потрібно створити його
+								<Link to="/school/specialties"> спеціальність</Link>,
+								якщо ви цього ще не зробили.
+							</p>
+
+							<CollapseForm
+								title="Додати нового вчітеля"
+								ariaControls="school-class-add-form-collapse"
 							>
-								<Teacher teacher={teacher} />
-							</ListGroup.Item>
-						)}
-					</ListGroup>
+								<Suspense
+									fallback={
+										<LoadingIndicator
+											animation="border"
+											variant="primary"
+										/>}>
+									<LazyTeacherForm mode="create" />
+								</Suspense>
+							</CollapseForm>
 
-					<p className="pt-3 text-muted">
-						Щоб додати нового викладача, спочатку потрібно створити його
-						<Link to="/school/specialties"> спеціальність</Link>,
-						якщо ви цього ще не зробили.
-					</p>
-
-					<CollapseForm
-						title="Додати нового вчітеля"
-						ariaControls="school-class-add-form-collapse"
-					>
-						<Suspense
-							fallback={
-								<LoadingIndicator
-									animation="border"
-									variant="primary"
-								/>}>
-							<LazyTeacherForm mode="create" />
-						</Suspense>
-					</CollapseForm>
-				</>
-			}
+							<p className="py-3 text-muted">
+								<em>Список усіх вчителів школи.</em>
+							</p>
+							<ListGroup>
+								{teachers.map(teacher =>
+									<ListGroup.Item
+										className="px-0 py-1"
+										key={teacher.id}
+									>
+										<Teacher teacher={teacher} />
+									</ListGroup.Item>
+								)}
+							</ListGroup>
+						</>
+					}
+				</Col>
+			</Row>
 		</Container>
 	)
 }

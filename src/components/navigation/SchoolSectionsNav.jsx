@@ -6,13 +6,13 @@ import SectionLink from './SectionLink'
 const SchoolDataNav = () => {
 
 	const schoolSectionsLinks = [
-		{
+		/*{
 			to: '/school/overview',
 			label: 'Взагалі'
-		},
+		},*/
 		{
 			to: '/school/classes',
-			label: 'Класи'
+			label: 'Групи'
 		},
 		{
 			to: '/school/teachers',
@@ -37,8 +37,8 @@ const SchoolDataNav = () => {
 	]
 
 	return (
-		<Container className="mb-3">
-			<Row>
+		<Container>
+			<Row className="d-flex justify-content-center">
 				{schoolSectionsLinks.map(link =>
 					<SectionLink
 						key={link.label}

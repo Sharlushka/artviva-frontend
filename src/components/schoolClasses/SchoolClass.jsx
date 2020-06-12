@@ -82,7 +82,10 @@ const SchoolClass = ({ user, schoolClass, deleteSchoolClass }) => {
 								</small>
 							</p>
 							<p>Фах: <strong>{schoolClass.specialty.title}</strong></p>
-							<p>Опіс: <strong>{schoolClass.info}</strong></p>
+							{schoolClass.info
+								? <p>Опіс: <strong>{schoolClass.info}</strong></p>
+								: null
+							}
 							Учні:
 							<ol>
 								{schoolClass.pupils.map(pupil => (

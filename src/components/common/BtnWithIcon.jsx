@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import { Button } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons'
+import { faTrash, faEdit, faInfo } from '@fortawesome/free-solid-svg-icons'
 
 const BtnWithIcon = props => {
 
@@ -11,12 +11,13 @@ const BtnWithIcon = props => {
 	const chooseIcon = () => {
 		if (icon === 'trash') return <FontAwesomeIcon icon={faTrash} />
 		if (icon === 'edit') return <FontAwesomeIcon icon={faEdit} />
+		if (icon === 'info') return <FontAwesomeIcon icon={faInfo} />
 	}
 
 	return (
 		<Button
 			{ ...other }
-			className={`${className} ml-2 btn-with-icon`}
+			className={`${className} ml-2 py-1 btn-with-icon`}
 		>
 			{chooseIcon() || label}
 		</Button>

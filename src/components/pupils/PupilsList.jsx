@@ -44,58 +44,61 @@ const PupilsList = ({
 
 	return (
 		<Container>
-			{isLoading
-				? <LoadingIndicator
-					animation="border"
-					variant="primary"
-				/>
-				: <>
-					{/*<p className="pt-3 text-muted">
-						Щоб створити учня, вам потрібна така інформація:
-						<strong> Ім&apos;я та прізвище</strong>.
-						Додаткова інформація не є обов&apos;язковою.
-					</p>*/}
-					<CollapseForm
-						title="Додати нового учня"
-						ariaControls="pupil-add-form-collapse"
-					>
-						<Suspense
-							fallback={
-								<LoadingIndicator
-									animation="border"
-									variant="primary"
-								/>}>
-							<LazyPupilForm mode="create" />
-						</Suspense>
-					</CollapseForm>
-					<Row className="py-2">
-						<Col xs={8}>
-							<em className="text-muted">Список усіх учнів школи.</em>
-						</Col>
-						<Col xs={4}>
-							<Form>
-								<Form.Check
-									custom
-									type="checkbox"
-									id="sort-checkbox"
-									label="A-Z"
-									onClick={changeOrder}
-								/>
-							</Form>
-						</Col>
-					</Row>
-					<ListGroup>
-						{pupils.map(pupil =>
-							<ListGroup.Item
-								className="px-0 py-1"
-								key={pupil.id}
-							>
-								<Pupil pupil={pupil} />
-							</ListGroup.Item>
-						)}
-					</ListGroup>
-				</>
-			}
+			<Row className="d-flex justify-content-center">
+				<Col md={10} xl={8}>
+					{isLoading
+						? <LoadingIndicator
+							animation="border"
+							variant="primary"
+						/>
+						: <>
+							<Row className="py-3">
+								<Col>
+									<CollapseForm
+										title="Додати нового учня"
+										ariaControls="pupil-add-form-collapse"
+									>
+										<Suspense
+											fallback={
+												<LoadingIndicator
+													animation="border"
+													variant="primary"
+												/>}>
+											<LazyPupilForm mode="create" />
+										</Suspense>
+									</CollapseForm>
+								</Col>
+							</Row>
+							<Row className="py-2">
+								<Col xs={8}>
+									<em className="text-muted">Список усіх учнів школи.</em>
+								</Col>
+								<Col xs={4}>
+									<Form>
+										<Form.Check
+											custom
+											type="checkbox"
+											id="sort-checkbox"
+											label="A-Z"
+											onClick={changeOrder}
+										/>
+									</Form>
+								</Col>
+							</Row>
+							<ListGroup>
+								{pupils.map(pupil =>
+									<ListGroup.Item
+										className="px-0 py-1"
+										key={pupil.id}
+									>
+										<Pupil pupil={pupil} />
+									</ListGroup.Item>
+								)}
+							</ListGroup>
+						</>
+					}
+				</Col>
+			</Row>
 		</Container>
 	)
 }
