@@ -14,7 +14,6 @@ import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 import ReCaptchaComp from '../common/ReCaptchaComp'
 import BtnWithSpinner from '../common/BtnWithSpinner'
 
-// const LoginForm = ({ user, setNotification, ...props }) => {
 const LoginForm = ({ setNotification, ...props }) => {
 
 	const unmounted = useRef(false)
@@ -104,7 +103,7 @@ const LoginForm = ({ setNotification, ...props }) => {
 
 	return (
 		<>
-			<Container className="pb-4">
+			<Container>
 				<h1 className="text-center custom-font py-4">
 					Логін
 				</h1>
@@ -221,7 +220,6 @@ const LoginForm = ({ setNotification, ...props }) => {
 								>
 									<BtnWithSpinner
 										type="submit"
-										style= {{ width: '7rem' }}
 										loadingState={logginIn}
 										disabled={score <= .1 ? true : false}
 										waitingState={!score}

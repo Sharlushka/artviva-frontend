@@ -4,14 +4,14 @@ import { Container, Row, Col, Image } from 'react-bootstrap'
 
 const LoginView = () => {
 	return (
-		<Container className="pt-4">
-			<Row className="pt-4 d-flex justify-content-center">
-				<Col xs={12} md={4} className="text-center">
+		<Container>
+			<Row className="d-flex justify-content-center">
+				<Col xs={10} md={4} className="text-center">
 					<span className="image-align-helper"></span>
 					<Image
 						src="img/schoolLogo-transparent.png"
 						alt="ArtViva logo"
-						className="responsive-image-fraction pt-4"
+						className="responsive-image-fraction"
 					/>
 				</Col>
 				<Col xs={12} md={8}>

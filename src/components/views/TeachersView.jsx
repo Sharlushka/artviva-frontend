@@ -7,7 +7,6 @@ import { shuffle } from '../../utils/shuffleArray'
 import PropTypes from 'prop-types'
 
 const TeachersView = ({ match }) => {
-	// console.log('Match is ', match.params)
 	const [administration, setAdministration] = useState(null)
 	const [departments, setDepartments] = useState(null)
 
@@ -17,8 +16,8 @@ const TeachersView = ({ match }) => {
 	}, [setAdministration, setDepartments])
 
 	return (
-		<Container className="pt-5">
-			<h3 className="text-center custom-font pt-4 pb-2">
+		<Container>
+			<h3 className="text-center custom-font pb-2">
 				Адміністрація
 			</h3>
 			<Row className="p-2 d-flex justify-content-center">

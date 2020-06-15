@@ -45,7 +45,7 @@ const NavigationBar = ({ user }) => {
 	}
 
 	// list of links
-	const linkClassList = 'pr-2 py-2 py-sm-0 px-md-2 d-flex align-items-center'
+	const linkClassList = 'pr-2 py-1 py-lg-0 px-lg-2 d-flex align-items-center'
 	const navLinks = [
 		{
 			to: '/teachers',
@@ -87,7 +87,7 @@ const NavigationBar = ({ user }) => {
 				collapseOnSelect
 				onToggle={toggleExpanded}
 				expanded={isExpanded}
-				expand="sm"
+				expand="lg"
 				bg="light"
 				variant="light"
 				className={visibility ? 'navbar-visible' : 'navbar-hidden' }
@@ -123,6 +123,7 @@ const NavigationBar = ({ user }) => {
 									<NavDropdown.Item href="/school/payments"><Logout /></NavDropdown.Item>
 								</>
 								: <>
+									<NavDropdown.Item href="/login">Подати заявку</NavDropdown.Item>
 									<NavDropdown.Item href="/login">Логін</NavDropdown.Item>
 									<NavDropdown.Item href="/register">Реєстрація</NavDropdown.Item>
 								</>

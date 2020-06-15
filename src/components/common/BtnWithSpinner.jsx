@@ -31,7 +31,7 @@ const BtnWithSpinner = props => {
 			data-cy={dataCy}
 			{ ...other }
 		>
-			{chooseSpinner() || <>{label}</>}
+			{chooseSpinner() || label}
 		</Button>
 	)
 }

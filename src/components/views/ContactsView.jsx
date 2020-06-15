@@ -8,7 +8,7 @@ const ContactsView = () => {
 	const mapStyles = {
 		height: '70vh',
 		width: '100%',
-		top: '8rem'
+		top: '4rem'
 	}
 
 	const initialCenter = {
@@ -29,7 +29,7 @@ const ContactsView = () => {
 				zoom={11}
 				departments={departments}
 			/>
-			<h1 className="custom-font moar-padding-top">Філії</h1>
+			<h1 className="custom-font">Філії</h1>
 			<Container style={largePaddingTop}>
 				<Row className="d-flex justify-content-around px-2">
 					{departments.map(department =>

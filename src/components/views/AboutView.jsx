@@ -4,7 +4,7 @@ import AboutTextImage from '../common/AboutTextImage'
 
 const AboutView = () => {
 	return (
-		<Container className="pt-5" fluid>
+		<Container fluid>
 			<Row className="d-flex justify-content-center">
 				<Col xs={12} md={8} className="p-0">
 					<Col>

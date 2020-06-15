@@ -5,12 +5,12 @@ import { Container, Row, Col } from 'react-bootstrap'
 
 const RecoverView = () => {
 	return (
-		<Container className="pt-4">
-			<Row className="pt-4">
+		<Container>
+			<Row>
 				<Col xs={12}>
-					<h1 className="text-center custom-font py-4">
+					<h2 className="text-center custom-font py-2">
 						Відновлення паролю
-					</h1>
+					</h2>
 					<RecoverForm />
 				</Col>
 			</Row>

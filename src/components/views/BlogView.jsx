@@ -1,5 +1,4 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import { FacebookProvider, Page } from 'react-facebook'
 import { Container } from 'react-bootstrap'
 
@@ -7,7 +6,7 @@ const BlogView = () => {
 	const windowWidth = window.innerWidth
 
 	return (
-		<Container className="p-0 pt-5 text-center">
+		<Container className="text-center">
 			<h1 className="custom-font py-3 m-0">Фейсбук</h1>
 			<FacebookProvider appId="2185912735037143">
 				<Page href="https://www.facebook.com/myz.shpytky" tabs="timeline"
@@ -23,12 +22,4 @@ const BlogView = () => {
 	)
 }
 
-const mapStateToProps = (state) => {
-	return {
-		user: state.user
-	}
-}
-
-export default connect(
-	mapStateToProps
-)(BlogView)
+export default BlogView
