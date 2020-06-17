@@ -39,7 +39,7 @@ const LoginForm = ({ setNotification, ...props }) => {
 		props.login(userCreds)
 			.then(() => {
 				setNotification({
-					message: 'Ви успішно ввійшли в систему.',
+					message: 'Вхід вдалий.',
 					variant: 'info'
 				}, 5)
 				setLoginSuccessful(true)

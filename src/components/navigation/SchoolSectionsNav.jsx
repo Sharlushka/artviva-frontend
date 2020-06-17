@@ -32,7 +32,7 @@ const SchoolDataNav = () => {
 		},
 		{
 			to: '/school/payments',
-			label: 'Дані по оплаті'
+			label: 'Всі платежі'
 		}
 	]
 
