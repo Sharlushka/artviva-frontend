@@ -19,7 +19,7 @@ const setToken = newToken => {
 * @returns {Object} - Response data
 */
 
-const getUsersList = async () => {
+const getAll = async () => {
 	const config = {
 		headers: { Authorization: token }
 	}
@@ -57,4 +57,24 @@ const activate = async data => {
 	return response.data
 }
 
-export default { getUsersList, signUp, setToken, activate }
+/**
+* Update user details
+* @param {Object} payload - User details
+* @param {string} payload.name - User name
+* @param {string} payload.middlename - User middle name
+* @param {string} payload.lastname - User last name
+* @param {string} payload.approvedUser - User account 'approved' status
+* @param {string} payload.superUser - User account 'super user' status
+*
+* @returns {Object} - Response data
+*/
+
+const update = async (id, payload) => {
+	const config = {
+		headers: { Authorization: token }
+	}
+	const response = await axios.put(`${baseUrl}/${id}`, payload, config)
+	return response.data
+}
+
+export default { getAll, signUp, setToken, activate, update }

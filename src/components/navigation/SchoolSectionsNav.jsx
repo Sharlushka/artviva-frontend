@@ -8,7 +8,7 @@ const SchoolDataNav = () => {
 	const schoolSectionsLinks = [
 		/*{
 			to: '/school/overview',
-			label: 'Взагалі'
+			label: 'Статистика'
 		},*/
 		{
 			to: '/school/classes',
@@ -32,7 +32,11 @@ const SchoolDataNav = () => {
 		},
 		{
 			to: '/school/payments',
-			label: 'Всі платежі'
+			label: 'Платежі'
+		},
+		{
+			to: '/school/users',
+			label: 'Користувачі'
 		}
 	]
 

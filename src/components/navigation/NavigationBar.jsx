@@ -112,9 +112,9 @@ const NavigationBar = ({ user }) => {
 						<NavDropdown title="Школа" id="school-mgmt-links">
 							{user
 								? <>
-									<NavDropdown.Item href="/pay/form">Оплата</NavDropdown.Item>
+									<NavDropdown.Item href="/pay/form">Оплата навчання</NavDropdown.Item>
 									<NavDropdown.Item href="/login">Подати заявку</NavDropdown.Item>
-									<NavDropdown.Item href="/school/overview">Огляд</NavDropdown.Item>
+									<NavDropdown.Item href="/school/overview">Вчителі, учні, групи</NavDropdown.Item>
 									{/*<NavDropdown.Item href="/school/classes">Класи</NavDropdown.Item>
 									<NavDropdown.Item href="/school/teachers">Вчителі</NavDropdown.Item>
 									<NavDropdown.Item href="/school/pupils">Учні</NavDropdown.Item>
@@ -125,7 +125,7 @@ const NavigationBar = ({ user }) => {
 									<NavDropdown.Item href="/school/payments"><Logout /></NavDropdown.Item>
 								</>
 								: <>
-									<NavDropdown.Item href="/pay/form">Оплата</NavDropdown.Item>
+									<NavDropdown.Item href="/pay/form">Оплата навчання</NavDropdown.Item>
 									<NavDropdown.Item href="/login">Подати заявку</NavDropdown.Item>
 									<NavDropdown.Item href="/login">Логін</NavDropdown.Item>
 									<NavDropdown.Item href="/register">Реєстрація</NavDropdown.Item>

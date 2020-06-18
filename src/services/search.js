@@ -14,10 +14,11 @@ const setToken = newToken => {
 
 /**
  * Search teachers
+ * @param {string} payload - Search term
  *
  * @returns {Object} - Response data
  */
-const teachers = async (payload) => {
+const teachers = async payload => {
 
 	const config = {
 		headers: { Authorization: token }
@@ -33,10 +34,11 @@ const teachers = async (payload) => {
 
 /**
  * Search pupils
+ * @param {string} payload - Search term
  *
  * @returns {Object} - Response data
  */
-const pupils = async (payload) => {
+const pupils = async payload => {
 
 	const config = {
 		headers: { Authorization: token }
@@ -52,6 +54,7 @@ const pupils = async (payload) => {
 
 /**
  * Search specialties
+ * @param {string} payload - Search term
  *
  * @returns {Object} - Response data
  */

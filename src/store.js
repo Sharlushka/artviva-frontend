@@ -5,6 +5,7 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 
 import notificationReducer from './reducers/notificationReducer'
 import loginReducer from './reducers/loginReducer'
+import userReducer from './reducers/userReducer'
 import branchesReducer from './reducers/branchesReducer'
 import specialtiesReducer from './reducers/specialtiesReducer'
 import teachersReducer from './reducers/teachersReducer'
@@ -15,6 +16,7 @@ import paymentsReducer from './reducers/paymentsReducer'
 
 const reducer = combineReducers({
 	user: loginReducer,
+	users: userReducer,
 	notification: notificationReducer,
 	branches: branchesReducer,
 	specialties: specialtiesReducer,

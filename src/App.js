@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { ParallaxProvider } from 'react-scroll-parallax'
 import { loadReCaptcha } from 'react-recaptcha-google'
+import { setUserFromLocalStorage } from './reducers/loginReducer'
+
 import PrivateRoute from './components/PrivateRoute'
 
 import Notification from './components/Notification'
@@ -32,9 +34,8 @@ import ScrollToTop from './components/common/ScrollToTop'
 import SchoolSectionsNav from './components/navigation/SchoolSectionsNav'
 import ShowcaseView from './components/views/ShowcaseView'
 
-import { setUserFromLocalStorage } from './reducers/loginReducer'
+import { UsersListView } from './components'
 import './css/index.css'
-
 
 const App = (props) => {
 	useEffect(() => {
@@ -71,8 +72,21 @@ const App = (props) => {
 			<Route path="/blog" component={BlogView} />
 			<Route path="/contacts" component={ContactsView} />
 			<PrivateRoute path="/school" component={SchoolSectionsNav} />
+			{/* How is this different? */}
+			{/*<Route
+				path="/test"
+				render={({ match: { url } }) => (
+					<>
+						<PrivateRoute path={`${url}/`} component={Test} exact />
+						<PrivateRoute path={`${url}/userslist`} component={UsersList}/>
+						<PrivateRoute path={`${url}/other`} component={SomeOtherComponent}/>
+					</>
+				)}
+			/>*/}
 			<PrivateRoute path="/school/overview" component={SchoolOverview} />
 			<Switch>
+				{/*<PrivateRoute path="/school/users/:id" exact component={SchoolClassDetails} />*/}
+				<PrivateRoute path="/school/users" exact component={UsersListView} />
 				<PrivateRoute path="/school/classes/:id" exact component={SchoolClassDetails} />
 				<PrivateRoute path="/school/classes" component={SchoolClassesList} />
 				<PrivateRoute path="/school/teachers/:id" exact component={TeacherDetails} />
