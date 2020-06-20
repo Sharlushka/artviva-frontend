@@ -37,6 +37,11 @@ const PupilsList = ({
 	// eslint-disable-next-line
 	}, [user, initializePupils, setNotification])
 
+	const checkPupilStatus = pupil => {
+		const { currentlyEnrolled, docsPresent } = pupil
+		return !currentlyEnrolled || !docsPresent ? true : false
+	}
+
 	const changeOrder = () => {
 		defaultSortOrder ? sortPupils('name') : sortPupils('name', 'desc')
 		setdefaultSortOrder(!defaultSortOrder)
@@ -88,7 +93,7 @@ const PupilsList = ({
 							<ListGroup>
 								{pupils.map(pupil =>
 									<ListGroup.Item
-										className="px-0 py-1"
+										className={`px-0 py-1 ${checkPupilStatus(pupil) ? 'warning-background' : null}`}
 										key={pupil.id}
 									>
 										<Pupil pupil={pupil} />

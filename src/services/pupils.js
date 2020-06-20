@@ -17,6 +17,7 @@ const setToken = newToken => {
  *
  * @returns {Object} - Response data
  */
+
 const getAll = async () => {
 	try {
 		const config = {
@@ -31,12 +32,29 @@ const getAll = async () => {
 
 /**
  * Create new pupil
- * @param {Object} payload - New specialty data
- * @param {string} payload.name - Unique pupil name
+ *
+ * @param {Object} payload - New pupil data
+ * @param {string} payload.name - Unique pupil's name
+ * @param {string} payload.applicantName - Name of the person responsible for the pupil application
+ * @param {string} payload.specialty - Pupil's specialty id
+ * @param {string} payload.dateOfBirth - Pupil's date of birth
+ * @param {string} payload.mainSchool - Current pupil's school
+ * @param {integer} payload.mainSchoolClass - Current school form
+ * @param {string} payload.gender - Pupil's gender
+ * @param {integer} payload.hasBenefit - Benefits percent from 0-100
+ * @param {string} payload.fathersName - Pupil's father's name
+ * @param {string} payload.fathersPhone - Pupil's father's phone number
+ * @param {string} payload.fathersEmploymentInfo - Pupil's father's job description
+ * @param {string} payload.mothersName - Mother's name
+ * @param {string} payload.mothersPhone - Mother's phone
+ * @param {string} payload.mothersEmploymentInfo - Mother's job
+ * @param {string} payload.contactEmail - Applicant's contact email
+ * @param {string} payload.homeAddress - Pupil's home address
  * @param {string} payload.info - Some optional pupil info
  *
  * @returns {Object} - Response data
  */
+
 const create = async payload => {
 	const config = {
 		headers: { Authorization: token }
@@ -47,6 +65,7 @@ const create = async payload => {
 
 /**
  * Delete single pupil
+ *
  * @param {string} id - Pupil ID
  *
  * @returns {Object} - Response data
@@ -62,9 +81,27 @@ const deleteById = async id => {
 
 /**
  * Update pupil's data
+ *
  * @param {string} id - Pupil's id
- * @param {Object} payload - Updated pupil's data
- * @param {string} payload.name - Unique pupil name
+ * @param {Object} payload - New pupil data
+ * @param {string} payload.name - Unique pupil's name
+ * @param {string} payload.currentlyEnrolled - Current pupil's status
+ * @param {string} payload.applicantName - Name of the person responsible for the pupil application
+ * @param {string} payload.specialty - Pupil's specialty id
+ * @param {string} payload.dateOfBirth - Pupil's date of birth
+ * @param {string} payload.mainSchool - Current pupil's school
+ * @param {integer} payload.mainSchoolClass - Current school form
+ * @param {string} payload.gender - Pupil's gender
+ * @param {integer} payload.hasBenefit - Benefits percent from 0-100
+ * @param {string} payload.fathersName - Pupil's father's name
+ * @param {string} payload.fathersPhone - Pupil's father's phone number
+ * @param {string} payload.fathersEmploymentInfo - Pupil's father's job description
+ * @param {string} payload.mothersName - Mother's name
+ * @param {string} payload.mothersPhone - Mother's phone
+ * @param {string} payload.mothersEmploymentInfo - Mother's job
+ * @param {string} payload.contactEmail - Applicant's contact email
+ * @param {string} payload.homeAddress - Pupil's home address
+ * @param {string} payload.info - Some optional pupil info
  *
  * @returns {Object} - Response data
  */
@@ -77,4 +114,35 @@ const update = async (id, payload) => {
 	return request.then(response => response.data)
 }
 
-export default { getAll, setToken, create, deleteById, update }
+/**
+ * Process pupil public application form
+ * without auth token
+ *
+ * @param {Object} payload - New pupil data
+ * @param {string} payload.name - Unique pupil's name
+ * @param {string} payload.applicantName - Name of the person responsible for the pupil application
+ * @param {string} payload.specialty - Pupil's specialty id
+ * @param {string} payload.dateOfBirth - Pupil's date of birth
+ * @param {string} payload.mainSchool - Current pupil's school
+ * @param {integer} payload.mainSchoolClass - Current school form
+ * @param {string} payload.gender - Pupil's gender
+ * @param {integer} payload.hasBenefit - Benefits percent from 0-100
+ * @param {string} payload.fathersName - Pupil's father's name
+ * @param {string} payload.fathersPhone - Pupil's father's phone number
+ * @param {string} payload.fathersEmploymentInfo - Pupil's father's job description
+ * @param {string} payload.mothersName - Mother's name
+ * @param {string} payload.mothersPhone - Mother's phone
+ * @param {string} payload.mothersEmploymentInfo - Mother's job
+ * @param {string} payload.contactEmail - Applicant's contact email
+ * @param {string} payload.homeAddress - Pupil's home address
+ * @param {string} payload.info - Some optional pupil info
+ *
+ * @returns {Object} - Response data
+ */
+
+const publicApply = async payload => {
+	const response = await axios.post(`${baseUrl}/apply`, payload)
+	return response.data
+}
+
+export default { getAll, setToken, create, deleteById, update, publicApply }

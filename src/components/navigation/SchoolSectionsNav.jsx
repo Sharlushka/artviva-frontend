@@ -42,7 +42,7 @@ const SchoolDataNav = () => {
 
 	return (
 		<Container>
-			<Row className="d-flex justify-content-center">
+			<Row className="d-flex justify-content-center1">
 				{schoolSectionsLinks.map(link =>
 					<SectionLink
 						key={link.label}

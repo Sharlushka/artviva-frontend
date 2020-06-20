@@ -125,6 +125,13 @@ const Pupil = ({ user, pupil, deletePupil, setNotification }) => {
 										}
 									</Card.Text>
 									<Card.Text>
+										Зарахован до навчання?&nbsp;
+										{pupil.currentlyEnrolled
+											? <Emoji label="Check Mark" emoji={'✔️'} />
+											: <Emoji label="Cross Mark" emoji={'❌'} />
+										}
+									</Card.Text>
+									<Card.Text>
 										Пільги: {pupil.hasBenefit}%
 									</Card.Text>
 									{pupil.info
@@ -153,7 +160,9 @@ const Pupil = ({ user, pupil, deletePupil, setNotification }) => {
 									</Card.Text>
 									<Card.Text>
 										Класи ДШМ: {pupil.schoolClasses.map(item =>
-											<p className="pl-3" key={item.id}>{item.title}</p>
+											<span className="pl-3 d-block" key={item.id}>
+												{item.title}
+											</span>
 										)}
 									</Card.Text>
 								</Card.Body>

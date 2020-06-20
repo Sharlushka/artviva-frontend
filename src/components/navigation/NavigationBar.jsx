@@ -113,20 +113,15 @@ const NavigationBar = ({ user }) => {
 							{user
 								? <>
 									<NavDropdown.Item href="/pay/form">Оплата навчання</NavDropdown.Item>
-									<NavDropdown.Item href="/login">Подати заявку</NavDropdown.Item>
+									<NavDropdown.Item href="/apply">Подати заяву на навчання</NavDropdown.Item>
 									<NavDropdown.Item href="/school/overview">Вчителі, учні, групи</NavDropdown.Item>
-									{/*<NavDropdown.Item href="/school/classes">Класи</NavDropdown.Item>
-									<NavDropdown.Item href="/school/teachers">Вчителі</NavDropdown.Item>
-									<NavDropdown.Item href="/school/pupils">Учні</NavDropdown.Item>
-									<NavDropdown.Item href="/school/specialties">Спеціальності</NavDropdown.Item>
-									<NavDropdown.Item href="/school/branches">Філії</NavDropdown.Item>*/}
 									<NavDropdown.Item href="/school/payments">Всі платежі</NavDropdown.Item>
 									<NavDropdown.Divider />
 									<NavDropdown.Item href="/school/payments"><Logout /></NavDropdown.Item>
 								</>
 								: <>
 									<NavDropdown.Item href="/pay/form">Оплата навчання</NavDropdown.Item>
-									<NavDropdown.Item href="/login">Подати заявку</NavDropdown.Item>
+									<NavDropdown.Item href="/apply">Подати заяву на навчання</NavDropdown.Item>
 									<NavDropdown.Item href="/login">Логін</NavDropdown.Item>
 									<NavDropdown.Item href="/register">Реєстрація</NavDropdown.Item>
 								</>

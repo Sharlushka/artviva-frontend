@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 import { setNotification } from '../../reducers/notificationReducer'
 import { createPupil, updatePupil } from '../../reducers/pupilsReducer'
 import pupilsService from '../../services/pupils'
@@ -32,6 +33,7 @@ const PupilForm = ({
 	mode,
 	closeModal }) => {
 
+	const history = useHistory()
 	const [editMode, setEditMode] = useState(false)
 	const [processingForm, setProcessingForm] = useState(false)
 	const [specialtiesNames, setSpecialtiesNames] = useState([])
@@ -43,10 +45,8 @@ const PupilForm = ({
 
 	// set auth token and mode
 	useEffect(() => {
-		pupilsService.setToken(user.token)
-		if (mode === 'edit') {
-			setEditMode(true)
-		}
+		if (user) pupilsService.setToken(user.token)
+		if (mode === 'edit') setEditMode(true)
 	}, [user, mode])
 
 	useEffect(() => {
@@ -67,11 +67,38 @@ const PupilForm = ({
 
 		setProcessingForm(true)
 		editMode
-			? existingPupil(trimObject(values), setErrors)
-			: newPupil(trimObject(values), setErrors, resetForm)
+			? editPupil(trimObject(values), setErrors)
+			: (mode === 'create'
+				? addPupil(trimObject((values), setErrors, resetForm))
+				: publicApply(trimObject(values), setErrors, resetForm))
 	}
 
-	const newPupil = (values, setErrors, resetForm ) => {
+	const publicApply = (values, setErrors, resetForm) => {
+		// this one is a little different
+		pupilsService.publicApply(values)
+			.then(() => {
+				setNotification({
+					message: 'Ваша заява була успішно додана.',
+					variant: 'success'
+				}, 5)
+				setProcessingForm(false)
+				resetForm()
+				history.push('/apply/success')
+			})
+			.catch(error => {
+				const { message, cause } = { ...error.response.data }
+				if (cause === 'name') {
+					setErrors({ title: message })
+				}
+				setNotification({
+					message,
+					variant: 'danger'
+				}, 5)
+				setProcessingForm(false)
+			})
+	}
+
+	const addPupil = (values, setErrors, resetForm) => {
 		createPupil(values)
 			.then(() => {
 				setNotification({
@@ -93,7 +120,7 @@ const PupilForm = ({
 			.finally(() => setProcessingForm(false))
 	}
 
-	const existingPupil = (values, setErrors) => {
+	const editPupil = (values, setErrors) => {
 		updatePupil(pupil.id, values)
 			.then(() => {
 				setNotification({
@@ -143,6 +170,7 @@ const PupilForm = ({
 				processDataCheck: false,
 				paymentObligationsCheck: false,
 				docsPresent: false,
+				currentlyEnrolled: false,
 				info: ''
 			}
 
@@ -219,6 +247,10 @@ const PupilForm = ({
 			.oneOf([true]),
 		paymentObligationsCheck: Yup.bool()
 			.oneOf([true]),
+		docsPresent: Yup.bool()
+			.oneOf([true, false]),
+		currentlyEnrolled: Yup.bool()
+			.oneOf([true, false]),
 		info: Yup.string()
 			.min(3, 'Не менш 3 символів.')
 			.max(255, 'Максимум 255 символів.')
@@ -444,34 +476,8 @@ const PupilForm = ({
 						/>
 
 						<Form.Row>
-							{editMode
-								?	<>
-									<Col xs={12} className="pt-4">
-										<CheckBox
-											type="checkbox"
-											id="docs-present-checkbox"
-											label="Надав усі необхідні документи."
-											name="docsPresent"
-											onChange={handleChange}
-											onBlur={handleBlur}
-											checked={values.docsPresent}
-											value={values.docsPresent}
-											touched={touched.docsPresent}
-											errors={errors.docsPresent}
-										/>
-										<TextAreaInput
-											label="Додаткова інформація/опис"
-											rows={2}
-											name="info"
-											onChange={handleChange}
-											onBlur={handleBlur}
-											value={values.info}
-											touched={touched.info}
-											errors={errors.info}
-										/>
-									</Col>
-								</>
-								: <>
+							{mode === 'public'
+								? <>
 									<Col xs={12} className="pt-4">
 										<CheckBox
 											type="checkbox"
@@ -523,6 +529,48 @@ const PupilForm = ({
 										/>
 									</Col>
 								</>
+								: <>
+									<Col xs={12} className="pt-3">
+										<CheckBox
+											type="checkbox"
+											id={editMode
+												? `currently-enrolled-checkbox-${pupil.id}`
+												: 'currently-enrolled-checkbox'}
+											label="Зарахований до школи на навчання."
+											name="currentlyEnrolled"
+											onChange={handleChange}
+											onBlur={handleBlur}
+											checked={values.currentlyEnrolled}
+											value={values.currentlyEnrolled}
+											touched={touched.currentlyEnrolled}
+											errors={errors.currentlyEnrolled}
+										/>
+										<CheckBox
+											type="checkbox"
+											id={editMode
+												? `docs-present-checkbox-${pupil.id}`
+												: 'docs-present-checkbox'}
+											label="Надав усі необхідні документи."
+											name="docsPresent"
+											onChange={handleChange}
+											onBlur={handleBlur}
+											checked={values.docsPresent}
+											value={values.docsPresent}
+											touched={touched.docsPresent}
+											errors={errors.docsPresent}
+										/>
+										<TextAreaInput
+											label="Додаткова інформація/опис"
+											rows={2}
+											name="info"
+											onChange={handleChange}
+											onBlur={handleBlur}
+											value={values.info}
+											touched={touched.info}
+											errors={errors.info}
+										/>
+									</Col>
+								</>
 							}
 						</Form.Row>
 
@@ -532,7 +580,10 @@ const PupilForm = ({
 							className="pt-4 px-0 d-flex justify-content-end"
 						>
 							<BtnWithSpinner
-								label={editMode ? 'Зберегти' : 'Додати'}
+								label={editMode
+									? 'Зберегти'
+									: (mode === 'public' ? 'Відправити' : 'Додати')
+								}
 								variant={editMode ? 'success' : 'primary'}
 								type="submit"
 								loadingState={processingForm}
@@ -555,11 +606,11 @@ const PupilForm = ({
 
 PupilForm.propTypes = {
 	pupil: PropTypes.object,
-	user: PropTypes.object.isRequired,
+	user: PropTypes.object,
 	setNotification: PropTypes.func.isRequired,
 	createPupil: PropTypes.func.isRequired,
 	updatePupil: PropTypes.func.isRequired,
-	mode: PropTypes.oneOf(['create', 'edit']).isRequired,
+	mode: PropTypes.oneOf(['create', 'edit', 'public']).isRequired,
 	closeModal: PropTypes.func
 }
 

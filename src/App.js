@@ -34,7 +34,7 @@ import ScrollToTop from './components/common/ScrollToTop'
 import SchoolSectionsNav from './components/navigation/SchoolSectionsNav'
 import ShowcaseView from './components/views/ShowcaseView'
 
-import { UsersListView } from './components'
+import { UsersListView, PublicApplyView } from './components'
 import './css/index.css'
 
 const App = (props) => {
@@ -71,6 +71,7 @@ const App = (props) => {
 			<Route path="/register" component={RegisterView} />
 			<Route path="/blog" component={BlogView} />
 			<Route path="/contacts" component={ContactsView} />
+			<Route path="/apply/:status?" component={PublicApplyView} />
 			<PrivateRoute path="/school" component={SchoolSectionsNav} />
 			{/* How is this different? */}
 			{/*<Route
